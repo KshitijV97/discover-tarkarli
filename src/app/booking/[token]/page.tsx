@@ -8,6 +8,8 @@ import { Card } from "@/components/ui/Card";
 import { ManageMeals } from "@/components/booking/ManageMeals";
 import { PayDeposit } from "@/components/booking/PayDeposit";
 import { getPaymentProvider } from "@/lib/payments";
+import { Aurora } from "@/components/fx/Aurora";
+import { SuccessCheck } from "@/components/fx/SuccessCheck";
 
 export const metadata: Metadata = { title: "Your booking", robots: { index: false } };
 export const dynamic = "force-dynamic";
@@ -29,14 +31,20 @@ export default async function BookingPage({ params, searchParams }: { params: { 
   const canPayOnline = !!getPaymentProvider() && !booking.depositPaid && ["pending", "confirmed"].includes(booking.status);
 
   return (
-    <div className="container-page space-y-6 py-6">
+    <div className="container-page space-y-6 pb-10 pt-24">
       {searchParams.new && (
-        <div className="rounded-card bg-gradient-to-br from-primary to-primary/80 p-5 text-primary-foreground shadow-raised">
+        <div className="relative overflow-hidden rounded-card bg-ink p-6 text-ink-foreground shadow-raised">
+          <Aurora className="opacity-70" />
+          <div className="relative flex items-start gap-4">
+          <SuccessCheck />
+          <div>
           <p className="text-sm opacity-90">{booking.status === "pending" ? "Almost done — pay the deposit to confirm" : "Booking received"}</p>
           <h1 className="text-2xl font-semibold">Thank you, {booking.guestName.split(" ")[0]}!</h1>
           <p className="mt-1 text-sm opacity-90">
             Save this page — it&apos;s your private link to view your booking and change meals.
           </p>
+          </div>
+          </div>
         </div>
       )}
 

@@ -2,6 +2,8 @@
 
 import { formatINR, type Paise } from "@/lib/money";
 import { Stepper } from "@/components/ui/Stepper";
+import { PhotoCarousel } from "@/components/fx/Carousel";
+import { img } from "@/lib/images";
 
 export interface RoomView {
   id: string;
@@ -23,9 +25,10 @@ interface Props {
 }
 
 export function RoomPhoto({ room, className = "" }: { room: Pick<RoomView, "name" | "photos">; className?: string }) {
+  if (room.photos.length > 1) return <PhotoCarousel photos={room.photos.map((p) => img(p, 800))} alt={room.name} className={className} />;
   if (room.photos[0]) {
     // eslint-disable-next-line @next/next/no-img-element
-    return <img src={room.photos[0]} alt={room.name} className={`object-cover ${className}`} loading="lazy" />;
+    return <img src={img(room.photos[0], 800)} alt={room.name} className={`object-cover ${className}`} loading="lazy" />;
   }
   return (
     <div className={`relative overflow-hidden bg-gradient-to-br from-primary/80 via-primary/60 to-gold/70 ${className}`} aria-hidden>
@@ -40,10 +43,10 @@ export function RoomCard({ room, available, guests, nights, onToggle, onGuestsCh
   const soldOut = available === false;
   return (
     <article
-      className={`overflow-hidden rounded-card border bg-surface shadow-card transition ${selected ? "border-primary ring-2 ring-primary/30" : "border-border"} ${soldOut ? "opacity-60" : ""}`}
+      className={`group overflow-hidden rounded-card border bg-surface shadow-card transition duration-300 hover:shadow-raised ${selected ? "border-primary ring-2 ring-primary/30" : "border-border"} ${soldOut ? "opacity-60" : ""}`}
     >
       <div className="flex flex-col sm:flex-row">
-        <RoomPhoto room={room} className="h-40 w-full sm:h-auto sm:w-48 sm:shrink-0" />
+        <RoomPhoto room={room} className="h-48 w-full sm:h-auto sm:min-h-52 sm:w-60 sm:shrink-0" />
         <div className="flex flex-1 flex-col gap-3 p-4">
           <div className="flex items-start justify-between gap-3">
             <div>

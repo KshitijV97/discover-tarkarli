@@ -1,8 +1,12 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { mergeTheme, themeToCss } from "@/lib/theme";
-import { getThemeOverride } from "@/lib/server/settings-repo";
-import { SiteHeader } from "@/components/SiteHeader";
+import { getSettings, getThemeOverride } from "@/lib/server/settings-repo";
+import { defaultSettings } from "@/lib/settings";
+import { getSessionUser } from "@/lib/server/session";
+import { Header } from "@/components/site/Header";
+import { Footer } from "@/components/site/Footer";
+import { MotionProvider } from "@/components/fx/MotionProvider";
 
 export const metadata: Metadata = {
   title: { default: "Golden Tide Retreat", template: "%s · Golden Tide Retreat" },
@@ -12,7 +16,12 @@ export const metadata: Metadata = {
 export const viewport: Viewport = { width: "device-width", initialScale: 1, themeColor: "#0E6E8C" };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const theme = mergeTheme(await getThemeOverride());
+  const [override, user, settings] = await Promise.all([
+    getThemeOverride(),
+    getSessionUser(),
+    getSettings().catch(() => defaultSettings),
+  ]);
+  const theme = mergeTheme(override);
   return (
     <html lang="en-IN">
       <head>
@@ -27,12 +36,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           </>
         )}
       </head>
-      <body className="min-h-dvh">
-        <SiteHeader />
-        <main>{children}</main>
-        <footer className="mt-section border-t border-border py-8 text-center text-sm text-muted">
-          <div className="container-page">© {new Date().getFullYear()} Golden Tide Retreat</div>
-        </footer>
+      <body className="flex min-h-dvh flex-col">
+        <MotionProvider>
+          <Header user={user} />
+          <main className="flex-1">{children}</main>
+          <Footer property={settings.property} />
+        </MotionProvider>
       </body>
     </html>
   );

@@ -13,6 +13,9 @@ See `.env.example` (copy to `.env.local` for development).
 | `DATABASE_POOL_MAX` | | Connections per instance (default 5, minimum 3). **Don't use 1** with a transaction pooler: concurrent queries get pipelined on one connection and hang. |
 | `NEXT_PUBLIC_SITE_URL` | ✅ prod | Absolute base URL for links in messages. |
 | `CRON_SECRET` | ✅ prod | Bearer token for `/api/cron/*`. Vercel Cron sends it automatically when set. |
+| `AUTH_SECRET` | ✅ prod | Signs session cookies. `openssl rand -base64 32`. |
+| `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET` | for Google sign-in | OAuth client; see [auth.md](auth.md). |
+| `ADMIN_EMAILS`, `STAFF_EMAILS` | | Comma-separated allow-lists for staff/admin roles. |
 | `PAYMENT_PROVIDER` | | `razorpay` (default). |
 | `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET` | for payments | Enables online deposits. |
 | `RAZORPAY_WEBHOOK_SECRET` | for payments | Verifies webhooks. |

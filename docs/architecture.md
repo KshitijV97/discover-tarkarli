@@ -56,6 +56,12 @@ src/
     api/payments/[provider]/verify browser payment callback
     api/webhooks/razorpay          provider webhook
     api/cron/daily|notifications   scheduled jobs (Bearer CRON_SECRET)
+  auth.ts                          Auth.js config (Google; phone OTP planned)
+  app/signin|account|admin         sign-in, guest bookings, staff area
+  content/site.ts                  marketing copy + placeholder photos
+  components/fx                    animation primitives (carousels, reveal, spotlight, marquee…)
+  components/home                  landing page sections
+  components/site                  header, footer, auth server actions
   components/ui                    Button, Card, Field, Stepper
   components/booking               DateRangeCalendar, RoomCard, MealPlanner, PriceSummary, BookingFlow, ManageMeals, PayDeposit
   lib/
@@ -92,4 +98,4 @@ See [payments.md](payments.md). Browser callback and webhook both call the idemp
 | A business setting | Add a field (with default) to the zod schema in `lib/settings.ts`; it's immediately readable via `getSettings()`. |
 | A schema change | New file `db/migrations/NNNN_description.sql`; never edit applied migrations. |
 | External invoicing (Frappe Books…) | Planned `InvoiceProvider` interface fed from `bookings` + `booking_rooms` + `booking_meals` + `payments` (all carry price and GST snapshots). |
-| Auth provider swap | Admin auth will sit behind `lib/server/auth.ts` (Supabase Auth first). |
+| A sign-in method (phone OTP, email link…) | Add an Auth.js provider in `src/auth.ts` and call `upsertIdentityUser()`; see [auth.md](auth.md). |

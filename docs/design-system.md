@@ -29,6 +29,30 @@
 1. Add it to `theme.config.ts`.
 2. Colours are mapped to Tailwind automatically (camelCase → kebab-case: `surfaceMuted` → `bg-surface-muted`). Radius/spacing/shadow need a line in `tailwind.config.ts`.
 
+## Motion & effects (`src/components/fx`)
+Original components in the spirit of modern animated UI kits, built on **framer-motion** and **Embla**. All of them respect `prefers-reduced-motion` (via `MotionProvider` plus a global CSS rule).
+
+| Component | Effect | Use |
+|---|---|---|
+| `HeroCarousel` | Crossfading full-bleed slideshow, Ken Burns zoom, swipe, progress dots | Home hero |
+| `Carousel` / `PhotoCarousel` | Draggable carousel with autoplay, arrows and dots / in-card photo swiper | Rooms, booking room cards |
+| `TextReveal` | Words resolve from blur, staggered | Headlines |
+| `Reveal`, `RevealGroup`/`RevealItem` | Fade + lift + unblur on scroll, staggered | Sections |
+| `SpotlightCard` | Radial glow follows the cursor | Bento cards |
+| `TiltCard` | 3D tilt toward the cursor (mouse only) | Room cards |
+| `ShimmerButton` | Rotating gradient border + sheen (CSS only) | Primary CTAs |
+| `Marquee` | Infinite scroller, pauses on hover (CSS only) | Menu, gallery |
+| `Aurora` | Drifting blurred colour fields (CSS only) | Dark sections |
+| `ParallaxImage` | Image drifts against scroll | Kitchen |
+| `AnimatedNumber` | Tweened numbers / count-up in view | Stats, totals |
+| `SuccessCheck` | Self-drawing check mark | Booking confirmation |
+
+Keyframes live in `tailwind.config.ts` (`marquee`, `aurora`, `kenburns`, `shimmer`, …).
+
+## Content & images
+- Marketing copy and photos: `src/content/site.ts`. These are placeholder Unsplash photos; swap in real photography there. Room photos live in `rooms.photos`.
+- `img(src, width)` / `srcSet(src)` in `src/lib/images.ts` resize Unsplash URLs on the fly and pass other hosts through. Plain `<img>` is used on purpose (no image-optimisation dependency).
+
 ## UI conventions
 - Mobile-first; `lg:` (≥1024px) adds sidebars. Touch targets ≥ 44px (`min-h-11`).
 - Page width: `.container-page` (max-width + gutters).

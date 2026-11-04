@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { AnimatePresence, motion } from "framer-motion";
+import { AnimatedNumber } from "@/components/fx/AnimatedNumber";
 import { addDays, diffDays, formatDate, type ISODate } from "@/lib/dates";
 import { formatINR } from "@/lib/money";
 import type { AppSettings } from "@/lib/settings";
@@ -28,9 +30,11 @@ interface Props {
   initialCheckOut?: ISODate | null;
   /** True when the deposit is collected online (provider configured + enabled). */
   paymentsOnline: boolean;
+  /** Signed-in user's details to prefill the form. */
+  prefill?: { name: string; email: string } | null;
 }
 
-export function BookingFlow({ rooms, settings, today, serverNow, initialCheckIn = null, initialCheckOut = null, paymentsOnline }: Props) {
+export function BookingFlow({ rooms, settings, today, serverNow, initialCheckIn = null, initialCheckOut = null, paymentsOnline, prefill }: Props) {
   const router = useRouter();
   const [step, setStep] = useState<Step>(initialCheckIn && initialCheckOut ? 1 : 0);
   const [checkIn, setCheckIn] = useState<ISODate | null>(initialCheckIn);
@@ -40,7 +44,7 @@ export function BookingFlow({ rooms, settings, today, serverNow, initialCheckIn 
   const [availabilityError, setAvailabilityError] = useState<string | null>(null);
   const [selected, setSelected] = useState<Record<string, number>>({}); // roomId → guests
   const [mealValues, setMealValues] = useState<MealValues>({});
-  const [guest, setGuest] = useState({ name: "", phone: "", email: "" });
+  const [guest, setGuest] = useState({ name: prefill?.name ?? "", phone: "", email: prefill?.email ?? "" });
   const [touched, setTouched] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -181,7 +185,7 @@ export function BookingFlow({ rooms, settings, today, serverNow, initialCheckIn 
 
   // --- Render -----------------------------------------------------------------
   return (
-    <div className="container-page pb-32 pt-6 lg:pb-10">
+    <div className="container-page pb-32 pt-24 lg:pb-10">
       {/* Step indicator */}
       <ol className="no-scrollbar mb-6 flex items-center gap-2 overflow-x-auto text-sm">
         {STEPS.map((label, i) => {
@@ -192,9 +196,10 @@ export function BookingFlow({ rooms, settings, today, serverNow, initialCheckIn 
                 type="button"
                 disabled={!reachable || i > step}
                 onClick={() => setStep(i as Step)}
-                className={`flex items-center gap-2 rounded-pill px-3 py-1.5 font-medium ${i === step ? "bg-primary text-primary-foreground" : i < step ? "bg-primary-soft text-primary" : "text-muted"}`}
+                className={`relative flex items-center gap-2 rounded-pill px-3 py-1.5 font-medium transition-colors ${i === step ? "text-primary-foreground" : i < step ? "bg-primary-soft text-primary" : "text-muted"}`}
               >
-                <span className="tabular-nums">{i + 1}</span> {label}
+                {i === step && <motion.span layoutId="step-pill" className="absolute inset-0 rounded-pill bg-primary" transition={{ type: "spring", stiffness: 380, damping: 32 }} />}
+                <span className="relative tabular-nums">{i < step ? "✓" : i + 1}</span> <span className="relative">{label}</span>
               </button>
               {i < STEPS.length - 1 && <span className="text-border">—</span>}
             </li>
@@ -204,6 +209,8 @@ export function BookingFlow({ rooms, settings, today, serverNow, initialCheckIn 
 
       <div className="grid gap-8 lg:grid-cols-[1fr_22rem]">
         <section aria-live="polite">
+          <AnimatePresence mode="wait" initial={false}>
+          <motion.div key={step} initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }} transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}>
           {step === 0 && (
             <Card className="p-4 sm:p-6">
               <h1 className="mb-1 text-2xl font-semibold">When are you coming?</h1>
@@ -238,7 +245,8 @@ export function BookingFlow({ rooms, settings, today, serverNow, initialCheckIn 
               )}
               {[...rooms]
                 .sort((a, b) => Number(availableIds?.has(b.id) ?? 0) - Number(availableIds?.has(a.id) ?? 0))
-                .map((room) => (
+                .map((room, i) => (
+                  <motion.div key={room.id} layout initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
                   <RoomCard
                     key={room.id}
                     room={room}
@@ -248,6 +256,7 @@ export function BookingFlow({ rooms, settings, today, serverNow, initialCheckIn 
                     onToggle={() => toggleRoom(room)}
                     onGuestsChange={(g) => setSelected((p) => ({ ...p, [room.id]: g }))}
                   />
+                  </motion.div>
                 ))}
             </div>
           )}
@@ -294,6 +303,9 @@ export function BookingFlow({ rooms, settings, today, serverNow, initialCheckIn 
             </Card>
           )}
 
+          </motion.div>
+          </AnimatePresence>
+
           {/* Desktop nav */}
           <div className="mt-6 hidden items-center justify-between lg:flex">
             <Button variant="ghost" onClick={() => setStep((s) => Math.max(0, s - 1) as Step)} disabled={step === 0}>← Back</Button>
@@ -337,7 +349,7 @@ function MobileSummary({ quote, checkIn, checkOut, intraState }: { quote: Return
     <div className="mb-2">
       <button type="button" className="flex w-full items-center justify-between text-left" onClick={() => setOpen((o) => !o)} aria-expanded={open}>
         <span className="text-sm text-muted">Total incl. GST · <span className="text-primary">Deposit {formatINR(quote.deposit)}</span></span>
-        <span className="font-semibold">{formatINR(quote.total)} <span className="text-muted">{open ? "▾" : "▴"}</span></span>
+        <span className="font-semibold"><AnimatedNumber value={quote.total} format={(n) => formatINR(Math.round(n / 100) * 100)} /> <span className="text-muted">{open ? "▾" : "▴"}</span></span>
       </button>
       {open && (
         <div className="mt-3 max-h-[50vh] overflow-y-auto border-t border-border pt-3">

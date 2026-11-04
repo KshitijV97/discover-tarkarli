@@ -40,3 +40,9 @@ The owner's network blocks Postgres ports, and Vercel's build machines can alway
 
 ### 013 · Pool size of at least 3 with a transaction pooler (2026-11-04)
 With `max: 1`, postgres.js pipelines concurrent queries on one connection. Supavisor in transaction mode doesn't handle this, so pages hung in production. The code now enforces a minimum of 3 connections and a 10s connect timeout.
+
+### 014 · Auth.js with JWT sessions, users in our Postgres (2026-11-04)
+The owner chose Auth.js over Supabase Auth to keep the portability rule. Sign-in is optional for guests (fewer drop-offs). Staff roles come only from env allow-lists. Identities sit in their own table, so Google and future phone OTP can link to one user. There is no edge middleware (the DB driver runs on Node only); pages gate themselves with `requireUser`/`requireStaff`.
+
+### 015 · Animated redesign on framer-motion + Embla, original components (2026-11-04)
+Effects inspired by modern animated UI kits, written from scratch in `components/fx` and driven by theme tokens. Simple effects (marquee, aurora, shimmer) are CSS-only. All motion respects `prefers-reduced-motion`. Placeholder Unsplash photos are kept in one content file.

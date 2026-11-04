@@ -26,6 +26,9 @@ export const defaultTheme = {
     accent: "#E8793A", // sunset orange
     accentForeground: "#FFFFFF",
     gold: "#D9A441", // sunset gold
+    // Deep sea, for dark sections, overlays and the hero
+    ink: "#0A1C26",
+    inkForeground: "#F5EFE4",
     // Feedback
     success: "#2E8B57",
     warning: "#C98A12",

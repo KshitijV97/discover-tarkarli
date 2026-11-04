@@ -52,6 +52,8 @@ export interface CreateBookingInput {
   rooms: RoomAllocation[];
   meals: MealSelection[];
   guest: { name: string; phone: string; email: string };
+  /** Signed-in user making the booking (optional — guests can book without an account). */
+  userId?: string | null;
 }
 
 const REF_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // no 0/O/1/I
@@ -97,10 +99,10 @@ export async function createBooking(
       const bookingId = await db().begin(async (tx) => {
         await tx`select expire_stale_bookings()`;
         const [b] = await tx<{ id: string }[]>`
-          insert into bookings (reference, access_token, guest_name, guest_phone, guest_email, num_guests,
+          insert into bookings (user_id, reference, access_token, guest_name, guest_phone, guest_email, num_guests,
                                 check_in, check_out, status, expires_at,
                                 subtotal_amount, tax_amount, total_amount, deposit_amount)
-          values (${reference}, ${accessToken}, ${input.guest.name.trim()}, ${phone}, ${input.guest.email.trim().toLowerCase()},
+          values (${input.userId ?? null}, ${reference}, ${accessToken}, ${input.guest.name.trim()}, ${phone}, ${input.guest.email.trim().toLowerCase()},
                   ${numGuests}, ${input.checkIn}, ${input.checkOut}, ${status}, ${expiresAt},
                   ${paiseToRupeesString(quote.subtotal)}, ${paiseToRupeesString(quote.tax)},
                   ${paiseToRupeesString(quote.total)}, ${paiseToRupeesString(quote.deposit)})
@@ -254,4 +256,38 @@ export async function updateBookingMeals(
   const detail = toDetail(loaded!, settings);
   await notify("booking.meals_updated", { booking: detail });
   return detail;
+}
+
+// ---------------------------------------------------------------------------
+// Account: a signed-in user's bookings (linked, or made with their verified email)
+// ---------------------------------------------------------------------------
+export interface BookingSummary {
+  reference: string;
+  accessToken: string;
+  checkIn: ISODate;
+  checkOut: ISODate;
+  status: BookingStatus;
+  numGuests: number;
+  total: number;
+  depositPaid: boolean;
+  rooms: string;
+  photo: string | null;
+}
+
+export async function listBookingsForUser(userId: string, verifiedEmail: string | null): Promise<BookingSummary[]> {
+  const rows = await db()<{
+    reference: string; access_token: string; check_in: ISODate; check_out: ISODate; status: BookingStatus;
+    num_guests: number; total_amount: string; deposit_paid: boolean; rooms: string | null; photo: string | null;
+  }[]>`
+    select b.reference, b.access_token, b.check_in, b.check_out, b.status, b.num_guests, b.total_amount, b.deposit_paid,
+           (select string_agg(r.name, ', ' order by r.sort_order) from booking_rooms br join rooms r on r.id = br.room_id where br.booking_id = b.id) as rooms,
+           (select r.photos[1] from booking_rooms br join rooms r on r.id = br.room_id where br.booking_id = b.id order by r.sort_order limit 1) as photo
+    from bookings b
+    where b.user_id = ${userId} or (${verifiedEmail}::text is not null and lower(b.guest_email) = lower(${verifiedEmail}))
+    order by b.check_in desc
+    limit 100`;
+  return rows.map((r) => ({
+    reference: r.reference, accessToken: r.access_token, checkIn: r.check_in, checkOut: r.check_out, status: r.status,
+    numGuests: r.num_guests, total: rupeesToPaise(r.total_amount), depositPaid: r.deposit_paid, rooms: r.rooms ?? "", photo: r.photo,
+  }));
 }

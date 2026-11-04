@@ -17,6 +17,8 @@ npm test
 - **Booking**: calendar with sold-out nights, live per-room availability, multi-room bookings. Double-booking is impossible because the database enforces it.
 - **Meals**: breakfast included every morning, lunch and dinner booked as headcounts. Guests can edit meals until a configurable cutoff.
 - **Payments**: Razorpay deposits with room holds and signature-verified callbacks and webhooks. The balance is paid at the property.
+- **Design**: animated, mobile-first site with hero and room carousels, scroll reveals, a spotlight bento grid, marquees and parallax. It respects reduced-motion.
+- **Accounts**: optional Google sign-in (Auth.js) for guests and staff, with phone OTP planned.
 - **Notifications**: one event system that sends over WhatsApp Cloud API, Telegram or SMS (MSG91/Twilio). Routing, recipients and templates are configurable.
 - **Configurable**: deposit, meal prices, cutoff, GST and the theme are runtime settings. Design tokens are CSS variables.
 - **Portable**: plain Postgres + Node. Supabase and Vercel are the hosts, not dependencies.

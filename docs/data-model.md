@@ -77,6 +77,17 @@ Outbox + delivery log.
 | `attempts`, `last_error`, `provider_message_id`, `sent_at` | |
 | `dedupe_key` (unique) | prevents duplicate sends |
 
+### `users`, `user_identities`
+Accounts for optional guest sign-in and staff access. See [auth.md](auth.md).
+| Column | Notes |
+|---|---|
+| `email` (unique, lower-case), `email_verified_at` | null for future phone-only users |
+| `phone` (unique, E.164), `phone_verified_at` | future phone OTP |
+| `name`, `image` | from Google profile |
+| `role` | `guest · staff · admin`, set from env allow-lists at each sign-in |
+`user_identities (provider, provider_account_id) → user_id` links several sign-in methods to one user.
+`bookings.user_id` (nullable) links bookings made while signed in.
+
 ### `menu_items`, `ala_carte_orders`, `ala_carte_order_items`
 Created for the upcoming à la carte feature. Order items snapshot `price_at_order` and `gst_rate`.
 
