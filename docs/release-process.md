@@ -1,5 +1,7 @@
 # Release process
 
+> **Superseded on 2026-11-04** by the owner's fast mode: [workflows/vibe-coding.md](workflows/vibe-coding.md). Work goes directly to `main`, with no PRs, approvals, tags or releases. This document is kept for reference, for when the owner wants a reviewed release again.
+
 How a requirement becomes a merged change, a version tag and a production deploy. It applies to every change, from the owner's request to the live site.
 
 > **Who approves:** the owner (Kshitij Vengurlekar). Nothing is merged, tagged or deployed to production until the owner approves in chat. The rules below are the process. GitHub does not enforce them (see [Limits](#limits)).

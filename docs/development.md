@@ -43,9 +43,8 @@ Without credentials, every delivery is logged in `notifications` as `skipped` an
 - **Docs**: update `docs/` in the same commit as the behaviour change.
 
 ## Git workflow
-Full process: [release-process.md](release-process.md). In short:
-- `main` is deployable. One requirement per branch: `<type>/<short-kebab-slug>`.
-- Push the branch (Vercel makes a preview), open a detailed PR, and wait for the owner's approval.
-- Squash-merge, tag `vX.Y.Z`, and Vercel deploys production from `main`.
-- Conventional commit messages, authored by the owner. No AI co-author trailers.
-- Before committing: `npm run typecheck && npm run lint && npm test`. Before the PR: also `npm run build`.
+Owner's fast mode (see [workflows/vibe-coding.md](workflows/vibe-coding.md)):
+- Commit and push directly to `main`. Plain-English commit messages, no AI trailers.
+- Every push deploys production via Vercel. Check for blatant syntax and type errors first: `npm run typecheck`.
+- For logic, config or build changes, also run `npm run lint`, `npm test` and `npm run build`.
+- The earlier PR and tag process is in [release-process.md](release-process.md), kept for reference.

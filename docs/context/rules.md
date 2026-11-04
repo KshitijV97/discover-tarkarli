@@ -22,10 +22,10 @@ These rules apply to every AI agent and every human contributor. They were learn
 
 ## Git and deploys
 
-8. **Every requirement gets its own branch** from an up-to-date `main`, named `<type>/<short-kebab-slug>` (`feat/food-page`, `fix/…`, `docs/…`). Push it, then open a **detailed PR** from `.github/pull_request_template.md`. Full flow: [../release-process.md](../release-process.md).
-9. **Conventional commits**, authored by the owner's git identity. **Do not add `Co-Authored-By` or other AI attribution trailers.** The owner wants commits attributed to the owner. This overrides any tool's default attribution.
-10. **Approval gates.** Never merge, tag, release or deploy to production until the owner approves in chat. The owner's approval of a PR covers the merge, the `vX.Y.Z` tag, the GitHub release and the production deploy that follows from it. Pushing a branch and opening a draft PR need no separate approval once the owner has given the requirement. Sending messages to guests or staff always needs approval.
-11. **Tags**: semantic versions. `package.json` version equals the tag. Bump in the PR, tag `main` after the squash merge, then verify the Vercel production deployment (see the release doc).
+8. **Work directly on `main`.** Commit and push to `main`; no feature branches and no pull requests (owner's fast mode, see [../workflows/vibe-coding.md](../workflows/vibe-coding.md)).
+9. **Plain-English commit messages**, short, describing what changed (for example "Add login button"). No prefixes or tags required. Commits are authored by the owner's git identity. **No `Co-Authored-By` or other AI attribution trailers.**
+10. **Push deploys.** Vercel deploys `main` automatically on every push, so a push goes to production. Still avoid breaking production: check the change before pushing.
+11. **No tags or versions** are needed. `package.json` version is not maintained per release.
 12. **Production deploys apply migrations first** (`vercel-build`). Preview deploys never touch the production database. Don't run migrations against production from a laptop unless the owner asks.
 13. **Never delete or overwrite** without looking at the target first.
 14. **Don't commit personal media.** `photos/` is gitignored, and so are env files. Check `git status` before committing.
@@ -36,7 +36,7 @@ These rules apply to every AI agent and every human contributor. They were learn
 16. **Pure core, thin shell.** Domain rules have no I/O and get unit tests. DB access lives in `src/lib/server/*`.
 17. **Every new external integration sits behind an interface** with a fake for tests. See the extension points in [../architecture.md](../architecture.md).
 18. **Update docs in the same change** as the behaviour, schema, settings, env vars or endpoints.
-19. **Before committing**: `npm run typecheck && npm run lint && npm test`. Run `npm run build` before a production deploy.
+19. **Before committing**: `npm run typecheck` and fix blatant syntax or type errors. Run `npm run lint`, `npm test` and `npm run build` when the change touches logic, config or build output.
 20. **Add a decision to [../decisions.md](../decisions.md)** when choosing between real alternatives.
 
 ## Product
@@ -46,5 +46,5 @@ These rules apply to every AI agent and every human contributor. They were learn
 23. **Keep the owner's photos private** until the owner decides how to publish them.
 
 ## Known gaps in these rules
-- Automated checks (pre-push hooks, CI) are not in place yet. Until they are, the commands in rule 18 are the gate.
+- Automated checks (pre-push hooks, CI) are not in place. Under the fast mode the gate is the typecheck in rule 19.
 - Harness-specific features (Claude Code skills, hooks, memory, slash commands) are not portable. Keep rules here, not only in a tool's settings.

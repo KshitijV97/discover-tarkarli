@@ -32,6 +32,9 @@ All dates are 2026-11-04 unless noted. The project was built in one long working
 ## Release process
 - Uncommitted at the time of writing: `docs/release-process.md` and `.github/pull_request_template.md`. Every requirement now gets its own branch, a detailed PR, owner approval, a squash merge, a `vX.Y.Z` tag, and a Vercel production deploy from `main`. *Why:* the owner wants approval before anything reaches production, and wants commits attributed to the owner (no AI co-author trailers).
 
+## Workflow switch
+- The owner chose direct-to-main fast mode: commit and push to `main`, no PRs, approvals or tags. *Why:* speed and momentum. The release process is kept for reference. See decision 016.
+
 ## Decisions that shaped the work
 See [../decisions.md](../decisions.md) (001 to 015). The most consequential:
 - Plain Postgres and postgres.js instead of Supabase client libraries (portability).

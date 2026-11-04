@@ -8,7 +8,7 @@ Last updated: 2026-11-04, after the context-portability work. Update this file w
 - **Working tree:** uncommitted context-portability files (`AGENTS.md`, `docs/context/`, the `CLAUDE.md` pointer).
 
 ## Deployment
-- **Process:** see [../release-process.md](../release-process.md). No tags exist yet. The first release tag is `v0.2.0` once the feature branch is merged (proposal, owner to confirm).
+- **Process:** direct to `main` (owner's fast mode, see [../workflows/vibe-coding.md](../workflows/vibe-coding.md)). Every push deploys production. The old release process is in [../release-process.md](../release-process.md) for reference.
 - **Production (Vercel):** the latest *production* deploy does **not** include the admin dashboard, branding or licence. The `vercel --prod` attempt was blocked by a permission check. It needs the owner's approval, or a deploy from `main` after merging.
 - **Preview:** a preview build of the feature branch was started by the push. Its result was not checked.
 - **Region mismatch to resolve:** `vercel.json` sets `regions: ["hnd1"]` (Tokyo), `docs/deployment.md` says Montreal `yul1`, and commit `2a23ba4` says "pin Vercel region to Mumbai". Decide the intended region (Mumbai `bom1` is the goal in `docs/region-migration.md`) and make the three agree.

@@ -46,3 +46,7 @@ The owner chose Auth.js over Supabase Auth to keep the portability rule. Sign-in
 
 ### 015 · Animated redesign on framer-motion + Embla, original components (2026-11-04)
 Effects inspired by modern animated UI kits, written from scratch in `components/fx` and driven by theme tokens. Simple effects (marquee, aurora, shimmer) are CSS-only. All motion respects `prefers-reduced-motion`. Placeholder Unsplash photos are kept in one content file.
+
+### 016 · Direct-to-main fast mode (2026-11-04)
+The owner chose speed over review gates: commit and push to `main`, plain-English messages, no PRs, approvals, tags or releases. Vercel deploys each push to production. Trade-off accepted by the owner: a bad push goes live, and rollback is by promoting a previous deployment or reverting a commit. Replaces the release process (PRs and tags) for new work; that process stays in `docs/release-process.md` for reference.
+

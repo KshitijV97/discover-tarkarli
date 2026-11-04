@@ -11,6 +11,7 @@
 | [region-migration.md](region-migration.md) | **TODO**: move Vercel and Supabase to Mumbai, step by step |
 | [auth.md](auth.md) | Sign-in: Auth.js + Google (**TODO setup**), roles, phone OTP plan |
 | [release-process.md](release-process.md) | **How work ships**: branch, PR, owner approval, merge, version tag, Vercel deploy, rollback |
+| [workflows/vibe-coding.md](workflows/vibe-coding.md) | **Proposed fast mode** (direct to main, no PRs, no tags). Not active until the owner confirms |
 | [marketing.md](marketing.md) | Branding pillars (dog friendly, AC rooms, Konkan food), where copy lives, photos policy |
 | [admin.md](admin.md) | Admin dashboard: what's built, how to add a page or setting |
 | [future-services.md](future-services.md) | **TODO**: third-party activities (parasailing, scuba, kayaking…) as configurable, operator-owned offers |
