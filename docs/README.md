@@ -2,6 +2,7 @@
 
 | Doc | What's inside |
 |---|---|
+| [context/README.md](context/README.md) | **Start here for any AI tool or new contributor**: requirements, working rules, history, current handoff |
 | [architecture.md](architecture.md) | Layers, module map, request flows, extension points |
 | [booking-rules.md](booking-rules.md) | Stay, occupancy, meals, cutoff, pricing, GST, deposit rules |
 | [data-model.md](data-model.md) | Tables, constraints, triggers, migrations |

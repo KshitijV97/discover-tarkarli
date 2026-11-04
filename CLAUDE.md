@@ -1,5 +1,7 @@
 # CLAUDE.md
 
+> **Harness-neutral context lives in [AGENTS.md](AGENTS.md) and [docs/context/](docs/context/README.md).** Read those first. They work with any AI coding tool (Codex, OpenCode, Z.ai GLM and others). This file adds Claude Code specifics.
+
 Booking system for **Golden Tide Retreat**: a 6-room beachfront homestay in India with a restaurant. Guests book rooms, plan meals and pay a deposit online. Staff get WhatsApp/Telegram/SMS updates.
 
 Stack: Next.js 14 App Router · TypeScript (strict) · Tailwind · PostgreSQL via `postgres.js` · Razorpay · Vitest. Hosted on Vercel + Supabase, but **portability is a hard requirement**: no supabase-js, no Vercel-only APIs.
