@@ -1,0 +1,59 @@
+Golden Tide Retreat Platform: Restricted License
+
+Copyright (c) 2026 Kshitij Vengurlekar. All rights reserved.
+
+1. Definitions
+   "Software" means the source code, documentation, configuration files and
+   other materials in this repository.
+   "You" means any individual or entity that accesses the Software.
+   "Permission" means prior written permission from the copyright holder,
+   given by email or by a signed agreement.
+
+2. Grant
+   Subject to these terms, the copyright holder grants You a limited,
+   non-exclusive, non-transferable, revocable licence to view and read the
+   Software for personal evaluation, study and internal review only.
+
+3. Restrictions
+   Unless You have Permission, You must NOT:
+   a) use the Software, or any part of it, to run a business, website or
+      service, including for a property, a tenant or a customer, whether or
+      not You receive payment;
+   b) copy, modify, merge, translate, create derivative works from, or
+      compile the Software, other than making temporary copies needed to
+      read it;
+   c) distribute, publish, sublicense, sell, rent, lease or otherwise make
+      the Software or any derivative available to any third party;
+   d) offer the Software, or a service substantially based on it, as a hosted
+      or software-as-a-service product;
+   e) remove, alter or obscure any copyright, licence or attribution notice;
+   f) use the Software to build a product or service that competes with the
+      copyright holder's offering;
+   g) reverse engineer, decompile or disassemble the Software, except where
+      applicable law expressly permits this despite this restriction.
+
+4. Attribution
+   Any permitted copy of the Software, or of a substantial part of it, must
+   keep this licence and the copyright notice above.
+
+5. Ownership
+   The Software is licensed, not sold. The copyright holder keeps all rights
+   not expressly granted. Third-party libraries used by the Software remain
+   under their own licences, which are listed in their package metadata.
+
+6. Termination
+   This licence ends automatically if You breach any term. On termination,
+   You must delete all copies of the Software in Your possession.
+
+7. No warranty
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+   OR IMPLIED, INCLUDING MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+   NON-INFRINGEMENT. THE COPYRIGHT HOLDER IS NOT LIABLE FOR ANY CLAIM, DAMAGES
+   OR OTHER LIABILITY ARISING FROM THE SOFTWARE OR ITS USE.
+
+8. Governing law
+   This licence is governed by the laws of India. Courts at the copyright
+   holder's place of residence have exclusive jurisdiction.
+
+For licensing requests (commercial use, deployment, or a tenant of the
+platform), contact Kshitij Vengurlekar.

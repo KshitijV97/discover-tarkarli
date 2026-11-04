@@ -62,4 +62,4 @@ Before committing: `npm run typecheck && npm run lint && npm test`.
 ## Status
 Planned: room types + OTA channel sync (docs/channel-sync.md). Keep availability logic room-type-ready.
 Hosting TODO: move Vercel (`yul1`) and Supabase (Tokyo) to Mumbai; see `docs/region-migration.md`.
-Done: booking flow, meals, pricing, notifications framework, Razorpay deposits, animated redesign, Auth.js sign-in (Google; needs OAuth setup). Next: phone OTP, admin dashboard, GST invoice PDF, à la carte ordering. See `docs/roadmap.md`.
+Done: booking flow, meals, pricing, notifications framework, Razorpay deposits, animated redesign, Auth.js sign-in (Google; needs OAuth setup), admin dashboard first slice (`/admin`, see docs/admin.md). Next: finish admin, phone OTP, GST invoice PDF, à la carte ordering. Planned TODOs with docs: quality gates, third-party activities, multi-tenant SaaS, SaaS billing. See `docs/roadmap.md`.

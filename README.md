@@ -25,3 +25,8 @@ npm test
 
 ## Documentation
 Everything is in **[docs/](docs/README.md)**: architecture, booking rules, data model, payments, notifications, configuration, API, deployment, development, decision log and roadmap.
+
+## Copyright and license
+Copyright (c) 2026 Kshitij Vengurlekar. All rights reserved.
+
+This software is under a **restricted license**, not an open-source license. You may read the source for evaluation. Using it to run a business, copying, modifying, redistributing or offering it as a hosted service all need prior written permission. See [LICENSE](LICENSE).

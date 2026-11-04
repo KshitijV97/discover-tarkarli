@@ -26,7 +26,8 @@ export function Footer({ property }: { property: AppSettings["property"] }) {
         </div>
       </div>
       <div className="container-page relative border-t border-white/10 py-5 text-xs text-ink-foreground/50">
-        © {new Date().getFullYear()} {property.name}{property.gstin ? ` · GSTIN ${property.gstin}` : ""}
+        <p>© {new Date().getFullYear()} {property.name}{property.gstin ? ` · GSTIN ${property.gstin}` : ""}</p>
+        <p className="mt-1">Booking software © 2026 Kshitij Vengurlekar. All rights reserved.</p>
       </div>
     </footer>
   );
