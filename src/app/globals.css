@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Theme variables are injected in app/layout.tsx from src/theme/theme.config.ts. */
+
+@layer base {
+  html { -webkit-tap-highlight-color: transparent; }
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+  h1, h2, h3, h4 { @apply font-heading tracking-tight; }
+  :focus-visible { @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-background; }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-content px-gutter md:px-gutter-desktop;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar { scrollbar-width: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+}
