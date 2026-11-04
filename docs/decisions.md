@@ -1,0 +1,36 @@
+# Decision log
+
+Short ADRs — why things are the way they are. Add new entries at the bottom.
+
+### 001 · Plain Postgres + postgres.js, not supabase-js (2026-11-04)
+Portability requirement. All data access is SQL over `DATABASE_URL`; migrations are plain `.sql`. Moving hosts = changing one env var. Trade-off: no auto-generated types; we map rows by hand in repos.
+
+### 002 · Double-booking prevented by a DB exclusion constraint (2026-11-04)
+Application-level checks race under concurrency. `EXCLUDE USING gist (room_id WITH =, stay WITH &&)` makes overlap impossible from any code path. `stay`/`blocks_inventory` are denormalised onto `booking_rooms` by triggers.
+
+### 003 · Money in paise, dates as strings (2026-11-04)
+Avoid float rounding and timezone drift. GST rounded per line.
+
+### 004 · Breakfast = morning after each night; lunch/dinner on nights' days (2026-11-04)
+Owner's choice (standard hotel convention). Breakfast rows stored even when free for kitchen counts.
+
+### 005 · Prices exclusive of GST; deposit on total incl. GST, rounded up to the rupee (2026-11-04)
+Owner's choice. GST slabs and rates are settings.
+
+### 006 · Price snapshots on every line (2026-11-04)
+`booking_rooms`, `booking_meals`, `ala_carte_order_items` store price + GST rate, so setting changes never alter existing bookings and invoices can be regenerated exactly (and later pushed to an external invoicing system).
+
+### 007 · Settings table with typed code defaults (2026-11-04)
+Business rules editable at runtime; app works on an empty table; zod validates each group and falls back on error.
+
+### 008 · Notifications via outbox + channel adapters (2026-11-04)
+One `notify()` for all events; routing/recipients/templates in settings; channels activate by env credentials. Outbox gives a delivery log, dedupe and retries without a queue service. Sends happen inline after commit (serverless-safe); a cron retries failures. WhatsApp supports Meta-approved templates because business-initiated messages require them.
+
+### 009 · PaymentProvider interface, Razorpay via REST (2026-11-04)
+No SDK dependency. Browser callback and webhook both call idempotent `recordPayment()`; webhook is the source of truth. Late payments after hold expiry re-confirm if possible, else flag a conflict for manual refund.
+
+### 010 · Pending holds instead of payment-before-booking (2026-11-04)
+The room is reserved (15 min, extended when checkout starts) while the guest pays, so a guest never pays for a room someone else just took.
+
+### 011 · Cron as plain authenticated HTTP endpoints (2026-11-04)
+`vercel.json` schedules them today; any scheduler can call them with `Authorization: Bearer $CRON_SECRET`.
