@@ -30,8 +30,9 @@ Before committing: `npm run typecheck && npm run lint && npm test`.
 ## Working rules (short form; full list in docs/context/rules.md)
 - **Ask few, decide the rest.** Ask only the 3 to 4 questions that change the design, as multiple choice with a recommended default. Take sensible defaults for everything else and record them.
 - **Never work around credentials or sandboxes.** If a secret, connection string or network route is wrong or blocked, stop and ask the owner for the exact value or command. Do not probe, derive or disable anything to get past it.
-- **Confirm before outward-facing actions**: pushing, deploying to production, publishing, sending messages, changing live settings. Local edits and commits on a feature branch are fine.
-- **Branch off `main`** for features (`feat/`, `fix/`, `docs/`). Conventional commits (`feat:`, `fix:`, `docs:`, `refactor:`, `chore:`).
+- **One requirement, one branch.** Branch from `main` as `<type>/<short-kebab-slug>`, push it, and open a detailed PR from `.github/pull_request_template.md`. The owner approves the PR in chat. Only then merge (squash), tag `vX.Y.Z` on `main`, and let Vercel deploy production. See [docs/release-process.md](docs/release-process.md).
+- **Commits are the owner's.** Conventional messages. **No `Co-Authored-By` or AI attribution trailers.**
+- **Approval gates:** never merge, tag, release or deploy without the owner's approval in chat. Sending messages to guests or staff always needs approval.
 - **Update the docs in the same change** whenever behaviour, schema, settings, env vars or endpoints change.
 - **Report outcomes faithfully.** If a check fails or was not run, say so.
 

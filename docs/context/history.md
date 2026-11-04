@@ -29,6 +29,9 @@ All dates are 2026-11-04 unless noted. The project was built in one long working
 ## Context portability
 - This entry's commit: `AGENTS.md` and `docs/context/`. *Why:* the owner expects to hit a Claude Pro usage limit and needs to continue with Codex, OpenCode, Z.ai GLM or another tool. Everything a new agent needs was moved out of Claude-only memory and into the repo.
 
+## Release process
+- Uncommitted at the time of writing: `docs/release-process.md` and `.github/pull_request_template.md`. Every requirement now gets its own branch, a detailed PR, owner approval, a squash merge, a `vX.Y.Z` tag, and a Vercel production deploy from `main`. *Why:* the owner wants approval before anything reaches production, and wants commits attributed to the owner (no AI co-author trailers).
+
 ## Decisions that shaped the work
 See [../decisions.md](../decisions.md) (001 to 015). The most consequential:
 - Plain Postgres and postgres.js instead of Supabase client libraries (portability).

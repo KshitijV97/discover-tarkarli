@@ -22,27 +22,28 @@ These rules apply to every AI agent and every human contributor. They were learn
 
 ## Git and deploys
 
-8. **Branch off `main` for features**: `feat/…`, `fix/…`, `docs/…`. `main` should stay deployable.
-9. **Conventional commits**: `feat:`, `fix:`, `docs:`, `refactor:`, `chore:`, `build:`. Add the attribution trailer your tool requires.
-10. **Confirm before pushing, deploying to production, or sending anything outward.** The owner approved commits and pushes explicitly in past sessions. A "push everything" approval does not carry over to a later push of new work without asking.
-11. **Production deploys apply migrations first** (`vercel-build`). Preview deploys never touch the production database. Don't run migrations against production from a laptop unless the owner asks.
-12. **Never delete or overwrite** without looking at the target first.
-13. **Don't commit personal media.** `photos/` is gitignored, and so are env files. Check `git status` before committing.
+8. **Every requirement gets its own branch** from an up-to-date `main`, named `<type>/<short-kebab-slug>` (`feat/food-page`, `fix/…`, `docs/…`). Push it, then open a **detailed PR** from `.github/pull_request_template.md`. Full flow: [../release-process.md](../release-process.md).
+9. **Conventional commits**, authored by the owner's git identity. **Do not add `Co-Authored-By` or other AI attribution trailers.** The owner wants commits attributed to the owner. This overrides any tool's default attribution.
+10. **Approval gates.** Never merge, tag, release or deploy to production until the owner approves in chat. The owner's approval of a PR covers the merge, the `vX.Y.Z` tag, the GitHub release and the production deploy that follows from it. Pushing a branch and opening a draft PR need no separate approval once the owner has given the requirement. Sending messages to guests or staff always needs approval.
+11. **Tags**: semantic versions. `package.json` version equals the tag. Bump in the PR, tag `main` after the squash merge, then verify the Vercel production deployment (see the release doc).
+12. **Production deploys apply migrations first** (`vercel-build`). Preview deploys never touch the production database. Don't run migrations against production from a laptop unless the owner asks.
+13. **Never delete or overwrite** without looking at the target first.
+14. **Don't commit personal media.** `photos/` is gitignored, and so are env files. Check `git status` before committing.
 
 ## Code
 
-14. **Invariants in [../../AGENTS.md](../../AGENTS.md) must hold** (no double-booking, paise, date strings, server-side pricing, idempotent payments, `notify()` never throws, settings for business values, theme tokens only, append-only migrations).
-15. **Pure core, thin shell.** Domain rules have no I/O and get unit tests. DB access lives in `src/lib/server/*`.
-16. **Every new external integration sits behind an interface** with a fake for tests. See the extension points in [../architecture.md](../architecture.md).
-17. **Update docs in the same change** as the behaviour, schema, settings, env vars or endpoints.
-18. **Before committing**: `npm run typecheck && npm run lint && npm test`. Run `npm run build` before a production deploy.
-19. **Add a decision to [../decisions.md](../decisions.md)** when choosing between real alternatives.
+15. **Invariants in [../../AGENTS.md](../../AGENTS.md) must hold** (no double-booking, paise, date strings, server-side pricing, idempotent payments, `notify()` never throws, settings for business values, theme tokens only, append-only migrations).
+16. **Pure core, thin shell.** Domain rules have no I/O and get unit tests. DB access lives in `src/lib/server/*`.
+17. **Every new external integration sits behind an interface** with a fake for tests. See the extension points in [../architecture.md](../architecture.md).
+18. **Update docs in the same change** as the behaviour, schema, settings, env vars or endpoints.
+19. **Before committing**: `npm run typecheck && npm run lint && npm test`. Run `npm run build` before a production deploy.
+20. **Add a decision to [../decisions.md](../decisions.md)** when choosing between real alternatives.
 
 ## Product
 
-20. **Business values are settings**, not constants. Add a zod field with a default in `src/lib/settings.ts`.
-21. **Owner-only facts are not invented.** Dog policy, dish list, prices, and business details come from the owner. Mark unverified copy in [../marketing.md](../marketing.md) under "Owner to confirm".
-22. **Keep the owner's photos private** until the owner decides how to publish them.
+21. **Business values are settings**, not constants. Add a zod field with a default in `src/lib/settings.ts`.
+22. **Owner-only facts are not invented.** Dog policy, dish list, prices, and business details come from the owner. Mark unverified copy in [../marketing.md](../marketing.md) under "Owner to confirm".
+23. **Keep the owner's photos private** until the owner decides how to publish them.
 
 ## Known gaps in these rules
 - Automated checks (pre-push hooks, CI) are not in place yet. Until they are, the commands in rule 18 are the gate.
