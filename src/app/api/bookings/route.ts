@@ -7,8 +7,8 @@ import { errorResponse } from "@/lib/server/http";
 export async function POST(req: NextRequest) {
   try {
     const input = createBookingSchema.parse(await req.json());
-    const { reference, accessToken } = await createBooking(input);
-    return NextResponse.json({ reference, manageUrl: `/booking/${accessToken}` }, { status: 201 });
+    const { reference, accessToken, paymentRequired } = await createBooking(input);
+    return NextResponse.json({ reference, paymentRequired, manageUrl: `/booking/${accessToken}` }, { status: 201 });
   } catch (err) {
     return errorResponse(err);
   }

@@ -3,6 +3,7 @@ import { BookingFlow } from "@/components/booking/BookingFlow";
 import { listActiveRooms } from "@/lib/server/rooms-repo";
 import { getSettings } from "@/lib/server/settings-repo";
 import { isISODate, todayInTz } from "@/lib/dates";
+import { getPaymentProvider } from "@/lib/payments";
 
 export const metadata: Metadata = { title: "Book your stay" };
 export const dynamic = "force-dynamic";
@@ -20,6 +21,7 @@ export default async function BookPage({ searchParams }: { searchParams: { check
       serverNow={new Date().toISOString()}
       initialCheckIn={ci}
       initialCheckOut={co}
+      paymentsOnline={settings.booking.paymentsEnabled && !!getPaymentProvider()}
     />
   );
 }

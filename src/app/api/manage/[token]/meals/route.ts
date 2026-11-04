@@ -8,7 +8,6 @@ export async function PUT(req: NextRequest, { params }: { params: { token: strin
   try {
     const { meals } = updateMealsSchema.parse(await req.json());
     const booking = await updateBookingMeals({ token: params.token }, meals);
-    // TODO(step 5): notify guest + operator via lib/whatsapp.ts
     return NextResponse.json({ meals: booking.meals, quote: booking.quote });
   } catch (err) {
     return errorResponse(err);

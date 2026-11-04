@@ -4,6 +4,8 @@ import type { Sql, TransactionSql } from "postgres";
 import { db } from "./db";
 import { getSettings } from "./settings-repo";
 import { getRoomsByIds } from "./rooms-repo";
+import { notify } from "./notify";
+import { getPaymentProvider } from "@/lib/payments";
 import { planMeals, type MealLine, type MealSelection, type MealType } from "@/lib/booking/meals";
 import { computeQuote, roomGstRate, type Quote, type RoomPriceInput } from "@/lib/booking/pricing";
 import { normalizePhone, validateAllocation, validateStay, type RoomAllocation } from "@/lib/booking/rules";
@@ -12,7 +14,7 @@ import type { ISODate } from "@/lib/dates";
 import type { AppSettings } from "@/lib/settings";
 
 export class BookingError extends Error {
-  constructor(public code: "INVALID" | "UNAVAILABLE" | "NOT_FOUND" | "LOCKED", message: string, public details?: string[]) {
+  constructor(public code: "INVALID" | "UNAVAILABLE" | "NOT_FOUND" | "LOCKED" | "PROVIDER", message: string, public details?: string[]) {
     super(message);
   }
 }
@@ -57,7 +59,10 @@ const newReference = () =>
   "GT-" + Array.from({ length: 6 }, () => REF_ALPHABET[crypto.randomInt(REF_ALPHABET.length)]).join("");
 const newToken = () => crypto.randomBytes(24).toString("base64url");
 
-export async function createBooking(input: CreateBookingInput, now = new Date()): Promise<{ reference: string; accessToken: string }> {
+export async function createBooking(
+  input: CreateBookingInput,
+  now = new Date(),
+): Promise<{ reference: string; accessToken: string; paymentRequired: boolean }> {
   const settings = await getSettings();
 
   const stayError = validateStay(input.checkIn, input.checkOut, settings, now);
@@ -80,7 +85,8 @@ export async function createBooking(input: CreateBookingInput, now = new Date())
   });
   const quote = computeQuote({ checkIn: input.checkIn, checkOut: input.checkOut, rooms: roomInputs, meals: plan.lines, settings });
 
-  const paymentsEnabled = settings.booking.paymentsEnabled;
+  // Online deposit only when enabled in settings AND a provider is configured.
+  const paymentsEnabled = settings.booking.paymentsEnabled && getPaymentProvider() !== null;
   const status: BookingStatus = paymentsEnabled ? "pending" : "confirmed";
   const expiresAt = paymentsEnabled ? new Date(now.getTime() + settings.booking.holdMinutes * 60_000) : null;
 
@@ -88,7 +94,7 @@ export async function createBooking(input: CreateBookingInput, now = new Date())
     const reference = newReference();
     const accessToken = newToken();
     try {
-      await db().begin(async (tx) => {
+      const bookingId = await db().begin(async (tx) => {
         await tx`select expire_stale_bookings()`;
         const [b] = await tx<{ id: string }[]>`
           insert into bookings (reference, access_token, guest_name, guest_phone, guest_email, num_guests,
@@ -108,8 +114,15 @@ export async function createBooking(input: CreateBookingInput, now = new Date())
           })),
         )}`;
         await insertMeals(tx, b.id, plan.lines);
+        return b.id;
       });
-      return { reference, accessToken };
+      const booking = await getBookingById(bookingId);
+      if (booking) {
+        await notify(paymentsEnabled ? "booking.pending" : "booking.confirmed", {
+          booking, dedupeKey: `${paymentsEnabled ? "booking.pending" : "booking.confirmed"}:${bookingId}`,
+        });
+      }
+      return { reference, accessToken, paymentRequired: paymentsEnabled };
     } catch (err) {
       const code = (err as { code?: string }).code;
       if (code === "23P01") {
@@ -188,6 +201,11 @@ function toDetail(loaded: NonNullable<Awaited<ReturnType<typeof loadBooking>>>, 
   };
 }
 
+export async function getBookingById(id: string): Promise<BookingDetail | null> {
+  const [settings, loaded] = await Promise.all([getSettings(), loadBooking(db(), { id })]);
+  return loaded ? toDetail(loaded, settings) : null;
+}
+
 export async function getBookingByToken(token: string): Promise<BookingDetail | null> {
   if (!token || token.length > 64) return null;
   const [settings, loaded] = await Promise.all([getSettings(), loadBooking(db(), { token })]);
@@ -233,5 +251,7 @@ export async function updateBookingMeals(
     return loadBooking(tx, { id: b.id });
   });
 
-  return toDetail(loaded!, settings);
+  const detail = toDetail(loaded!, settings);
+  await notify("booking.meals_updated", { booking: detail });
+  return detail;
 }

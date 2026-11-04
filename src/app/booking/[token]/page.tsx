@@ -6,6 +6,8 @@ import { formatDate } from "@/lib/dates";
 import { formatINR } from "@/lib/money";
 import { Card } from "@/components/ui/Card";
 import { ManageMeals } from "@/components/booking/ManageMeals";
+import { PayDeposit } from "@/components/booking/PayDeposit";
+import { getPaymentProvider } from "@/lib/payments";
 
 export const metadata: Metadata = { title: "Your booking", robots: { index: false } };
 export const dynamic = "force-dynamic";
@@ -19,17 +21,18 @@ const STATUS: Record<string, { label: string; tone: string }> = {
   expired: { label: "Expired", tone: "bg-danger/10 text-danger" },
 };
 
-export default async function BookingPage({ params, searchParams }: { params: { token: string }; searchParams: { new?: string } }) {
+export default async function BookingPage({ params, searchParams }: { params: { token: string }; searchParams: { new?: string; pay?: string } }) {
   const [booking, settings] = await Promise.all([getBookingByToken(params.token), getSettings()]);
   if (!booking) notFound();
   const status = STATUS[booking.status];
   const editable = ["pending", "confirmed", "checked_in"].includes(booking.status);
+  const canPayOnline = !!getPaymentProvider() && !booking.depositPaid && ["pending", "confirmed"].includes(booking.status);
 
   return (
     <div className="container-page space-y-6 py-6">
       {searchParams.new && (
         <div className="rounded-card bg-gradient-to-br from-primary to-primary/80 p-5 text-primary-foreground shadow-raised">
-          <p className="text-sm opacity-90">Booking received</p>
+          <p className="text-sm opacity-90">{booking.status === "pending" ? "Almost done — pay the deposit to confirm" : "Booking received"}</p>
           <h1 className="text-2xl font-semibold">Thank you, {booking.guestName.split(" ")[0]}!</h1>
           <p className="mt-1 text-sm opacity-90">
             Save this page — it&apos;s your private link to view your booking and change meals.
@@ -73,8 +76,19 @@ export default async function BookingPage({ params, searchParams }: { params: { 
               <span>Balance at property</span>
               <span className="tabular-nums">{formatINR(booking.quote.balance)} {booking.balancePaid && <span className="text-success">· paid</span>}</span>
             </div>
-            {!booking.depositPaid && (
-              <p className="rounded-md bg-surface-muted p-3 text-xs text-muted">Online deposit payment is coming soon — our team will contact you to collect it.</p>
+            {canPayOnline ? (
+              <PayDeposit
+                token={booking.accessToken}
+                amount={booking.quote.deposit}
+                pending={booking.status === "pending"}
+                expiresAt={booking.expiresAt ? booking.expiresAt.toISOString() : null}
+                autoOpen={searchParams.pay === "1"}
+              />
+            ) : !booking.depositPaid && booking.status === "confirmed" ? (
+              <p className="rounded-md bg-surface-muted p-3 text-xs text-muted">Our team will contact you to collect the deposit.</p>
+            ) : null}
+            {booking.status === "expired" && (
+              <p className="rounded-md bg-danger/10 p-3 text-xs text-danger">This booking expired because the deposit wasn&apos;t paid in time. Please make a new booking.</p>
             )}
           </Card>
         </aside>

@@ -26,9 +26,11 @@ interface Props {
   serverNow: string;
   initialCheckIn?: ISODate | null;
   initialCheckOut?: ISODate | null;
+  /** True when the deposit is collected online (provider configured + enabled). */
+  paymentsOnline: boolean;
 }
 
-export function BookingFlow({ rooms, settings, today, serverNow, initialCheckIn = null, initialCheckOut = null }: Props) {
+export function BookingFlow({ rooms, settings, today, serverNow, initialCheckIn = null, initialCheckOut = null, paymentsOnline }: Props) {
   const router = useRouter();
   const [step, setStep] = useState<Step>(initialCheckIn && initialCheckOut ? 1 : 0);
   const [checkIn, setCheckIn] = useState<ISODate | null>(initialCheckIn);
@@ -161,7 +163,7 @@ export function BookingFlow({ rooms, settings, today, serverNow, initialCheckIn 
         if (res.status === 409) { setStep(1); setAvailabilityVersion((v) => v + 1); }
         return;
       }
-      router.push(`${data.manageUrl}?new=1`);
+      router.push(`${data.manageUrl}?new=1${data.paymentRequired ? "&pay=1" : ""}`);
     } catch {
       setSubmitError("Network error — please check your connection and try again.");
     } finally {
@@ -175,7 +177,7 @@ export function BookingFlow({ rooms, settings, today, serverNow, initialCheckIn 
     else { setStep((s) => (s + 1) as Step); window.scrollTo({ top: 0, behavior: "smooth" }); }
   }
 
-  const nextLabel = ["Choose rooms", "Plan meals", "Guest details", submitting ? "Booking…" : "Confirm booking"][step];
+  const nextLabel = ["Choose rooms", "Plan meals", "Guest details", submitting ? "Booking…" : paymentsOnline ? "Continue to payment" : "Confirm booking"][step];
 
   // --- Render -----------------------------------------------------------------
   return (
@@ -284,9 +286,9 @@ export function BookingFlow({ rooms, settings, today, serverNow, initialCheckIn 
               {submitError && <p className="rounded-md bg-danger/10 p-3 text-sm text-danger">{submitError}</p>}
               {quote && (
                 <p className="text-xs text-muted">
-                  {settings.booking.paymentsEnabled
-                    ? `You'll pay a deposit of ${formatINR(quote.deposit)} to confirm. Your room is held for ${settings.booking.holdMinutes} minutes.`
-                    : `Deposit of ${formatINR(quote.deposit)} will be collected to confirm (online payment coming soon).`}
+                  {paymentsOnline
+                    ? `Next, you'll pay a deposit of ${formatINR(quote.deposit)} securely via Razorpay. Your room is held for ${settings.booking.holdMinutes} minutes while you pay.`
+                    : `Our team will contact you to collect the deposit of ${formatINR(quote.deposit)}.`}
                 </p>
               )}
             </Card>

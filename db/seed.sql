@@ -38,6 +38,6 @@ insert into settings (key, value) values
   ('deposit',      '{"type":"percent","value":30}'),
   ('meals',        '{"breakfastIncluded":true,"breakfastPrice":350,"lunchPrice":550,"dinnerPrice":650,"cutoffTime":"18:00","cutoffDaysBefore":1}'),
   ('tax',          '{"roomRateLow":5,"roomRateHigh":18,"roomThreshold":7500,"foodRate":5,"intraState":true}'),
-  ('booking',      '{"minNights":1,"maxNights":30,"maxAdvanceDays":365,"holdMinutes":15,"paymentsEnabled":false,"checkInTime":"14:00","checkOutTime":"11:00"}'),
+  ('booking',      '{"minNights":1,"maxNights":30,"maxAdvanceDays":365,"holdMinutes":15,"paymentsEnabled":true,"checkInTime":"14:00","checkOutTime":"11:00"}'),
   ('property',     '{"name":"Golden Tide Retreat","timezone":"Asia/Kolkata","phone":"","email":"","address":"","gstin":""}')
 on conflict (key) do nothing;

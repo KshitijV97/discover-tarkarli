@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { notificationsSchema } from "@/lib/notifications/config";
 
 /**
  * Typed app settings. Each group is one row in the `settings` table
@@ -32,7 +33,9 @@ export const settingsSchema = z.object({
     maxNights: z.number().int().min(1).default(30),
     maxAdvanceDays: z.number().int().min(1).default(365),
     holdMinutes: z.number().int().min(1).default(15),
-    paymentsEnabled: z.boolean().default(false),     // false → bookings confirm instantly (pre-Razorpay)
+    // Collect the deposit online. Only takes effect when a payment provider is
+    // configured (RAZORPAY_KEY_ID/SECRET); otherwise bookings confirm instantly.
+    paymentsEnabled: z.boolean().default(true),
     checkInTime: hhmm.default("14:00"),
     checkOutTime: hhmm.default("11:00"),
   }).default({}),
@@ -44,6 +47,7 @@ export const settingsSchema = z.object({
     address: z.string().default(""),
     gstin: z.string().default(""),
   }).default({}),
+  notifications: notificationsSchema.default({}),
 });
 
 export type AppSettings = z.infer<typeof settingsSchema>;
