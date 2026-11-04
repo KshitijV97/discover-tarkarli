@@ -36,3 +36,10 @@ export async function requireStaff(next = "/admin"): Promise<SessionUser> {
   if (u.role !== "staff" && u.role !== "admin") redirect("/account?denied=1");
   return u;
 }
+
+/** Admin-only (settings changes). Staff get a redirect to /account. */
+export async function requireAdmin(next = "/admin"): Promise<SessionUser> {
+  const u = await requireUser(next);
+  if (u.role !== "admin") redirect("/account?denied=1");
+  return u;
+}

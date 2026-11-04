@@ -11,6 +11,8 @@ const NAV = [
   { href: "/#rooms", label: "Rooms" },
   { href: "/#experiences", label: "Experiences" },
   { href: "/#kitchen", label: "Kitchen" },
+  { href: "/food", label: "Local food" },
+  { href: "/#pets", label: "Dog friendly" },
   { href: "/#gallery", label: "Gallery" },
 ];
 

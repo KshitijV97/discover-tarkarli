@@ -2,7 +2,7 @@
 
 Two places:
 - **Environment variables** — secrets and infrastructure. Never in the DB or git.
-- **`settings` table** — business rules, editable at runtime (admin settings page upcoming). Typed with defaults in `src/lib/settings.ts`; a missing or invalid row falls back to defaults (invalid rows log a warning).
+- **`settings` table** — business rules, editable at runtime from `/admin/settings` (admin only; deposit, meals, GST, booking rules and property are editable, notifications and theme are not yet). Typed with defaults in `src/lib/settings.ts`; a missing or invalid row falls back to defaults (invalid rows log a warning).
 
 ## Environment variables
 See `.env.example` (copy to `.env.local` for development).

@@ -29,6 +29,12 @@ export function Hero({ today }: { today: ISODate }) {
           {site.hero.subtitle}
         </motion.p>
 
+        <ul className="mt-5 flex flex-wrap gap-2 text-xs font-semibold" aria-label="Highlights">
+          {site.badges.map((b) => (
+            <li key={b} className="rounded-pill glass px-3 py-1.5">{b}</li>
+          ))}
+        </ul>
+
         <motion.form
           initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.15, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           onSubmit={(e) => { e.preventDefault(); router.push(`/book?checkIn=${checkIn}&checkOut=${checkOut}`); }}

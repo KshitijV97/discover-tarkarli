@@ -43,6 +43,9 @@ Without credentials, every delivery is logged in `notifications` as `skipped` an
 - **Docs**: update `docs/` in the same commit as the behaviour change.
 
 ## Git workflow
-- `main` is deployable. Work on `feat/…`, `fix/…`, `docs/…` branches; open a PR.
-- Conventional commit messages (`feat:`, `fix:`, `docs:`, `refactor:`, `chore:`).
-- Before committing: `npm run typecheck && npm run lint && npm test`.
+Full process: [release-process.md](release-process.md). In short:
+- `main` is deployable. One requirement per branch: `<type>/<short-kebab-slug>`.
+- Push the branch (Vercel makes a preview), open a detailed PR, and wait for the owner's approval.
+- Squash-merge, tag `vX.Y.Z`, and Vercel deploys production from `main`.
+- Conventional commit messages, authored by the owner. No AI co-author trailers.
+- Before committing: `npm run typecheck && npm run lint && npm test`. Before the PR: also `npm run build`.

@@ -6,7 +6,8 @@ import { unsplash } from "@/lib/images";
  * Room photos live in the database (rooms.photos), not here.
  */
 export const site = {
-  tagline: "Beachfront homestay · Konkan coast",
+  tagline: "Dog-friendly beachfront homestay · Konkan coast",
+  badges: ["Dog friendly", "Air-conditioned rooms", "Konkan kitchen"],
   hero: {
     eyebrow: "Six rooms. One shoreline.",
     title: "Wake up to the tide. Stay for the food.",
@@ -78,4 +79,33 @@ export const site = {
     { title: "Pay a small deposit", body: "Secure your room online. The balance is settled at the property." },
   ],
   bookingBanner: unsplash("1540541338287-41700207dee6"),
+  // Dog policy wording: confirm with the owner before launch (docs/marketing.md).
+  pets: {
+    eyebrow: "Dog friendly",
+    title: "Bring your dog. They're family here too.",
+    body: "Walks on the sand, a quiet room, and a bowl of water waiting. Tell us when you book so we can get everything ready.",
+    points: [
+      "Dogs welcome in every room",
+      "Sand, sea and garden walks, right outside",
+      "Tell us in advance and we'll set up a bed and bowl",
+    ],
+  },
+  // Local dishes are cooked to order. Names are the Konkan names; descriptions are marketing copy.
+  localFood: {
+    eyebrow: "Local food",
+    title: "Konkan dishes, cooked to order",
+    body: "Recipes from the village kitchens along this coast: festival sweets, everyday breakfasts and the Sunday curries. Ask for any of them when you book, and we'll cook them fresh.",
+    solkadhi: {
+      name: "Solkadhi",
+      body: "Kokum and coconut milk with garlic and cumin. Pale pink, tangy, and the perfect end to a spicy meal.",
+    },
+    dishes: [
+      { name: "Modak", course: "Sweets", veg: true, body: "Steamed rice-flour dumplings filled with fresh coconut and jaggery. The Ganesh Chaturthi favourite, made on request." },
+      { name: "Ghavne", course: "Breakfast", veg: true, body: "Soft rice-flour crepes, lightly sweet with coconut and jaggery, served warm with ghee." },
+      { name: "Shirwale", course: "Breakfast", veg: true, body: "Fine steamed rice-flour strands served with sweet coconut milk and a little ghee." },
+      { name: "Patholi", course: "Sweets", veg: true, body: "Rice-flour parcels of jaggery and coconut, steamed in turmeric leaves. Fragrant and sweet." },
+      { name: "Kombdi Vade", course: "Mains", veg: false, body: "Malvani chicken curry with crisp lentil-and-rice vade. A Konkan Sunday classic." },
+      { name: "Surmai Curry", course: "Mains", veg: false, body: "Seer fish in a tangy Malvani coconut curry, made with the day's catch when it's available." },
+    ],
+  },
 } as const;

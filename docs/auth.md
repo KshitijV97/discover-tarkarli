@@ -5,7 +5,7 @@
 - **Sessions:** signed JWT cookies (`AUTH_SECRET`), so there is no sessions table.
 - **Who signs in:**
   - **Guests (optional):** see all their bookings at `/account`, and get name and email prefilled when booking. Booking without an account still works.
-  - **Staff / admin:** access `/admin` (dashboard coming). Roles come only from env allow-lists (`ADMIN_EMAILS`, `STAFF_EMAILS`) and are refreshed at each sign-in. Nobody can grant themselves a role.
+  - **Staff / admin:** access `/admin` (dashboard, first slice built; see [admin.md](admin.md)). Roles come only from env allow-lists (`ADMIN_EMAILS`, `STAFF_EMAILS`) and are refreshed at each sign-in. Nobody can grant themselves a role. Staff can see bookings; only admins can change settings (`requireAdmin()`).
 - **Booking linkage:** bookings made while signed in get `bookings.user_id`. `/account` shows bookings linked to the user **or** made with their (Google-verified) email.
 
 ## Data
