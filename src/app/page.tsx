@@ -4,7 +4,7 @@ import { getSettings } from "@/lib/server/settings-repo";
 import { todayInTz } from "@/lib/dates";
 import { Hero } from "@/components/home/Hero";
 import { RoomsShowcase } from "@/components/home/RoomsShowcase";
-import { Experiences, FinalCta, Gallery, HowItWorks, Kitchen, SectionHeading, Stats } from "@/components/home/sections";
+import { DogFriendly, Experiences, FinalCta, Gallery, HowItWorks, Kitchen, SectionHeading, Stats } from "@/components/home/sections";
 
 export const dynamic = "force-dynamic";
 
@@ -22,6 +22,7 @@ export default async function HomePage() {
       </section>
       <Experiences />
       <Kitchen menu={menu} />
+      <DogFriendly />
       <Gallery />
       <HowItWorks />
       <FinalCta />

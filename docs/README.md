@@ -9,6 +9,7 @@
 | [razorpay-onboarding.md](razorpay-onboarding.md) | **TODO**: step-by-step Razorpay account, keys, webhook, go-live checklist |
 | [region-migration.md](region-migration.md) | **TODO**: move Vercel and Supabase to Mumbai, step by step |
 | [auth.md](auth.md) | Sign-in: Auth.js + Google (**TODO setup**), roles, phone OTP plan |
+| [marketing.md](marketing.md) | Branding pillars (dog friendly, AC rooms, Konkan food), where copy lives, photos policy |
 | [admin.md](admin.md) | Admin dashboard: what's built, how to add a page or setting |
 | [future-services.md](future-services.md) | **TODO**: third-party activities (parasailing, scuba, kayaking…) as configurable, operator-owned offers |
 | [multi-tenancy.md](multi-tenancy.md) | **TODO (major)**: white-label SaaS, one platform for many domains and UI packs |

@@ -80,6 +80,12 @@ export function Kitchen({ menu }: { menu: MenuItem[] }) {
           <Reveal delay={0.1} className="flex flex-wrap gap-3 text-sm">
             <span className="rounded-pill bg-success/10 px-3 py-1.5 font-medium text-success">Breakfast included daily</span>
             <span className="rounded-pill bg-primary-soft px-3 py-1.5 font-medium text-primary">Lunch & dinner as easy add-ons</span>
+            <Link href="/food" className="rounded-pill bg-gold/20 px-3 py-1.5 font-medium text-foreground hover:bg-gold/30">Local Konkan dishes, on order →</Link>
+          </Reveal>
+          <Reveal delay={0.15} className="mt-8 rounded-card border border-border bg-surface p-5 shadow-card">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Signature</p>
+            <p className="mt-2 font-heading text-2xl font-semibold">{site.localFood.solkadhi.name}</p>
+            <p className="mt-1 text-sm text-muted">{site.localFood.solkadhi.body}</p>
           </Reveal>
         </div>
       </div>
@@ -101,6 +107,29 @@ export function Kitchen({ menu }: { menu: MenuItem[] }) {
           </Marquee>
         </div>
       )}
+    </section>
+  );
+}
+
+export function DogFriendly() {
+  const p = site.pets;
+  return (
+    <section id="pets" className="scroll-mt-20 container-page py-20 md:py-24">
+      <div className="grid items-center gap-10 rounded-[calc(var(--radius-card)*1.5)] bg-primary-soft p-8 md:grid-cols-2 md:p-14">
+        <Reveal>
+          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-accent">{p.eyebrow}</p>
+          <h2 className="text-balance text-3xl font-semibold leading-tight md:text-5xl">{p.title}</h2>
+          <p className="mt-4 text-base text-muted md:text-lg">{p.body}</p>
+        </Reveal>
+        <RevealGroup className="space-y-3">
+          {p.points.map((point) => (
+            <RevealItem key={point} className="flex items-start gap-3 rounded-card bg-surface p-4 shadow-card">
+              <span aria-hidden className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-pill bg-success/15 text-sm text-success">✓</span>
+              <p className="font-medium">{point}</p>
+            </RevealItem>
+          ))}
+        </RevealGroup>
+      </div>
     </section>
   );
 }
