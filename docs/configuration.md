@@ -10,7 +10,7 @@ See `.env.example` (copy to `.env.local` for development).
 | Variable | Required | Purpose |
 |---|---|---|
 | `DATABASE_URL` | ✅ | Postgres connection string. Supabase: **Transaction pooler** URI (port 6543). |
-| `DATABASE_POOL_MAX` | | Connections per instance (default 5; use 1 on serverless). |
+| `DATABASE_POOL_MAX` | | Connections per instance (default 5, minimum 3). **Don't use 1** with a transaction pooler: concurrent queries get pipelined on one connection and hang. |
 | `NEXT_PUBLIC_SITE_URL` | ✅ prod | Absolute base URL for links in messages. |
 | `CRON_SECRET` | ✅ prod | Bearer token for `/api/cron/*`. Vercel Cron sends it automatically when set. |
 | `PAYMENT_PROVIDER` | | `razorpay` (default). |

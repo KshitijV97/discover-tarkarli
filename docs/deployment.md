@@ -17,7 +17,7 @@ Today: **Vercel** (Next.js app) + **Supabase** (Postgres). Both free tier.
 ```bash
 npx vercel link            # create/link project
 npx vercel env add DATABASE_URL production        # transaction pooler URI
-npx vercel env add DATABASE_POOL_MAX production   # 1
+npx vercel env add DATABASE_POOL_MAX production   # 5 (min 3, never 1)
 npx vercel env add NEXT_PUBLIC_SITE_URL production
 npx vercel env add CRON_SECRET production         # long random string
 # optional: RAZORPAY_*, WHATSAPP_*, TELEGRAM_BOT_TOKEN, SMS_*
@@ -28,6 +28,15 @@ Or connect the GitHub repo in the Vercel dashboard for automatic deploys on push
 - **Cron**: `vercel.json` schedules `/api/cron/daily` once a day (Hobby plan allows daily crons). Vercel sends `Authorization: Bearer $CRON_SECRET`.
 - **Region**: set the Vercel function region to `bom1` (Mumbai) in Project → Settings → Functions to sit next to the database.
 - After the first deploy, set `NEXT_PUBLIC_SITE_URL` to the real URL and redeploy.
+
+## Migrations on deploy
+`npm run vercel-build` (`scripts/vercel-build.mjs`) runs `db:migrate` before `next build` on **production** deploys only (`VERCEL_ENV=production`), so schema changes ship with the code. Preview deploys never touch the production database. Set `DB_SEED_ON_BUILD=true` to also run the idempotent seed. On other hosts, run `npm run db:migrate` in your release step.
+
+## Troubleshooting
+- **`CONNECT_TIMEOUT` from your laptop**: some Wi-Fi/office networks block outbound ports 5432/6543. Use a phone hotspot or another network to run migrations locally, or just deploy and let the Vercel build apply them.
+- **Supabase "Direct connection" (`db.<ref>.supabase.co:5432`) fails with `ENOTFOUND`**: it is IPv6-only on the free plan. Use the **Transaction pooler** URI.
+- **Pages hang until a 300s function timeout while APIs work**: `DATABASE_POOL_MAX` is 1. Use 5 (code enforces a minimum of 3).
+- **Deploy from a restricted sandbox fails with `fetch failed`**: run `npx vercel --prod` from a normal terminal.
 
 ## 3. After deploy
 - Razorpay webhook → `https://<domain>/api/webhooks/razorpay` (see [payments.md](payments.md)).

@@ -34,3 +34,9 @@ The room is reserved (15 min, extended when checkout starts) while the guest pay
 
 ### 011 · Cron as plain authenticated HTTP endpoints (2026-11-04)
 `vercel.json` schedules them today; any scheduler can call them with `Authorization: Bearer $CRON_SECRET`.
+
+### 012 · Migrations run in the Vercel production build (2026-11-04)
+The owner's network blocks Postgres ports, and Vercel's build machines can always reach the database. Production builds apply pending migrations first, and preview builds skip them. This stays portable: other hosts run `npm run db:migrate` in their release step.
+
+### 013 · Pool size of at least 3 with a transaction pooler (2026-11-04)
+With `max: 1`, postgres.js pipelines concurrent queries on one connection. Supavisor in transaction mode doesn't handle this, so pages hung in production. The code now enforces a minimum of 3 connections and a 10s connect timeout.
