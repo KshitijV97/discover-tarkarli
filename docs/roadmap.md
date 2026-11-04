@@ -8,6 +8,10 @@
 - Notification framework: WhatsApp Cloud API, Telegram, SMS (MSG91/Twilio); outbox, dedupe, retries; daily balance reminders + kitchen summary
 - Razorpay deposit payments: orders, checkout, signature verification, webhook, holds, late-payment handling
 
+## 📝 TODO (owner)
+- **Razorpay onboarding**: create an account, test keys, webhook, KYC, live keys. Step-by-step: [razorpay-onboarding.md](razorpay-onboarding.md). Until then bookings confirm without online payment.
+- **Policy pages** (terms, cancellation/refund, privacy, contact), required for Razorpay activation.
+
 ## ⏭ Next
 1. **Admin dashboard** (Supabase Auth behind `lib/server/auth.ts`)
    - Bookings list filterable by date; meal selections; payment status

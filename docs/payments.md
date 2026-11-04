@@ -49,6 +49,8 @@ sequenceDiagram
 | Meal edits after deposit paid | Total changes; deposit stays fixed; balance absorbs the difference. |
 
 ## Setup
+> Owner checklist with screenshots-level detail: [razorpay-onboarding.md](razorpay-onboarding.md).
+
 1. Razorpay Dashboard → **Account & Settings → API Keys** → generate **Test** keys.
 2. Set env: `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET`.
 3. **Settings → Webhooks → Add**: URL `https://<your-domain>/api/webhooks/razorpay`, a secret (→ `RAZORPAY_WEBHOOK_SECRET`), events `payment.captured`, `payment.failed`, `order.paid`.
