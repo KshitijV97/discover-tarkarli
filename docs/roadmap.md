@@ -10,6 +10,7 @@
 
 ## 📝 TODO (owner)
 - **Razorpay onboarding**: create an account, test keys, webhook, KYC, live keys. Step-by-step: [razorpay-onboarding.md](razorpay-onboarding.md). Until then bookings confirm without online payment.
+- **Move hosting to India**: Vercel Montreal → Mumbai (`bom1`), Supabase Tokyo → Mumbai (`ap-south-1`). Easiest before go-live. Steps: [region-migration.md](region-migration.md).
 - **Policy pages** (terms, cancellation/refund, privacy, contact), required for Razorpay activation.
 
 ## ⏭ Next

@@ -57,4 +57,5 @@ Before committing: `npm run typecheck && npm run lint && npm test`.
 - New external integrations go behind an interface (see the extension points in docs/architecture.md).
 
 ## Status
+Hosting TODO: move Vercel (`yul1`) and Supabase (Tokyo) to Mumbai; see `docs/region-migration.md`.
 Done: booking flow, meals, pricing, notifications framework, Razorpay deposits. Next: admin dashboard (Supabase Auth behind `lib/server/auth.ts`), GST invoice PDF, à la carte ordering. See `docs/roadmap.md`.

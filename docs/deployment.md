@@ -2,6 +2,8 @@
 
 Today: **Vercel** (Next.js app) + **Supabase** (Postgres). Both free tier.
 
+> Current regions: Vercel functions in **Montreal (`yul1`)**, Supabase in **Tokyo (`ap-northeast-1`)**. Moving both to Mumbai is a TODO; see [region-migration.md](region-migration.md).
+
 ## 1. Supabase (database)
 1. Create a project at supabase.com — region **Mumbai (ap-south-1)** for Indian guests. Save the DB password.
 2. **Connect → Connection string → Transaction pooler** (port `6543`). This is `DATABASE_URL` for Vercel.

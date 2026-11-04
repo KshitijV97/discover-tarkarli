@@ -7,6 +7,7 @@
 | [data-model.md](data-model.md) | Tables, constraints, triggers, migrations |
 | [payments.md](payments.md) | Razorpay deposit flow, webhooks, edge cases, adding providers |
 | [razorpay-onboarding.md](razorpay-onboarding.md) | **TODO**: step-by-step Razorpay account, keys, webhook, go-live checklist |
+| [region-migration.md](region-migration.md) | **TODO**: move Vercel and Supabase to Mumbai, step by step |
 | [notifications.md](notifications.md) | Events, WhatsApp / SMS / Telegram channels, routing, templates |
 | [configuration.md](configuration.md) | Every env var and every `settings` key |
 | [design-system.md](design-system.md) | Theme tokens, runtime overrides, component conventions |
