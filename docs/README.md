@@ -17,6 +17,10 @@
 | [future-services.md](future-services.md) | **TODO**: third-party activities (parasailing, scuba, kayaking…) as configurable, operator-owned offers |
 | [multi-tenancy.md](multi-tenancy.md) | **TODO (major)**: white-label SaaS, one platform for many domains and UI packs |
 | [quality-gates.md](quality-gates.md) | **TODO, phased**: pre-push hooks, CI, integration and E2E tests |
+| [testing/README.md](testing/README.md) | **Test strategy**: pyramid, smoke/sanity/regression suites, background integration runs, feature matrix report |
+| [testing/manual-test-plan.md](testing/manual-test-plan.md) | **Manual test cases** for every built feature, with expected results and worked numbers (usable today) |
+| [testing/feature-catalog.md](testing/feature-catalog.md) | Every feature with ID and status; basis of the test-results matrix |
+| [guided-experience.md](guided-experience.md) | **TODO**: guest and admin walkthroughs, AI assistant with owner handoff |
 | [saas-billing.md](saas-billing.md) | **TODO**: billing tenants (plans, usage, add-ons), tenant invoices, cost control |
 | [channel-sync.md](channel-sync.md) | **Planned**: room types + OTA sync (iCal, then channel manager) |
 | [notifications.md](notifications.md) | Events, WhatsApp / SMS / Telegram channels, routing, templates |
