@@ -21,6 +21,9 @@
 | [testing/manual-test-plan.md](testing/manual-test-plan.md) | **Manual test cases** for every built feature, with expected results and worked numbers (usable today) |
 | [testing/feature-catalog.md](testing/feature-catalog.md) | Every feature with ID and status; basis of the test-results matrix |
 | [guided-experience.md](guided-experience.md) | **TODO**: guest and admin walkthroughs, AI assistant with owner handoff |
+| [convenience-features.md](convenience-features.md) | **TODO**: catalogue of switchable guest conveniences, and what's allowed for review incentives |
+| [guest-checkin.md](guest-checkin.md) | **TODO**: web check-in, guest ID (upload, DigiLocker), guest register, Form C for foreigners |
+| [produce-shop.md](produce-shop.md) | **TODO**: seasonal Konkan produce (kokum, mangoes, jackfruit, cashews), pickup at checkout, ship-home later |
 | [saas-billing.md](saas-billing.md) | **TODO**: billing tenants (plans, usage, add-ons), tenant invoices, cost control |
 | [channel-sync.md](channel-sync.md) | **Planned**: room types + OTA sync (iCal, then channel manager) |
 | [notifications.md](notifications.md) | Events, WhatsApp / SMS / Telegram channels, routing, templates |

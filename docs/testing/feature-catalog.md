@@ -23,6 +23,15 @@ Status: **Built** · **Partial** · **Planned**. "Cases" counts cases in the man
 | F-ACT | Third-party activities | Planned | – | See future-services.md |
 | F-TOUR | Guided walkthroughs (guest and admin) | Planned | – | See guided-experience.md |
 | F-ASSIST | AI assistant and owner handoff | Planned | – | See guided-experience.md |
+| F-CHK | Web check-in (ETA, allergies, GSTIN, house rules) | Planned | – | See guest-checkin.md |
+| F-KYC | Guest ID (upload, DigiLocker, desk) | Planned | – | See guest-checkin.md |
+| F-SHOP | Konkan produce shop (season windows, pickup, add to bill) | Planned | – | See produce-shop.md |
+| F-SHIP | Ship-home for shop orders (carry/ship split, courier) | Planned | – | See produce-shop.md |
+| F-FOLIO | Room bill and self checkout | Planned | – | Shared by F-ALC, F-SHOP; convenience-features.md |
+| F-QRG | QR room guide (Wi-Fi, menu, tide, swim safety) | Planned | – | convenience-features.md |
+| F-REQ | In-stay requests to staff | Planned | – | convenience-features.md |
+| F-FDBK | Feedback + ungated review request | Planned | – | No rewards for public reviews; convenience-features.md |
+| F-PERK | Returning-guest and feedback perks | Planned | – | convenience-features.md |
 
 ## Operations
 | ID | Feature | Status | Cases | Notes |
@@ -31,6 +40,7 @@ Status: **Built** · **Partial** · **Planned**. "Cases" counts cases in the man
 | F-CRN | Daily jobs (expire holds, balance reminders, kitchen summary, retries) | Built | `TC-CRN-*` | |
 | F-ADM | Admin overview and bookings list | Partial | `TC-ADM-*` | Booking detail, rooms, menu, notification log not built |
 | F-SET | Settings editor (property, deposit, meals, tax, booking) | Built | `TC-SET-*` | Notifications and theme editors not built |
+| F-REG | Guest register export and Form C pre-fill/reminders | Planned | – | See guest-checkin.md |
 | F-ADM2 | Admin remaining: booking detail/edit/cancel, check-in/out, manual balance payments, rooms and menu management, notification log | Planned | – | |
 
 ## Platform
