@@ -20,6 +20,8 @@ npm run db:migrate     # apply db/migrations/*.sql to $DATABASE_URL
 npm run db:seed        # idempotent sample data + default settings
 npm run test:smoke     # unit tests tagged [smoke]
 npm run smoke -- <url> # read-only HTTP smoke check, safe on production
+npm run test:integration   # real Postgres 16 tests (*.int.test.ts); no Docker needed
+npm run test:status        # last results per suite;  test:matrix = feature catalog as results
 ```
 Before committing: `npm run typecheck && npm run lint && npm test`. The pre-push hook (`.githooks/pre-push`) runs the same, and CI (`.github/workflows/ci.yml`) re-checks every push.
 

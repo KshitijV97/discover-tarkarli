@@ -1,6 +1,6 @@
 # Testing strategy
 
-> **Status:** unit tests (5 files, `npm test`), `[smoke]`/`[sanity]` title tags, `npm run test:smoke`, `npm run test:sanity`, `scripts/smoke.mjs`, the pre-push hook and CI exist (P0, 2026-11-13). Integration, E2E, background runs and the matrix report are **planned**. The manual plan in [manual-test-plan.md](manual-test-plan.md) is usable today.
+> **Status:** P0 and P1 are built (2026-11-13): unit tests, `[smoke]`/`[sanity]` tags, `scripts/smoke.mjs`, the pre-push hook, CI, **20 integration tests on real Postgres 16**, `test:integration:bg`, `test:status` and `test:matrix` (also the CI job summary). E2E tests are **planned** (P9). The manual plan in [manual-test-plan.md](manual-test-plan.md) is usable today.
 
 ## Goals
 1. You can **manually test every feature** from a written plan ([manual-test-plan.md](manual-test-plan.md)).
@@ -53,7 +53,16 @@ Design so they cost you nothing:
 3. **Background runner.** `npm run test:integration:bg` starts the suite detached and writes `reports/integration.json` plus a log. You keep working.
 4. **Always-visible status.** `npm run test:status` prints one line per suite (last run time, pass/fail counts, failures by feature). The same line can go in the shell prompt or a desktop notification.
 5. **CI runs them in a separate job**, in parallel with the fast job. A failing integration job blocks a release tag, but not a push to `main`.
-6. **Local Postgres only when needed.** The runner starts `npm run db:up` if port 54329 is closed.
+6. **Local Postgres only when needed.** Without `TEST_DATABASE_URL`, the suite starts a throwaway Postgres 16 with `embedded-postgres` on port 54330 (data in `.cache/pg-test`, no Docker needed). It never reads `DATABASE_URL` and refuses non-local hosts. See decision 017.
+
+### How to write one
+```ts
+import { setupTestDb } from "@/test/integration/harness";
+import { makeRoom, setSetting, NOW, guest } from "@/test/integration/factories";
+const t = setupTestDb();          // own schema, all migrations, tables truncated before each test
+it("[sanity] TC-XXX-NN …", async () => { const room = await makeRoom(t.sql); /* call services, assert with t.sql */ });
+```
+Files are named `*.int.test.ts` next to the service they test (`src/lib/server/`).
 
 ## The feature matrix (your catalog as test results)
 `npm run test:matrix` (planned) joins three inputs and writes `reports/feature-matrix.md` and `reports/feature-matrix.html`:
@@ -87,7 +96,7 @@ Statuses: ✅ all pass · ⚠️ some fail or stale (> 30 days) · ❌ failing �
 ## Build order (also in the roadmap)
 1. ✅ Pre-push hook and CI (quality-gates phase 1).
 2. ✅ Case-ID convention, `[smoke]/[sanity]` tags, `test:smoke`, `scripts/smoke.mjs`.
-3. Integration harness and the first 8 tests (no double-booking, triggers, idempotent payment, settings, snapshots, cron holds, webhook signature, cutoff at booking).
-4. `test:integration:bg`, `test:status`, `test:matrix`, CI summary.
+3. ✅ Integration harness and the first 8 tests (no double-booking, triggers, idempotent payment, settings, snapshots, cron holds, webhook signature, cutoff at booking), plus late payments and the kitchen summary.
+4. ✅ `test:integration:bg`, `test:status`, `test:matrix`, CI summary.
 5. Playwright journeys (5–10).
 6. Backfill unit tests until every `Auto = unit` case in the plan has a test.

@@ -14,3 +14,7 @@ tsconfig.tsbuildinfo
 
 # Personal property photos (not for git or deploys yet)
 /photos/
+
+# Local test database and test reports
+/.cache/
+/reports/

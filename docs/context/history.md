@@ -38,8 +38,11 @@ All dates are 2026-11-04 unless noted. The project was built in one long working
 ## Quality foundation (P0)
 - 2026-11-13: pre-push hook, GitHub Actions CI with a Postgres 16 migration check, `[smoke]/[sanity]` test tags and `scripts/smoke.mjs`. The smoke script passed against production before the push. *Why:* every later phase (especially the multi-tenant rewrite) needs a safety net, and in fast mode the hook is the only gate before production.
 
+## Integration tests (P1)
+- 2026-11-13: 20 integration tests on real Postgres 16, schema per file, embedded Postgres locally (no Docker on the owner's machine), background runner, status line and feature matrix in the CI summary. All the database invariants listed in `AGENTS.md` now have a test. *Why:* P4 (multi-tenancy) rewrites the data model and needs this safety net first. See decision 017.
+
 ## Decisions that shaped the work
-See [../decisions.md](../decisions.md) (001 to 015). The most consequential:
+See [../decisions.md](../decisions.md) (001 to 017). The most consequential:
 - Plain Postgres and postgres.js instead of Supabase client libraries (portability).
 - Database-level double-booking protection.
 - Price snapshots on every booking line, so settings changes never alter existing bookings.

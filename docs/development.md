@@ -24,6 +24,10 @@ Reset the local DB: `docker compose down -v && npm run db:up && npm run db:migra
 | `test:smoke` / `test:sanity` | Only unit tests tagged `[smoke]` (or `[smoke]` and `[sanity]`) in their title |
 | `smoke` | `npm run smoke -- <baseUrl>`: read-only HTTP checks against a running site, safe on production |
 | `prepare` | Runs on `npm install`; points git at `.githooks/` so the pre-push gate runs |
+| `test:integration` | Integration tests on real Postgres 16 (`*.int.test.ts`). Starts a local throwaway Postgres if `TEST_DATABASE_URL` isn't set |
+| `test:integration:bg` | Same, detached; results in `reports/` |
+| `test:status` | One line per suite: last run, pass/fail, failing case IDs |
+| `test:matrix` | Feature catalog as test results → `reports/feature-matrix.md` |
 | `db:up` | start local Postgres (Docker) |
 | `db:migrate` | apply new `db/migrations/*.sql` to `DATABASE_URL` |
 | `db:seed` | idempotent sample rooms, menu, settings |

@@ -1,6 +1,6 @@
 # Future: quality gates (TODO, in phases)
 
-> **Status: phase 1 done (2026-11-13); phases 2–5 planned.** Built: `.githooks/pre-push` (typecheck, lint, unit tests), GitHub Actions CI (`.github/workflows/ci.yml`: typecheck, lint, test, migrations on Postgres 16 twice, seed, build, smoke), and `scripts/smoke.mjs`. Not built: pre-commit formatting, integration and end-to-end tests.
+> **Status: phases 1 and 2 done (2026-11-13); phases 3–5 planned.** Phase 2: 20 integration tests in `src/lib/server/*.int.test.ts`, run by the CI `integration` job; see [testing/README.md](testing/README.md). Built: `.githooks/pre-push` (typecheck, lint, unit tests), GitHub Actions CI (`.github/workflows/ci.yml`: typecheck, lint, test, migrations on Postgres 16 twice, seed, build, smoke), and `scripts/smoke.mjs`. Not built: pre-commit formatting, integration and end-to-end tests.
 >
 > **Fast-mode caveat:** with direct-to-main, CI cannot block a deploy, because Vercel deploys the same push in parallel. The pre-push hook is the real gate; CI is the clean-machine double check.
 
@@ -19,7 +19,7 @@ Each phase is independently useful. Stop after any phase if the cost is not wort
 
 *Why first:* it is cheap (under an hour), protects every later change, and catches the bugs that matter most (type errors, broken imports, migration mistakes).
 
-### Phase 2: integration tests against real Postgres
+### Phase 2: integration tests against real Postgres ✅
 Unit tests cannot prove the invariants that live in the database. Add a suite that runs against Postgres 16 (the docker-compose service in CI, or a local one):
 - No double-booking: two overlapping bookings for the same room, the second gets `23P01` and maps to HTTP 409.
 - Triggers keep `stay` and `blocks_inventory` in sync.

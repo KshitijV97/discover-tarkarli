@@ -25,7 +25,7 @@ npm run db:up          # local Postgres 16 in Docker (port 54329)
 npm run db:migrate     # apply db/migrations/*.sql to $DATABASE_URL
 npm run db:seed        # idempotent sample data + default settings
 ```
-Before committing: `npm run typecheck && npm run lint && npm test`. The pre-push hook runs the same; CI re-checks every push. Smoke-check a running site with `npm run smoke -- <url>`.
+Before committing: `npm run typecheck && npm run lint && npm test`. The pre-push hook runs the same; CI re-checks every push. Smoke-check a running site with `npm run smoke -- <url>`. Database rules are covered by `npm run test:integration` (real Postgres; add cases in `src/lib/server/*.int.test.ts` with `setupTestDb()`).
 
 ## Working rules (short form; full list in docs/context/rules.md)
 - **Ask few, decide the rest.** Ask only the 3 to 4 questions that change the design, as multiple choice with a recommended default. Take sensible defaults for everything else and record them.
