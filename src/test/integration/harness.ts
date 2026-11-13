@@ -41,7 +41,7 @@ export function setupTestDb(): TestDb {
 
   beforeEach(async () => {
     await ctx.sql.unsafe(`
-      truncate notifications, payments, booking_meals, booking_rooms, bookings, rooms, settings restart identity cascade`);
+      truncate admin_audit_log, ala_carte_order_items, ala_carte_orders, menu_items, notifications, payments, booking_meals, booking_rooms, bookings, rooms, settings restart identity cascade`);
   });
 
   afterAll(async () => {

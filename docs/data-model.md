@@ -94,6 +94,17 @@ Created for the upcoming à la carte feature. Order items snapshot `price_at_ord
 ### `settings`
 `key text PK, value jsonb`. One row per settings group (`deposit`, `meals`, `tax`, `booking`, `property`, `notifications`, `theme`). Missing rows/fields fall back to code defaults. See [configuration.md](configuration.md).
 
+### `admin_audit_log`
+| Column | Notes |
+|---|---|
+| `tenant_id` text | `'default'` until tenancy lands (becomes a reference to `tenants`) |
+| `actor_email` | who did it |
+| `action` | e.g. `booking.check_in`, `booking.cancel`, `payment.manual`, `settings.save`, `room.update`, `notification.resend` |
+| `entity`, `entity_id` | what it was done to (`booking`, `settings`, `room`, `menu_item`, `notification`) |
+| `detail` jsonb | e.g. `{from, to}` for status changes, changed fields for settings |
+
+Manual payments use the existing `payments` table: `provider = 'manual'`, `method` cash/upi/card/bank_transfer, and `raw = {note, recordedBy}`.
+
 ## Functions
 - `expire_stale_bookings()` → marks lapsed `pending` bookings `expired` (releasing rooms via trigger). Returns count.
 - `booking_status_blocks(status)` → whether a status holds inventory.

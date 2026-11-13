@@ -3,6 +3,9 @@
 import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/server/session";
 import { saveSettingsGroup } from "@/lib/server/admin-repo";
+import { getSettings } from "@/lib/server/settings-repo";
+import { writeAudit } from "@/lib/server/audit-repo";
+import { changedFields, describeChanges } from "@/lib/admin/diff";
 import { parseGroupForm, SETTINGS_GROUPS, type FormValues } from "@/lib/admin/settings-form";
 import type { AppSettings } from "@/lib/settings";
 
@@ -25,7 +28,13 @@ export async function saveSettingsGroupAction(groupKey: string, formData: FormDa
   const result = parseGroupForm(group, raw);
   if (!result.ok) return { ok: false, message: "Fix the highlighted fields.", errors: result.errors };
 
+  const before = (await getSettings())[group.key] as Record<string, unknown>;
   await saveSettingsGroup(group.key, result.value as AppSettings[typeof group.key]);
+  const changes = changedFields(before, result.value as Record<string, unknown>);
+  await writeAudit({
+    actorEmail: admin.email ?? admin.id, action: "settings.save", entity: "settings", entityId: group.key,
+    detail: { summary: describeChanges(group.key, changes), changes },
+  });
   console.info(`[admin] ${admin.email} saved settings.${group.key}`);
   revalidatePath("/", "layout");
   return { ok: true };

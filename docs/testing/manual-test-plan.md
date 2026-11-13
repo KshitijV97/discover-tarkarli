@@ -187,7 +187,27 @@ Run after every deploy. Cases are marked **S** below; this is the checklist:
 | TC-SET-04 | Site refresh | Change property phone | Footer and booking pages update at once | N | int |
 | TC-SET-05 | Staff blocked | As staff, call the save action | Rejected | R | int |
 | TC-SET-06 | Fallback to defaults | `delete from settings where key='tax'` | Site works with default tax; warning logged. Re-save from admin | R | int |
-| TC-SET-07 | Save is logged | Save any group | Server log has the admin's email | R | manual |
+| TC-SET-07 | Save is logged | Save any group | Recent changes shows the changed fields and the admin's email | R | unit |
+
+### F-ADM2 · Booking operations, messages, rooms and menu
+| ID | Case | Steps | Expected | Suite | Auto |
+|---|---|---|---|---|---|
+| TC-ADM2-01 | Check-in available on arrival day | Open a confirmed booking arriving today | "Check in" and "Cancel booking…" shown | S | unit |
+| TC-ADM2-02 | Check-in blocked early | Open a confirmed booking arriving next week | No check-in button; "Check-in opens on …" shown | N | unit |
+| TC-ADM2-03 | Balance from ledger | Booking with deposit paid online | Total, paid and due match; failed orders not counted | S | unit |
+| TC-ADM2-04 | Manual payment validation | Record more than the due amount; then ₹0 | Both refused with a message; nothing recorded | N | unit |
+| TC-ADM2-05 | Check in and out | Check in, then check out | Status changes each time; both appear under History | N | int |
+| TC-ADM2-06 | Cancel | Cancel a confirmed booking (confirm step) | Status cancelled; room bookable again; guest and operator told once; refund note if the deposit was paid | N | int |
+| TC-ADM2-07 | Desk payments | Record ₹5,000 cash, then the rest by UPI | Due drops each time; fully paid at the end; `booking.fully_paid` once | S | int |
+| TC-ADM2-08 | Hold paid at the desk | Pending hold; record the deposit | Status confirmed; hold timer cleared | N | int |
+| TC-ADM2-09 | Two staff at once | Two tabs record the full balance together | Only one payment recorded | R | int |
+| TC-ADM2-10 | Resend | Messages → Resend on a "not sent" row | Says the channel isn't set up; sends once it is | N | int |
+| TC-ADM2-11 | Add a room | Rooms → Add a room, leave web address empty | Saved; address made from the name | S | unit |
+| TC-ADM2-12 | Room validation | Negative price, 0 guests, `http://` photo | Field-level errors; nothing saved | N | unit |
+| TC-ADM2-13 | Menu dish | Add a dish; then save with no price | First saves; second shows "Enter the price in rupees" | N | unit |
+| TC-ADM2-14 | Room price change | Change a booked room's price | Existing booking keeps the old price; new bookings use the new one | N | int |
+| TC-ADM2-15 | Hide a room | Untick "Bookable" | Room disappears from `/book`; existing bookings kept | N | int |
+| TC-ADM2-16 | Staff can't edit prices | Sign in as staff; open `/admin/rooms` | Redirected to `/account` | N | e2e |
 
 ### F-SEC / F-A11Y / F-PERF · Platform quality
 | ID | Case | Steps | Expected | Suite | Auto |
@@ -211,7 +231,7 @@ Run after every deploy. Cases are marked **S** below; this is the checklist:
 5. A suite passes only when **every** case in it passes.
 
 ## Planned features (cases to be written with the feature)
-F-OTP, F-REF, F-INV, F-ALC, F-ACT, F-TOUR, F-ASSIST, F-ADM2, F-CHN, F-TEN, F-FLG, F-ONB, F-BILL. For each, write the cases first (see [feature-catalog.md](feature-catalog.md#adding-a-feature)). Multi-tenancy brings a **standing isolation group** that every release must pass:
+F-OTP, F-REF, F-INV, F-ALC, F-ACT, F-TOUR, F-ASSIST, F-CHN, F-TEN, F-FLG, F-ONB, F-BILL. For each, write the cases first (see [feature-catalog.md](feature-catalog.md#adding-a-feature)). Multi-tenancy brings a **standing isolation group** that every release must pass:
 
 | ID | Case | Suite |
 |---|---|---|

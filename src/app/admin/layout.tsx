@@ -6,6 +6,9 @@ export const dynamic = "force-dynamic";
 const NAV = [
   { href: "/admin", label: "Overview", adminOnly: false },
   { href: "/admin/bookings", label: "Bookings", adminOnly: false },
+  { href: "/admin/notifications", label: "Messages", adminOnly: false },
+  { href: "/admin/rooms", label: "Rooms", adminOnly: true },
+  { href: "/admin/menu", label: "Menu", adminOnly: true },
   { href: "/admin/settings", label: "Settings", adminOnly: true },
 ];
 

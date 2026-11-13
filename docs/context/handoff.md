@@ -1,9 +1,9 @@
 # Handoff: current state
 
-Last updated: 2026-11-13, after P1 (integration tests). Update this file whenever the state changes.
+Last updated: 2026-11-14, after P2 slice 2 (booking operations). Update this file whenever the state changes.
 
 ## Repository
-- **Branch in use:** `main` (direct-to-main fast mode). P0 and P1 are committed and pushed there. Next on the roadmap: P2 (finish admin).
+- **Branch in use:** `main` (direct-to-main fast mode). P0, P1 and P2 slice 2 are pushed there. Next: the rest of P2 (booking date/room edits, notification and theme editors), then P3.
 - **Open PR:** #2 (`docs/guest-convenience-and-produce-shop`): planning docs for web check-in, guest ID, produce shop and conveniences. Waiting for the owner to merge.
 - **Owner status page:** `docs/status/status.html`, published as a private artifact. Republish it when the state changes.
 
@@ -31,8 +31,7 @@ In rough priority order:
 9. **Region move** to Mumbai (see above).
 
 ## Known issues and gaps
-- Settings changes are logged to the server console only; no audit table.
-- Admin booking detail, rooms, menu and notification pages are not built (`docs/admin.md`).
+- Admin: booking date/room edits, notification routing and theme editors are not built (`docs/admin.md`). Admin pages were checked in a local browser with a throwaway database and a localhost-only test session; not yet in production (needs Google sign-in).
 - No E2E tests yet (P9). Unit, integration (20, real Postgres), pre-push hook and CI exist.
 - Activity, multi-tenant and billing work is planned only.
 - The `CLAUDE.md` status line is partly out of date; this file is the current source.

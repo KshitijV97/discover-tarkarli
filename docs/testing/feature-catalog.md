@@ -30,8 +30,8 @@ Status: **Built** · **Partial** · **Planned**. "Cases" counts cases in the man
 | F-NTF | Notifications (events, routing, dedupe, retries, templates, channels) | Built | `TC-NTF-*` | Real channels need credentials |
 | F-CRN | Daily jobs (expire holds, balance reminders, kitchen summary, retries) | Built | `TC-CRN-*` | |
 | F-ADM | Admin overview and bookings list | Partial | `TC-ADM-*` | Booking detail, rooms, menu, notification log not built |
-| F-SET | Settings editor (property, deposit, meals, tax, booking) | Built | `TC-SET-*` | Notifications and theme editors not built |
-| F-ADM2 | Admin remaining: booking detail/edit/cancel, check-in/out, manual balance payments, rooms and menu management, notification log | Planned | – | |
+| F-SET | Settings editor (property, deposit, meals, tax, booking) with change history | Built | `TC-SET-*` | Notifications and theme editors not built |
+| F-ADM2 | Booking detail, check-in/out, cancel, desk payments, message log + resend, rooms and menu editors, audit log | Partial | `TC-ADM2-*` | Booking date/room edits, notification and theme editors not built |
 
 ## Platform
 | ID | Feature | Status | Cases | Notes |

@@ -4,15 +4,13 @@ import { getSettings } from "@/lib/server/settings-repo";
 import { listBookingsInRange } from "@/lib/server/admin-repo";
 import { addDays, formatDate, isISODate, todayInTz } from "@/lib/dates";
 import { formatINR } from "@/lib/money";
+import Link from "next/link";
 import { Card } from "@/components/ui/Card";
+import { StatusBadge } from "@/components/admin/StatusBadge";
 
 export const metadata: Metadata = { title: "Bookings", robots: { index: false } };
 export const dynamic = "force-dynamic";
 
-const STATUS: Record<string, string> = {
-  pending: "bg-warning/15 text-warning", confirmed: "bg-success/15 text-success", checked_in: "bg-primary-soft text-primary",
-  checked_out: "bg-surface-muted text-muted", cancelled: "bg-danger/10 text-danger", expired: "bg-danger/10 text-danger",
-};
 
 export default async function AdminBookingsPage({ searchParams }: { searchParams: { from?: string; to?: string } }) {
   await requireStaff("/admin/bookings");
@@ -61,7 +59,7 @@ export default async function AdminBookingsPage({ searchParams }: { searchParams
             <tbody className="divide-y divide-border">
               {rows.map((b) => (
                 <tr key={b.id} className="align-top">
-                  <td className="px-4 py-3 font-mono text-xs">{b.reference}</td>
+                  <td className="px-4 py-3 font-mono text-xs"><Link href={`/admin/bookings/${b.id}`} className="inline-flex min-h-11 items-center font-semibold text-primary underline-offset-2 hover:underline">{b.reference}</Link></td>
                   <td className="px-4 py-3">
                     <p className="font-medium">{b.guestName}</p>
                     <p className="text-xs text-muted">{b.guestPhone} · {b.numGuests} guest{b.numGuests > 1 ? "s" : ""}</p>
@@ -69,7 +67,7 @@ export default async function AdminBookingsPage({ searchParams }: { searchParams
                   <td className="px-4 py-3 whitespace-nowrap">{formatDate(b.checkIn)} → {formatDate(b.checkOut)}</td>
                   <td className="px-4 py-3">{b.rooms || "—"}</td>
                   <td className="px-4 py-3">
-                    <span className={`rounded-pill px-2.5 py-1 text-xs font-semibold ${STATUS[b.status] ?? ""}`}>{b.status.replace("_", " ")}</span>
+                    <StatusBadge status={b.status} />
                   </td>
                   <td className="px-4 py-3 text-right font-semibold whitespace-nowrap">{formatINR(b.total)}</td>
                   <td className="px-4 py-3 text-xs">

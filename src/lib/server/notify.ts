@@ -61,6 +61,43 @@ async function deliver(id: string, d: PlannedDelivery, settings: AppSettings) {
   }
 }
 
+/**
+ * Staff "resend" from the admin: sends the stored message again to the same
+ * recipient on the same channel, and updates that row. Returns the new status.
+ */
+export async function resendNotification(id: string): Promise<{ status: string; error: string | null }> {
+  const settings = await getSettings();
+  const sql = db();
+  const [r] = await sql<{ event: NotificationEvent; audience: PlannedDelivery["audience"]; channel: PlannedDelivery["channel"]; recipient: string; body: string; vars: TemplateVars }[]>`
+    select event, audience, channel, recipient, body, vars from notifications where id = ${id}`;
+  if (!r) return { status: "missing", error: "Notification not found." };
+  if (!channels[r.channel]?.isConfigured()) {
+    await sql`update notifications set status = 'skipped', last_error = ${`${r.channel} is not configured`} where id = ${id}`;
+    return { status: "skipped", error: `${r.channel} isn't set up yet, so nothing was sent.` };
+  }
+  await deliver(id, { event: r.event, audience: r.audience, channel: r.channel, to: r.recipient, text: r.body, vars: r.vars }, settings);
+  const [after] = await sql<{ status: string; last_error: string | null }[]>`select status, last_error from notifications where id = ${id}`;
+  return { status: after.status, error: after.last_error };
+}
+
+export interface NotificationLogRow {
+  id: string; event: string; audience: string; channel: string; recipient: string; status: string;
+  attempts: number; lastError: string | null; bookingId: string | null; reference: string | null; createdAt: Date;
+}
+
+/** Latest notifications for the admin log, optionally filtered by status. */
+export async function listNotifications(filter: { status?: string; limit?: number } = {}): Promise<NotificationLogRow[]> {
+  const rows = await db()<{ id: string; event: string; audience: string; channel: string; recipient: string; status: string; attempts: number; last_error: string | null; booking_id: string | null; reference: string | null; created_at: Date }[]>`
+    select n.id, n.event, n.audience, n.channel, n.recipient, n.status, n.attempts, n.last_error, n.booking_id, b.reference, n.created_at
+    from notifications n left join bookings b on b.id = n.booking_id
+    where (${filter.status ?? null}::text is null or n.status::text = ${filter.status ?? null})
+    order by n.created_at desc limit ${filter.limit ?? 100}`;
+  return rows.map((r) => ({
+    id: r.id, event: r.event, audience: r.audience, channel: r.channel, recipient: r.recipient, status: r.status,
+    attempts: r.attempts, lastError: r.last_error, bookingId: r.booking_id, reference: r.reference, createdAt: r.created_at,
+  }));
+}
+
 /** Retry failed/stuck notifications (called by cron). */
 export async function retryNotifications(limit = 50): Promise<{ retried: number }> {
   const settings = await getSettings();

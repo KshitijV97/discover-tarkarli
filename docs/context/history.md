@@ -41,6 +41,9 @@ All dates are 2026-11-04 unless noted. The project was built in one long working
 ## Integration tests (P1)
 - 2026-11-13: 20 integration tests on real Postgres 16, schema per file, embedded Postgres locally (no Docker on the owner's machine), background runner, status line and feature matrix in the CI summary. All the database invariants listed in `AGENTS.md` now have a test. *Why:* P4 (multi-tenancy) rewrites the data model and needs this safety net first. See decision 017.
 
+## Admin booking operations (P2 slice 2)
+- 2026-11-14: booking detail with check-in/out and cancel, desk payments, staff notes, message log with resend, rooms and menu editors, and `admin_audit_log` (migration 0005) including settings change history. 16 new unit tests and 10 new integration tests. Checked in a local browser against a throwaway database with notifications and payments switched off. *Why:* day-to-day operations were impossible without database access.
+
 ## Decisions that shaped the work
 See [../decisions.md](../decisions.md) (001 to 017). The most consequential:
 - Plain Postgres and postgres.js instead of Supabase client libraries (portability).
