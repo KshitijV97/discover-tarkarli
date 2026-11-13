@@ -1,6 +1,6 @@
 # Testing strategy
 
-> **Status:** unit tests exist (5 files, `npm test`). Everything else here is **planned**; the manual plan in [manual-test-plan.md](manual-test-plan.md) is usable today.
+> **Status:** unit tests (5 files, `npm test`), `[smoke]`/`[sanity]` title tags, `npm run test:smoke`, `npm run test:sanity`, `scripts/smoke.mjs`, the pre-push hook and CI exist (P0, 2026-11-13). Integration, E2E, background runs and the matrix report are **planned**. The manual plan in [manual-test-plan.md](manual-test-plan.md) is usable today.
 
 ## Goals
 1. You can **manually test every feature** from a written plan ([manual-test-plan.md](manual-test-plan.md)).
@@ -85,8 +85,8 @@ Statuses: ✅ all pass · ⚠️ some fail or stale (> 30 days) · ❌ failing �
 - Multi-tenancy adds a standing regression group, **F-TEN**: tenant A can never read or write tenant B's rows, through the API, the admin or the database (RLS).
 
 ## Build order (also in the roadmap)
-1. Pre-push hook and CI (quality-gates phase 1).
-2. Case-ID convention, `[smoke]/[sanity]` tags, `test:smoke`, `scripts/smoke.mjs`.
+1. ✅ Pre-push hook and CI (quality-gates phase 1).
+2. ✅ Case-ID convention, `[smoke]/[sanity]` tags, `test:smoke`, `scripts/smoke.mjs`.
 3. Integration harness and the first 8 tests (no double-booking, triggers, idempotent payment, settings, snapshots, cron holds, webhook signature, cutoff at booking).
 4. `test:integration:bg`, `test:status`, `test:matrix`, CI summary.
 5. Playwright journeys (5–10).

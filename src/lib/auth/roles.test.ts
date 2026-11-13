@@ -3,7 +3,7 @@ import { isStaff, roleForEmail, safeCallbackUrl } from "./roles";
 
 describe("roleForEmail", () => {
   const env = { ADMIN_EMAILS: " Owner@Example.com ,ops@example.com", STAFF_EMAILS: "kitchen@example.com" };
-  it("maps allow-listed emails case-insensitively", () => {
+  it("[smoke] maps allow-listed emails case-insensitively", () => {
     expect(roleForEmail("owner@example.com", env)).toBe("admin");
     expect(roleForEmail("OPS@example.com", env)).toBe("admin");
     expect(roleForEmail("kitchen@example.com", env)).toBe("staff");
@@ -21,7 +21,7 @@ describe("roleForEmail", () => {
 });
 
 describe("safeCallbackUrl", () => {
-  it("allows relative paths only", () => {
+  it("[sanity] allows relative paths only", () => {
     expect(safeCallbackUrl("/book?x=1")).toBe("/book?x=1");
     expect(safeCallbackUrl("https://evil.com")).toBe("/account");
     expect(safeCallbackUrl("//evil.com")).toBe("/account");

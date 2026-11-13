@@ -9,6 +9,7 @@
 - Razorpay deposit payments: orders, checkout, signature verification, webhook, holds, late-payment handling
 - Redesigned animated site (hero carousel, room carousels, bento, marquees, parallax, reveal-on-scroll)
 - Optional guest accounts + staff roles via Auth.js (Google); `/account` booking history; staff-gated `/admin`
+- **P0 quality foundation** (2026-11-13): pre-push hook, GitHub Actions CI (typecheck, lint, tests, migrations on Postgres 16, build, smoke), `[smoke]/[sanity]` test tags, `scripts/smoke.mjs`. See [quality-gates.md](quality-gates.md).
 - Admin dashboard, first slice: overview counts, bookings list filtered by date, and a settings editor for deposit, meals, GST, booking rules and property (admin-only, validated on the server). See [admin.md](admin.md).
 
 ## 📝 TODO (owner, not code)

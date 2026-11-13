@@ -11,14 +11,14 @@ describe("razorpay signatures", () => {
     delete process.env.RAZORPAY_WEBHOOK_SECRET;
   });
 
-  it("verifies checkout signature = HMAC(order_id|payment_id)", () => {
+  it("[smoke] verifies checkout signature = HMAC(order_id|payment_id)", () => {
     const signature = hmacHex("test_secret", "order_1|pay_1");
     expect(razorpay.verifyCheckout({ orderId: "order_1", paymentId: "pay_1", signature })).toBe(true);
     expect(razorpay.verifyCheckout({ orderId: "order_1", paymentId: "pay_2", signature })).toBe(false);
     expect(razorpay.verifyCheckout({ orderId: "order_1", paymentId: "pay_1", signature: "bad" })).toBe(false);
   });
 
-  it("parses signed webhooks and rejects tampered ones", () => {
+  it("[sanity] parses signed webhooks and rejects tampered ones", () => {
     const body = JSON.stringify({ event: "payment.captured", payload: { payment: { entity: { id: "pay_1", order_id: "order_1", amount: 368600, method: "upi" } } } });
     const ev = razorpay.parseWebhook(body, hmacHex("hook_secret", body));
     expect(ev).toMatchObject({ type: "paid", orderId: "order_1", paymentId: "pay_1", amount: 368600, method: "upi" });

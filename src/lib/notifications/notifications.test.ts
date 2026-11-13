@@ -20,7 +20,7 @@ describe("templates", () => {
 });
 
 describe("planDeliveries", () => {
-  it("routes booking.confirmed to guest WhatsApp + operator WhatsApp/Telegram", () => {
+  it("[smoke] routes booking.confirmed to guest WhatsApp + operator WhatsApp/Telegram", () => {
     const d = planDeliveries({ event: "booking.confirmed", vars: { guestFirstName: "Asha", reference: "GT-1" }, settings: settings(), guestPhone: "+919876543210", isConfigured: all });
     expect(d.map((x) => `${x.audience}:${x.channel}:${x.to}`)).toEqual([
       "guest:whatsapp:+919876543210",
@@ -31,7 +31,7 @@ describe("planDeliveries", () => {
     expect(d.every((x) => !x.skipReason)).toBe(true);
   });
 
-  it("marks unconfigured or disabled channels as skipped", () => {
+  it("[sanity] marks unconfigured or disabled channels as skipped", () => {
     const d = planDeliveries({
       event: "payment.conflict", vars: {}, guestPhone: "+91x",
       settings: settings((s) => { s.notifications.channels.sms = false; }),

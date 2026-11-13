@@ -18,8 +18,10 @@ npm run build
 npm run db:up          # local Postgres 16 in Docker (port 54329)
 npm run db:migrate     # apply db/migrations/*.sql to $DATABASE_URL
 npm run db:seed        # idempotent sample data + default settings
+npm run test:smoke     # unit tests tagged [smoke]
+npm run smoke -- <url> # read-only HTTP smoke check, safe on production
 ```
-Before committing: `npm run typecheck && npm run lint && npm test`.
+Before committing: `npm run typecheck && npm run lint && npm test`. The pre-push hook (`.githooks/pre-push`) runs the same, and CI (`.github/workflows/ci.yml`) re-checks every push.
 
 ## Architecture (see docs/architecture.md)
 - `src/lib/booking/*`, `src/lib/dates.ts`, `src/lib/money.ts`, `src/lib/settings.ts`, `src/lib/notifications/{types,config,templates,plan,context}.ts`: **pure** domain logic. They do no I/O and are imported by both client and server. Unit-test changes here.
@@ -56,7 +58,7 @@ Before committing: `npm run typecheck && npm run lint && npm test`.
 - Local DB: `postgres://postgres:postgres@localhost:54329/golden_tide`.
 
 ## Conventions
-- Conventional commits (`feat:`, `fix:`, `docs:`, `refactor:`, `chore:`). Branch off `main` for features.
+- Commit and push directly to `main` (fast mode, see docs/workflows/vibe-coding.md and docs/context/rules.md). Plain-English commit messages, no AI attribution trailers. Every push deploys production.
 - Path alias `@/` = `src/`.
 - Server components load data; client components (`"use client"`) handle interaction. Mobile-first, with touch targets of at least 44px.
 - New external integrations go behind an interface (see the extension points in docs/architecture.md).

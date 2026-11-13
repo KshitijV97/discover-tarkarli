@@ -1,11 +1,11 @@
 # Handoff: current state
 
-Last updated: 2026-11-04, after the context-portability work. Update this file whenever the state changes.
+Last updated: 2026-11-13, after P0 (quality foundation). Update this file whenever the state changes.
 
 ## Repository
-- **Branch in use:** `feat/admin-dashboard-and-planning-docs`. Commits up to `41f1809` are pushed to origin. `dec77f1` (branding) is **local only** and needs a push. The context-portability files are uncommitted.
-- **`main`:** unchanged since `d19b6d4`. It does not contain the admin dashboard, the planning docs, the licence or the branding. Merge the feature branch to `main` when the owner approves.
-- **Working tree:** uncommitted context-portability files (`AGENTS.md`, `docs/context/`, the `CLAUDE.md` pointer).
+- **Branch in use:** `main` (direct-to-main fast mode). P0 is committed and pushed there.
+- **Open PR:** #2 (`docs/guest-convenience-and-produce-shop`): planning docs for web check-in, guest ID, produce shop and conveniences. Waiting for the owner to merge.
+- **Owner status page:** `docs/status/status.html`, published as a private artifact. Republish it when the state changes.
 
 ## Deployment
 - **Process:** direct to `main` (owner's fast mode, see [../workflows/vibe-coding.md](../workflows/vibe-coding.md)). Every push deploys production. The old release process is in [../release-process.md](../release-process.md) for reference.
@@ -14,13 +14,13 @@ Last updated: 2026-11-04, after the context-portability work. Update this file w
 - **Region mismatch to resolve:** `vercel.json` sets `regions: ["hnd1"]` (Tokyo), `docs/deployment.md` says Montreal `yul1`, and commit `2a23ba4` says "pin Vercel region to Mumbai". Decide the intended region (Mumbai `bom1` is the goal in `docs/region-migration.md`) and make the three agree.
 
 ## Built and verified
-- Typecheck, lint and 37 unit tests pass on the feature branch.
+- Typecheck, lint and 38 unit tests pass on `main`. `scripts/smoke.mjs` passed 5/5 against production on 2026-11-13.
 - `/food` and the home page render in the local browser (checked against the local database).
 - **Not verified:** the admin pages in a browser (need Google sign-in and a staff email); `npm run build` on the feature branch; the production behaviour of the settings editor.
 
 ## Waiting on the owner
 In rough priority order:
-1. **Approve production deploy** and the merge of the feature branch to `main`.
+1. **Merge PR #2** (planning docs for check-in, guest ID, produce shop). The admin dashboard is already on `main` and in production.
 2. **Dog policy** (number of dogs, extra charges, rules): the copy in `src/content/site.ts` (`pets`) promises only dogs welcome in every room, walks, and advance setup.
 3. **Dish list and prices**: confirm the dishes in `site.localFood.dishes` are made in the kitchen, and whether to add them to `menu_items` with prices.
 4. **Solkadhi**: confirm it is served with meals or on request, so the "signature" wording holds.
@@ -33,7 +33,7 @@ In rough priority order:
 ## Known issues and gaps
 - Settings changes are logged to the server console only; no audit table.
 - Admin booking detail, rooms, menu and notification pages are not built (`docs/admin.md`).
-- No pre-push hooks or CI yet (`docs/quality-gates.md`, phase 1).
+- No integration or E2E tests yet (P1, P9). The pre-push hook and CI exist (P0).
 - Activity, multi-tenant and billing work is planned only.
 - The `CLAUDE.md` status line is partly out of date; this file is the current source.
 

@@ -1,6 +1,8 @@
 # Future: quality gates (TODO, in phases)
 
-> **Status: planned.** Current state: `npm run typecheck`, `npm run lint` and `npm test` exist and are run by hand (see [development.md](development.md)). There are no git hooks, no CI pipeline and no integration or end-to-end tests yet.
+> **Status: phase 1 done (2026-11-13); phases 2–5 planned.** Built: `.githooks/pre-push` (typecheck, lint, unit tests), GitHub Actions CI (`.github/workflows/ci.yml`: typecheck, lint, test, migrations on Postgres 16 twice, seed, build, smoke), and `scripts/smoke.mjs`. Not built: pre-commit formatting, integration and end-to-end tests.
+>
+> **Fast-mode caveat:** with direct-to-main, CI cannot block a deploy, because Vercel deploys the same push in parallel. The pre-push hook is the real gate; CI is the clean-machine double check.
 
 ## Goal
 Every change is tested, linted and type-checked **before it leaves the developer's machine**, and every merge is checked again on a clean machine. Checks must be fast, so nobody turns them off.

@@ -17,7 +17,7 @@ describe("groupToFormValues", () => {
 });
 
 describe("parseGroupForm", () => {
-  it("round-trips the defaults without errors", () => {
+  it("[smoke] round-trips the defaults without errors", () => {
     for (const g of SETTINGS_GROUPS) {
       const result = parseGroupForm(g, groupToFormValues(defaultSettings, g.key));
       expect(result.ok, g.key).toBe(true);
@@ -34,7 +34,7 @@ describe("parseGroupForm", () => {
     expect(result).toEqual({ ok: true, value: { type: "fixed", value: 2500 } });
   });
 
-  it("reports per-field errors for invalid input", () => {
+  it("[sanity] TC-SET-02 reports per-field errors for invalid input", () => {
     const result = parseGroupForm(group("deposit"), { type: "percent", value: "" });
     expect(result.ok).toBe(false);
     if (!result.ok) expect(result.errors).toHaveProperty("value");

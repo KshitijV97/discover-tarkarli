@@ -11,10 +11,14 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
+    "test:smoke": "vitest run -t \"\\[smoke\\]\"",
+    "test:sanity": "vitest run -t \"\\[(smoke|sanity)\\]\"",
+    "smoke": "node scripts/smoke.mjs",
     "db:migrate": "node scripts/migrate.mjs",
     "db:seed": "node scripts/seed.mjs",
     "db:up": "docker compose up -d db",
-    "vercel-build": "node scripts/vercel-build.mjs"
+    "vercel-build": "node scripts/vercel-build.mjs",
+    "prepare": "node scripts/install-hooks.mjs"
   },
   "dependencies": {
     "embla-carousel-autoplay": "8.6.0",

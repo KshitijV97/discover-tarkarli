@@ -1,0 +1,154 @@
+<title>Golden Tide Status</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a single reading column, like a tide table; summary strip, then owner actions, then the phase ladder. */
+:root {
+  --bg: #FBF6EE; --surface: #FFFFFF; --sand: #F3EADB; --line: #E6D8C3;
+  --fg: #1F2A33; --muted: #5F6B74; --ocean: #0E6E8C; --ocean-soft: #DCEFF4;
+  --sunset: #C9612A; --ok: #2E7D4F; --warn: #A87208; --risk: #B23A2B;
+  --display: "Fraunces", Georgia, serif;
+  --body: "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0E1B23; --surface: #13242E; --sand: #1A2E39; --line: #27404D;
+  --fg: #EDE6DA; --muted: #9DAAB2; --ocean: #5DB8D6; --ocean-soft: #16394A;
+  --sunset: #F0955F; --ok: #6CC495; --warn: #E2B04A; --risk: #F07A68; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0E1B23; --surface: #13242E; --sand: #1A2E39; --line: #27404D;
+  --fg: #EDE6DA; --muted: #9DAAB2; --ocean: #5DB8D6; --ocean-soft: #16394A;
+  --sunset: #F0955F; --ok: #6CC495; --warn: #E2B04A; --risk: #F07A68; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.55; }
+.wrap { max-width: 860px; margin: 0 auto; padding-block: 40px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 40px; }
+header { display: grid; gap: 8px; }
+.eyebrow { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--ocean); font-weight: 700; }
+h1 { font-family: var(--display); font-weight: 600; font-size: clamp(30px, 6vw, 44px); line-height: 1.1; margin: 0; text-wrap: balance; }
+h2 { font-family: var(--display); font-weight: 500; font-size: 24px; margin: 0; text-wrap: balance; }
+.lede { color: var(--muted); max-width: 62ch; margin: 0; }
+section { display: grid; gap: 16px; min-width: 0; }
+.strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.cell { background: var(--surface); padding: 16px; display: grid; gap: 4px; align-content: start; }
+.cell b { font-family: var(--display); font-weight: 500; font-size: 20px; }
+.cell span { font-size: 14px; color: var(--muted); }
+.label { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.pill { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .04em; padding: 2px 8px; border-radius: 999px; border: 1px solid currentColor; white-space: nowrap; }
+.p-ok { color: var(--ok); } .p-warn { color: var(--warn); } .p-risk { color: var(--risk); } .p-now { color: var(--ocean); } .p-plan { color: var(--muted); }
+.actions { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.actions li { display: grid; grid-template-columns: 28px 1fr auto; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--line); align-items: start; }
+.actions input { width: 20px; height: 20px; margin-top: 3px; accent-color: var(--ocean); }
+.actions input:focus-visible { outline: 2px solid var(--ocean); outline-offset: 2px; }
+.actions .t { font-weight: 600; }
+.actions .d { color: var(--muted); font-size: 15px; }
+.actions li.done .t { text-decoration: line-through; color: var(--muted); }
+.actions code, td code, p code { font-family: var(--mono); font-size: 13px; background: var(--sand); padding: 1px 5px; border-radius: 4px; }
+.group { font-family: var(--display); font-size: 17px; margin: 12px 0 0; color: var(--sunset); }
+.tablebox { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 15px; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; background: var(--sand); }
+tr:last-child td { border-bottom: 0; }
+td.ph { font-family: var(--mono); font-weight: 500; color: var(--ocean); white-space: nowrap; }
+tr.now td { background: var(--ocean-soft); }
+.built { columns: 2 240px; column-gap: 32px; margin: 0; padding-left: 20px; }
+.built li { break-inside: avoid; margin-bottom: 6px; }
+.note { font-size: 14px; color: var(--muted); }
+@media (prefers-reduced-motion: no-preference) { .actions li { transition: opacity .2s; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Golden Tide Retreat · booking system</div>
+    <h1>Where the project stands</h1>
+    <p class="lede">Updated 13 Nov 2026. The core booking site is built. Payments and Google sign-in are coded but wait on your accounts. Work has started on the quality foundation (P0), which every later phase builds on.</p>
+  </header>
+
+  <section aria-label="Summary">
+    <div class="strip">
+      <div class="cell"><div class="label">Built</div><b>Booking core</b><span>Rooms, meals, GST pricing, deposits, notifications, admin first slice</span></div>
+      <div class="cell"><div class="label">In progress</div><b>P0 quality</b><span>CI on every push, pre-push checks, smoke tests</span></div>
+      <div class="cell"><div class="label">Blocked on you</div><b>11 items</b><span>Accounts, policy copy, business facts</span></div>
+      <div class="cell"><div class="label">Open PR</div><b>#2 docs</b><span>Check-in, ID, produce shop plans. Preview build passed</span></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="owner">
+    <h2 id="owner">Your action items</h2>
+    <p class="note">Ordered by what unblocks the most. Ticks are saved in this browser only.</p>
+
+    <p class="group">Unblocks going live</p>
+    <ul class="actions">
+      <li><input type="checkbox" id="a1" aria-label="Done"><div><div class="t">Merge docs PR #2</div><div class="d">Or tell me to merge it. The repo is in direct-to-main mode, so new work goes straight to <code>main</code>.</div></div><span class="pill p-warn">2 min</span></li>
+      <li><input type="checkbox" id="a2" aria-label="Done"><div><div class="t">Set up Google sign-in</div><div class="d">Create the OAuth client in Google Cloud and add the env vars in Vercel. Without it nobody can open <code>/admin</code>. Steps in <code>docs/auth.md</code>.</div></div><span class="pill p-risk">Blocks admin</span></li>
+      <li><input type="checkbox" id="a3" aria-label="Done"><div><div class="t">Razorpay account and KYC</div><div class="d">Test keys first, then the webhook and live keys. Until then bookings confirm with no online deposit. Steps in <code>docs/razorpay-onboarding.md</code>.</div></div><span class="pill p-risk">Blocks payments</span></li>
+      <li><input type="checkbox" id="a4" aria-label="Done"><div><div class="t">Policy page wording</div><div class="d">Terms, cancellation and refund, privacy, contact. Razorpay won't activate without them. I can draft them for you to edit.</div></div><span class="pill p-risk">Blocks payments</span></li>
+      <li><input type="checkbox" id="a5" aria-label="Done"><div><div class="t">Choose the hosting region</div><div class="d">Vercel is set to Tokyo (<code>hnd1</code>) and the database is in Tokyo. The plan is Mumbai for both, which is easiest before launch. Steps in <code>docs/region-migration.md</code>.</div></div><span class="pill p-warn">Before launch</span></li>
+    </ul>
+
+    <p class="group">Business facts only you know</p>
+    <ul class="actions">
+      <li><input type="checkbox" id="a6" aria-label="Done"><div><div class="t">Dog policy</div><div class="d">Number of dogs, any charge, rules. The site currently promises dogs are welcome in every room.</div></div><span class="pill p-warn">Copy is live</span></li>
+      <li><input type="checkbox" id="a7" aria-label="Done"><div><div class="t">Dish list, prices and Solkadhi</div><div class="d">Confirm the Konkan dishes on <code>/food</code> are cooked, give prices, and confirm Solkadhi is served so "signature drink" is true.</div></div><span class="pill p-warn">Copy is live</span></li>
+      <li><input type="checkbox" id="a8" aria-label="Done"><div><div class="t">Real photos</div><div class="d">Pick the photos from your private folder and decide they can be public. The site uses stock photos until then.</div></div><span class="pill p-plan">When ready</span></li>
+    </ul>
+
+    <p class="group">For the planned guest features</p>
+    <ul class="actions">
+      <li><input type="checkbox" id="a9" aria-label="Done"><div><div class="t">Ask the local police station about the guest register</div><div class="d">ID for the lead guest or every adult, and whether they use an online reporting portal.</div></div><span class="pill p-plan">Check-in</span></li>
+      <li><input type="checkbox" id="a10" aria-label="Done"><div><div class="t">DigiLocker registration, or pick an aggregator</div><div class="d">Direct registration is free but slow to approve. Setu, IDfy and similar services go live in days, for a few rupees per lookup.</div></div><span class="pill p-plan">Guest ID</span></li>
+      <li><input type="checkbox" id="a11" aria-label="Done"><div><div class="t">FSSAI scope and GST rates for produce</div><div class="d">Ask your CA whether the restaurant licence covers selling produce, and the GST rate per item. To catch mango season the shop needs to be live by about February 2027.</div></div><span class="pill p-plan">Produce shop</span></li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="phases">
+    <h2 id="phases">Next phases</h2>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Phase</th><th>What it delivers</th><th>Size</th><th>State</th></tr></thead>
+        <tbody>
+          <tr class="now"><td class="ph">P0</td><td>CI on every push, pre-push checks, test IDs, smoke script you can point at production</td><td>S</td><td><span class="pill p-now">In progress</span></td></tr>
+          <tr><td class="ph">P1</td><td>Database tests for the risky rules: no double-booking, payment idempotency, price snapshots</td><td>M</td><td><span class="pill p-plan">Next</span></td></tr>
+          <tr><td class="ph">P2</td><td>Finish admin: booking detail, edit and cancel, check-in/out, balance payments, rooms and menu, notification log</td><td>L</td><td><span class="pill p-plan">Planned</span></td></tr>
+          <tr><td class="ph">P3</td><td>Refunds on cancel and GST invoice PDF</td><td>M</td><td><span class="pill p-plan">Planned</span></td></tr>
+          <tr><td class="ph">P4–P5</td><td>Multi-tenant core and feature switches, so the product can be sold to other properties</td><td>L + M</td><td><span class="pill p-plan">Planned</span></td></tr>
+          <tr><td class="ph">P13</td><td>Web check-in, guest ID, guest register, Form C</td><td>M</td><td><span class="pill p-plan">Planned</span></td></tr>
+          <tr><td class="ph">P14</td><td>Room bill and Konkan produce shop (pickup), then ship-home</td><td>M + M</td><td><span class="pill p-warn">Feb 2027 target</span></td></tr>
+          <tr><td class="ph">P15</td><td>QR room guide, in-stay requests, feedback and perks</td><td>S–M</td><td><span class="pill p-plan">Planned</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Sizes: S ≈ 1–2 days, M ≈ 3–7 days, L ≈ 1–3 weeks. Phases P6–P12 (tours, AI assistant, onboarding, E2E tests, OTA sync, activities, phone OTP) follow the order in <code>docs/roadmap.md</code>. The produce shop may need to move ahead of them to make mango season.</p>
+  </section>
+
+  <section aria-labelledby="built">
+    <h2 id="built">Already built</h2>
+    <ul class="built">
+      <li>Room booking with live availability and no double-booking</li>
+      <li>Meals: free breakfast, lunch and dinner headcounts, 6pm cutoff</li>
+      <li>GST-exclusive pricing and configurable deposit</li>
+      <li>Razorpay deposits with webhook (needs your keys)</li>
+      <li>WhatsApp, Telegram and SMS notifications (need credentials)</li>
+      <li>Daily jobs: expire holds, balance reminders, kitchen summary</li>
+      <li>Animated site with dog-friendly and Konkan food pages</li>
+      <li>Google sign-in, guest account history (needs OAuth setup)</li>
+      <li>Admin first slice: overview, bookings by date, settings editor</li>
+      <li>37 unit tests, all passing</li>
+    </ul>
+  </section>
+</div>
+
+<script>
+document.querySelectorAll('.actions input').forEach(function (box) {
+  var key = 'gt-status-' + box.id;
+  try { box.checked = localStorage.getItem(key) === '1'; } catch (e) {}
+  var sync = function () { box.closest('li').classList.toggle('done', box.checked); };
+  sync();
+  box.addEventListener('change', function () {
+    sync();
+    try { localStorage.setItem(key, box.checked ? '1' : '0'); } catch (e) {}
+  });
+});
+</script>

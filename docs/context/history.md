@@ -35,6 +35,9 @@ All dates are 2026-11-04 unless noted. The project was built in one long working
 ## Workflow switch
 - The owner chose direct-to-main fast mode: commit and push to `main`, no PRs, approvals or tags. *Why:* speed and momentum. The release process is kept for reference. See decision 016.
 
+## Quality foundation (P0)
+- 2026-11-13: pre-push hook, GitHub Actions CI with a Postgres 16 migration check, `[smoke]/[sanity]` test tags and `scripts/smoke.mjs`. The smoke script passed against production before the push. *Why:* every later phase (especially the multi-tenant rewrite) needs a safety net, and in fast mode the hook is the only gate before production.
+
 ## Decisions that shaped the work
 See [../decisions.md](../decisions.md) (001 to 015). The most consequential:
 - Plain Postgres and postgres.js instead of Supabase client libraries (portability).

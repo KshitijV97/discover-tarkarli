@@ -46,5 +46,5 @@ These rules apply to every AI agent and every human contributor. They were learn
 23. **Keep the owner's photos private** until the owner decides how to publish them.
 
 ## Known gaps in these rules
-- Automated checks (pre-push hooks, CI) are not in place. Under the fast mode the gate is the typecheck in rule 19.
+- The pre-push hook (typecheck, lint, unit tests) and CI exist, but CI runs in parallel with the Vercel deploy, so it reports problems rather than preventing them. Never push with `--no-verify` except in an emergency.
 - Harness-specific features (Claude Code skills, hooks, memory, slash commands) are not portable. Keep rules here, not only in a tool's settings.

@@ -39,7 +39,7 @@ describe("meal slots", () => {
 describe("planMeals", () => {
   const base = { checkIn: "2026-11-10", checkOut: "2026-11-12", numGuests: 3, now: EARLY };
 
-  it("auto-includes breakfast for all guests at ₹0", () => {
+  it("[smoke] TC-MEAL-01 auto-includes breakfast for all guests at ₹0", () => {
     const { lines, errors } = planMeals({ ...base, selections: [], settings: S() });
     expect(errors).toEqual([]);
     expect(lines).toHaveLength(2);
@@ -56,7 +56,7 @@ describe("planMeals", () => {
     expect(lines.filter((l) => l.mealType === "lunch")).toHaveLength(0);
   });
 
-  it("rejects headcount above guests and invalid dates", () => {
+  it("[sanity] TC-MEAL-03 rejects headcount above guests and invalid dates", () => {
     const { errors } = planMeals({
       ...base, settings: S(),
       selections: [{ date: "2026-11-10", mealType: "lunch", quantity: 4 }, { date: "2026-11-12", mealType: "dinner", quantity: 1 }],
@@ -64,7 +64,7 @@ describe("planMeals", () => {
     expect(errors).toHaveLength(2);
   });
 
-  it("breakfast becomes a paid choice when not included", () => {
+  it("TC-MEAL-08 breakfast becomes a paid choice when not included", () => {
     const { lines } = planMeals({
       ...base, settings: S({ meals: { breakfastIncluded: false } }),
       selections: [{ date: "2026-11-11", mealType: "breakfast", quantity: 2 }],
@@ -72,7 +72,7 @@ describe("planMeals", () => {
     expect(lines).toEqual([expect.objectContaining({ mealType: "breakfast", quantity: 2, unitPrice: 35000, includedFree: false })]);
   });
 
-  it("locks changes after 6pm IST the day before", () => {
+  it("[sanity] locks changes after 6pm IST the day before", () => {
     const s = S();
     expect(mealCutoff("2026-11-11", s).toISOString()).toBe("2026-11-10T12:30:00.000Z");
     const justBefore = new Date("2026-11-10T12:29:00Z");
@@ -104,7 +104,7 @@ describe("pricing", () => {
     expect(roomGstRate(750100, S())).toBe(18);
   });
 
-  it("computes totals, tax buckets and 30% deposit", () => {
+  it("[sanity] computes totals, tax buckets and 30% deposit", () => {
     const settings = S();
     const { lines } = planMeals({
       checkIn: "2026-11-10", checkOut: "2026-11-12", numGuests: 2, now: EARLY, settings,
@@ -124,7 +124,18 @@ describe("pricing", () => {
     expect(q.balance).toBe(q.total - q.deposit);
   });
 
-  it("fixed deposit never exceeds total", () => {
+  it("[smoke] TC-PRC-01 Sea Breeze, 2 nights, 2 guests = ₹13,650 incl. GST, deposit ₹4,095", () => {
+    const q = computeQuote({
+      checkIn: "2026-11-10", checkOut: "2026-11-12", settings: S(), meals: [],
+      rooms: [{ roomId: "r1", name: "Sea Breeze", guests: 2, pricePerNight: 650000, gstRate: 5 }],
+    });
+    expect(q.roomSubtotal).toBe(1300000); // ₹13,000
+    expect(q.tax).toBe(65000); // 5% = ₹650
+    expect(q.total).toBe(1365000); // ₹13,650
+    expect(q.deposit).toBe(409500); // 30% = ₹4,095
+  });
+
+  it("TC-PRC-04 fixed deposit never exceeds total", () => {
     expect(computeDeposit(100000, S({ deposit: { type: "fixed", value: 2000 } }))).toBe(100000);
     expect(computeDeposit(500000, S({ deposit: { type: "fixed", value: 2000 } }))).toBe(200000);
   });
