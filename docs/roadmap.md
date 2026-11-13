@@ -17,6 +17,8 @@
 - **Move hosting to India**: Vercel Montreal → Mumbai (`bom1`), Supabase Tokyo → Mumbai (`ap-south-1`). Easiest before go-live. Steps: [region-migration.md](region-migration.md).
 - **Google sign-in setup**: create the OAuth client in Google Cloud and set env vars. Steps: [auth.md](auth.md#todo-set-up-google-sign-in).
 - **Real photography**: replace the Unsplash placeholders in `src/content/site.ts` and `rooms.photos`.
+- **DigiLocker requester registration** (or pick an aggregator) for guest ID; approval takes time. See [guest-checkin.md](guest-checkin.md).
+- **FSSAI scope and GST rates for produce sales**: confirm before the shop goes live. See [produce-shop.md](produce-shop.md).
 - **Policy pages** (terms, cancellation/refund, privacy, contact), required for Razorpay activation.
 
 ## 🗺 Phased plan (decided 2026-11-05)
@@ -38,6 +40,9 @@ Goal: sell the product to other buyers, each on their own domain, with a small b
 | **P10** | Room types + channel sync (iCal first, then OTAs) | L | P4 | [channel-sync.md](channel-sync.md) |
 | **P11** | Third-party activities, then SaaS billing | L | P4, P5 | [future-services.md](future-services.md), [saas-billing.md](saas-billing.md) |
 | **P12** | Phone OTP, à la carte ordering, UI packs | M each | P4 | Slot in wherever needed; none blocks the rest |
+| **P13** | Web check-in, guest ID, guest register | M | P2, P5 | Upload ID first, DigiLocker later; register export and Form C. [guest-checkin.md](guest-checkin.md) |
+| **P14** | Room bill + Konkan produce shop (pickup), then ship-home | M, then M | P2, P5 | Season-windowed catalogue; **v1 live by about Feb 2027 for mango season**. [produce-shop.md](produce-shop.md) |
+| **P15** | Other conveniences: QR room guide, requests, feedback + perks | S–M each | P5 | [convenience-features.md](convenience-features.md). No rewards for public reviews |
 
 ### Why this order
 1. **Tests first (P0–P1)**, because P4 rewrites the data model. Without the integration suite there is no safety net for that change.
@@ -58,5 +63,5 @@ Within P0 and P1, the manual plan ([testing/manual-test-plan.md](testing/manual-
 - Seasonal and weekend rates, extra-guest charges, child policy
 - Promo codes
 - Email channel
-- Reviews and guest feedback after checkout
+- Reviews and guest feedback after checkout (now planned: F-FDBK in [convenience-features.md](convenience-features.md))
 - Assistant on WhatsApp, Hindi and Marathi

@@ -211,7 +211,7 @@ Run after every deploy. Cases are marked **S** below; this is the checklist:
 5. A suite passes only when **every** case in it passes.
 
 ## Planned features (cases to be written with the feature)
-F-OTP, F-REF, F-INV, F-ALC, F-ACT, F-TOUR, F-ASSIST, F-ADM2, F-CHN, F-TEN, F-FLG, F-ONB, F-BILL. For each, write the cases first (see [feature-catalog.md](feature-catalog.md#adding-a-feature)). Multi-tenancy brings a **standing isolation group** that every release must pass:
+F-OTP, F-REF, F-INV, F-ALC, F-ACT, F-TOUR, F-ASSIST, F-ADM2, F-CHK, F-KYC, F-REG, F-SHOP, F-SHIP, F-FOLIO, F-QRG, F-REQ, F-FDBK, F-PERK (draft cases are in their docs), F-CHN, F-TEN, F-FLG, F-ONB, F-BILL. For each, write the cases first (see [feature-catalog.md](feature-catalog.md#adding-a-feature)). Multi-tenancy brings a **standing isolation group** that every release must pass:
 
 | ID | Case | Suite |
 |---|---|---|
