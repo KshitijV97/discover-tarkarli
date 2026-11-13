@@ -63,13 +63,13 @@ tr.now td { background: var(--ocean-soft); }
   <header>
     <div class="eyebrow">Golden Tide Retreat · booking system</div>
     <h1>Where the project stands</h1>
-    <p class="lede">Updated 13 Nov 2026. The core booking site is built. Payments and Google sign-in are coded but wait on your accounts. Work has started on the quality foundation (P0), which every later phase builds on.</p>
+    <p class="lede">Updated 13 Nov 2026. The core booking site is built. Payments and Google sign-in are coded but wait on your accounts. The quality foundation (P0) is live: every push is now checked automatically. Next up is P1, database tests for the rules that protect bookings and money.</p>
   </header>
 
   <section aria-label="Summary">
     <div class="strip">
       <div class="cell"><div class="label">Built</div><b>Booking core</b><span>Rooms, meals, GST pricing, deposits, notifications, admin first slice</span></div>
-      <div class="cell"><div class="label">In progress</div><b>P0 quality</b><span>CI on every push, pre-push checks, smoke tests</span></div>
+      <div class="cell"><div class="label">Just shipped</div><b>P0 quality</b><span>CI green on first run; production smoke check 5/5. P1 is next</span></div>
       <div class="cell"><div class="label">Blocked on you</div><b>11 items</b><span>Accounts, policy copy, business facts</span></div>
       <div class="cell"><div class="label">Open PR</div><b>#2 docs</b><span>Check-in, ID, produce shop plans. Preview build passed</span></div>
     </div>
@@ -109,8 +109,8 @@ tr.now td { background: var(--ocean-soft); }
       <table>
         <thead><tr><th>Phase</th><th>What it delivers</th><th>Size</th><th>State</th></tr></thead>
         <tbody>
-          <tr class="now"><td class="ph">P0</td><td>CI on every push, pre-push checks, test IDs, smoke script you can point at production</td><td>S</td><td><span class="pill p-now">In progress</span></td></tr>
-          <tr><td class="ph">P1</td><td>Database tests for the risky rules: no double-booking, payment idempotency, price snapshots</td><td>M</td><td><span class="pill p-plan">Next</span></td></tr>
+          <tr><td class="ph">P0</td><td>CI on every push, pre-push checks, test IDs, smoke script you can point at production</td><td>S</td><td><span class="pill p-ok">Done 13 Nov</span></td></tr>
+          <tr class="now"><td class="ph">P1</td><td>Database tests for the risky rules: no double-booking, payment idempotency, price snapshots</td><td>M</td><td><span class="pill p-now">Next</span></td></tr>
           <tr><td class="ph">P2</td><td>Finish admin: booking detail, edit and cancel, check-in/out, balance payments, rooms and menu, notification log</td><td>L</td><td><span class="pill p-plan">Planned</span></td></tr>
           <tr><td class="ph">P3</td><td>Refunds on cancel and GST invoice PDF</td><td>M</td><td><span class="pill p-plan">Planned</span></td></tr>
           <tr><td class="ph">P4–P5</td><td>Multi-tenant core and feature switches, so the product can be sold to other properties</td><td>L + M</td><td><span class="pill p-plan">Planned</span></td></tr>
@@ -135,7 +135,7 @@ tr.now td { background: var(--ocean-soft); }
       <li>Animated site with dog-friendly and Konkan food pages</li>
       <li>Google sign-in, guest account history (needs OAuth setup)</li>
       <li>Admin first slice: overview, bookings by date, settings editor</li>
-      <li>37 unit tests, all passing</li>
+      <li>38 unit tests, CI on every push, pre-push checks, production smoke check</li>
     </ul>
   </section>
 </div>
