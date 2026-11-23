@@ -38,7 +38,7 @@ You said you don't mind shared or separate infra, as long as blast radius stays 
 The control plane (a small registry of tenants, domains, cells, plans and entitlements) can live in your own database. It is the only shared state.
 
 ## Goal
-Run the same platform for many properties (tenants), each on its **own domain**, each with a **different UI** (look, layout, copy, photos), but using the **same configurable features**. The retreat we run today becomes tenant #1.
+Run the same platform for many properties (tenants), each on its **own domain**, each with a **different UI** (look, layout, copy, photos), but using the **same configurable features**. The retreat we run today becomes tenant #1. Since 2026-11-23 the main target is the **discovertarkarli.com** marketplace: many partners (stays, activity operators, kitchens) listed and bookable together, with cross-tenant search and split payouts. See [vision.md](vision.md).
 
 ## What "tenant" means here
 A tenant is one property (or one brand). It owns: its rooms, bookings, guests, staff, settings, payment and notification credentials, its domain, its theme and its enabled features.

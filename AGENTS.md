@@ -4,11 +4,12 @@ Instructions for any AI coding agent working in this repository (Claude Code, Op
 
 ## Read first, in this order
 1. **This file**: commands, rules, invariants.
+   Then **[docs/vision.md](docs/vision.md)**: where the product is going (marketplace + partners).
 2. **[docs/context/README.md](docs/context/README.md)**: the full context pack. Requirements, working rules, decision history, and the current handoff state.
 3. **[docs/README.md](docs/README.md)**: detailed technical docs (architecture, booking rules, data model, payments, auth, admin, deployment).
 
 ## What this project is
-Booking system for **Golden Tide Retreat**, a 6-room beachfront homestay in India with a restaurant. Guests book rooms, plan meals and pay a deposit online. Staff get WhatsApp, Telegram and SMS updates. The owner (Kshitij Vengurlekar) also intends to sell it as a multi-tenant SaaS. The codebase is **copyright Kshitij Vengurlekar, under a restricted licence** (see [LICENSE](LICENSE)). Do not copy, publish or redistribute code outside the owner's direction.
+**Discover Tarkarli** (discovertarkarli.com, in progress): a destination platform for booking stays, food and experiences on the Tarkarli / Malvan coast, with local businesses as partners (tenants). Today the code runs one property, **Golden Tide Retreat**, a 6-room beachfront homestay with a restaurant, which becomes partner #1. Guests book rooms, plan meals and pay a deposit online. Staff get WhatsApp, Telegram and SMS updates. Direction and the technical changes it drives: [docs/vision.md](docs/vision.md). The codebase is **copyright Kshitij Vengurlekar, under a restricted licence** (see [LICENSE](LICENSE)). Do not copy, publish or redistribute code outside the owner's direction.
 
 Stack: Next.js 14 App Router · TypeScript (strict) · Tailwind · PostgreSQL via `postgres.js` · Razorpay · Auth.js · Vitest.
 
@@ -44,6 +45,7 @@ Before committing: `npm run typecheck && npm run lint && npm test`. The pre-push
 - **Price snapshots** on booking lines are fixed at creation. Edits keep existing prices.
 - **Payments are idempotent.** `recordPayment()` is called by the browser callback and the webhook. Keep it safe to repeat.
 - **`notify()` never throws** and runs after the DB commit. Pass a `dedupeKey` for anything that may fire twice.
+- **Build for many partners.** The repo is public. New tables include `tenant_id`; new features must not assume a single property. Never commit secrets, real guest data or the owner's private photos.
 - **Business values belong in `settings`** (zod field with a default in `lib/settings.ts`). Secrets belong in env.
 - **Motion respects reduced motion**: use `components/fx` primitives.
 - **Styling uses theme tokens only** (`bg-primary`, `text-muted`, …) from `src/theme/theme.config.ts`. No raw hex or Tailwind palette colours in components.

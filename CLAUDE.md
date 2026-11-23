@@ -2,7 +2,7 @@
 
 > **Harness-neutral context lives in [AGENTS.md](AGENTS.md) and [docs/context/](docs/context/README.md).** Read those first. They work with any AI coding tool (Codex, OpenCode, Z.ai GLM and others). This file adds Claude Code specifics.
 
-Booking system for **Golden Tide Retreat**: a 6-room beachfront homestay in India with a restaurant. Guests book rooms, plan meals and pay a deposit online. Staff get WhatsApp/Telegram/SMS updates.
+**Discover Tarkarli** (discovertarkarli.com, in progress): a destination marketplace for stays, food and experiences on the Tarkarli / Malvan coast, with local businesses as tenants. Today the code runs one property, **Golden Tide Retreat** (6-room beachfront homestay with a restaurant), which becomes partner #1. Guests book rooms, plan meals and pay a deposit online. Staff get WhatsApp/Telegram/SMS updates. Vision and technical direction: `docs/vision.md`. **The repo is public**: never commit secrets, guest data or private photos.
 
 Stack: Next.js 14 App Router · TypeScript (strict) · Tailwind · PostgreSQL via `postgres.js` · Razorpay · Vitest. Hosted on Vercel + Supabase, but **portability is a hard requirement**: no supabase-js, no Vercel-only APIs.
 
@@ -68,4 +68,4 @@ Before committing: `npm run typecheck && npm run lint && npm test`. The pre-push
 ## Status
 Planned: room types + OTA channel sync (docs/channel-sync.md). Keep availability logic room-type-ready.
 Hosting TODO: move Vercel (`yul1`) and Supabase (Tokyo) to Mumbai; see `docs/region-migration.md`.
-Done: booking flow, meals, pricing, notifications framework, Razorpay deposits, animated redesign, Auth.js sign-in (Google; needs OAuth setup), admin dashboard first slice (`/admin`, see docs/admin.md). Next: finish admin, phone OTP, GST invoice PDF, à la carte ordering. Planned TODOs with docs: quality gates and test catalog (`docs/testing/`), third-party activities, multi-tenant SaaS (0% built; cell model), SaaS billing, guided tours and AI assistant (`docs/guided-experience.md`). See the phased plan in `docs/roadmap.md`. Until tenancy lands, **any new table includes `tenant_id`**, and every new feature adds its cases to `docs/testing/` with `TC-<FEATURE>-<NN>` ids.
+Done: booking flow, meals, pricing, notifications framework, Razorpay deposits, animated redesign, Auth.js sign-in (Google; needs OAuth setup), admin dashboard first slice (`/admin`, see docs/admin.md). Next: finish admin, phone OTP, GST invoice PDF, à la carte ordering. Vision (2026-11-23): tenancy and a marketplace layer move up the plan; see `docs/vision.md`. Planned TODOs with docs: quality gates and test catalog (`docs/testing/`), third-party activities, multi-tenant SaaS (0% built; cell model), SaaS billing, guided tours and AI assistant (`docs/guided-experience.md`). See the phased plan in `docs/roadmap.md`. Until tenancy lands, **any new table includes `tenant_id`**, and every new feature adds its cases to `docs/testing/` with `TC-<FEATURE>-<NN>` ids.

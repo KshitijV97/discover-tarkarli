@@ -28,7 +28,7 @@ owner request
 
 ## 2. Commits
 - Conventional messages: `feat:`, `fix:`, `docs:`, `refactor:`, `chore:`, `build:`, `test:`.
-- Commits are authored by the owner's git identity (`Kshitij Vengurlekar <writetokshitij@gmail.com>`), so GitHub and Vercel attribute them to the owner.
+- Commits are authored by the owner's git identity (the owner's name and email in `git config`), so GitHub and Vercel attribute them to the owner.
 - **No AI co-author trailers** (no `Co-Authored-By:` lines). This is the owner's rule.
 
 ## 3. Checks before the PR

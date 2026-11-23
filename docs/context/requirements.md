@@ -44,6 +44,9 @@ The owner asked for these, in one session, as **planned TODOs**. None is built y
 8. **Licensing**: copyright Kshitij Vengurlekar 2026, under a restricted licence (view only for evaluation; no business use, copying or hosting without written permission). See [../../LICENSE](../../LICENSE).
 9. **Portability across AI tools (this document set).** The owner must be able to keep working when one AI tool's usage limit is reached, using another tool (Codex, OpenCode, Z.ai GLM, or others). That is why the context is in the repo, in tool-neutral form.
 
+## 3a. Vision change (captured 2026-11-23)
+The repository goes public and the product becomes **discovertarkarli.com**: a destination platform for Tarkarli and the Malvan coast where stays, food and activities are booked together. Golden Tide Retreat becomes a tenant / partner on it. This drives future technical change (tenancy, marketplace layer, split payouts). See [../vision.md](../vision.md).
+
 ## 4. Non-goals (for now)
 - Native mobile apps.
 - Full accounting. GST invoice PDF is planned, not built.
