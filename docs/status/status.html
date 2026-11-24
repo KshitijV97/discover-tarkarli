@@ -63,14 +63,14 @@ tr.now td { background: var(--ocean-soft); }
   <header>
     <div class="eyebrow">Golden Tide Retreat · booking system</div>
     <h1>Where the project stands</h1>
-    <p class="lede">Updated 13 Nov 2026. The core booking site is built. Payments and Google sign-in are coded but wait on your accounts. P0 and P1 are done: every push is checked automatically, and the rules that protect bookings and money (no double-booking, payments counted once, prices fixed at booking) are now tested against a real database. Most of P2 is now live too: staff can check guests in and out, cancel, record cash or UPI payments, resend messages and edit rooms and the menu. Nobody can use the admin pages until Google sign-in is set up, which makes that your most urgent item.</p>
+    <p class="lede">Updated 13 Nov 2026. The core booking site is built. Payments and Google sign-in are coded but wait on your accounts. P0 and P1 are done: every push is checked automatically, and the rules that protect bookings and money (no double-booking, payments counted once, prices fixed at booking) are now tested against a real database. P2 is finished: staff can run the whole property from the admin, including changing dates, rooms and meals, and you can edit who gets which message and the site's colours without touching code. Nobody can use the admin pages until Google sign-in is set up, which makes that your most urgent item.</p>
   </header>
 
   <section aria-label="Summary">
     <div class="strip">
       <div class="cell"><div class="label">Built</div><b>Booking core</b><span>Rooms, meals, GST pricing, deposits, notifications, admin first slice</span></div>
-      <div class="cell"><div class="label">Just shipped</div><b>Admin operations</b><span>Check-in/out, cancel, desk payments, messages, rooms and menu editors. Live once you set up Google sign-in</span></div>
-      <div class="cell"><div class="label">Blocked on you</div><b>11 items</b><span>Accounts, policy copy, business facts</span></div>
+      <div class="cell"><div class="label">Just shipped</div><b>Admin finished (P2)</b><span>Change dates, rooms and meals; notifications and theme editors. Usable once you set up Google sign-in</span></div>
+      <div class="cell"><div class="label">Blocked on you</div><b>12 items</b><span>Accounts, policy copy, business facts</span></div>
       <div class="cell"><div class="label">Open PR</div><b>#2 docs</b><span>Check-in, ID, produce shop plans. Preview build passed</span></div>
     </div>
   </section>
@@ -92,6 +92,7 @@ tr.now td { background: var(--ocean-soft); }
     <ul class="actions">
       <li><input type="checkbox" id="a6" aria-label="Done"><div><div class="t">Dog policy</div><div class="d">Number of dogs, any charge, rules. The site currently promises dogs are welcome in every room.</div></div><span class="pill p-warn">Copy is live</span></li>
       <li><input type="checkbox" id="a7" aria-label="Done"><div><div class="t">Dish list, prices and Solkadhi</div><div class="d">Confirm the Konkan dishes on <code>/food</code> are cooked, give prices, and confirm Solkadhi is served so "signature drink" is true.</div></div><span class="pill p-warn">Copy is live</span></li>
+      <li><input type="checkbox" id="a12" aria-label="Done"><div><div class="t">Book a stay button colour</div><div class="d">White text on the orange button is 2.9:1 contrast, below the 3:1 minimum for large text. A slightly darker orange fixes it; change it in Admin → Settings → Theme, or tell me a colour.</div></div><span class="pill p-plan">Accessibility</span></li>
       <li><input type="checkbox" id="a8" aria-label="Done"><div><div class="t">Real photos</div><div class="d">Pick the photos from your private folder and decide they can be public. The site uses stock photos until then.</div></div><span class="pill p-plan">When ready</span></li>
     </ul>
 
@@ -111,8 +112,8 @@ tr.now td { background: var(--ocean-soft); }
         <tbody>
           <tr><td class="ph">P0</td><td>CI on every push, pre-push checks, test IDs, smoke script you can point at production</td><td>S</td><td><span class="pill p-ok">Done 13 Nov</span></td></tr>
           <tr><td class="ph">P1</td><td>Database tests for the risky rules: no double-booking, payment idempotency, price snapshots</td><td>M</td><td><span class="pill p-ok">Done 13 Nov</span></td></tr>
-          <tr class="now"><td class="ph">P2</td><td>Finish admin. <b>Done:</b> booking detail, check-in/out, cancel, desk payments, message log, rooms and menu, audit log. <b>Left:</b> edit booking dates and rooms, notification and theme editors</td><td>L</td><td><span class="pill p-now">Most done</span></td></tr>
-          <tr><td class="ph">P3</td><td>Refunds on cancel and GST invoice PDF</td><td>M</td><td><span class="pill p-plan">Planned</span></td></tr>
+          <tr><td class="ph">P2</td><td>Finish admin: bookings, check-in/out, cancel, desk payments, date/room/meal changes, messages, rooms and menu, notifications and theme editors, audit log</td><td>L</td><td><span class="pill p-ok">Done 24 Nov</span></td></tr>
+          <tr class="now"><td class="ph">P3</td><td>Refunds on cancel and GST invoice PDF (or tenancy first, see the Discover Tarkarli vision)</td><td>M</td><td><span class="pill p-now">Next · your call</span></td></tr>
           <tr><td class="ph">P4–P5</td><td>Multi-tenant core and feature switches, so the product can be sold to other properties</td><td>L + M</td><td><span class="pill p-plan">Planned</span></td></tr>
           <tr><td class="ph">P13</td><td>Web check-in, guest ID, guest register, Form C</td><td>M</td><td><span class="pill p-plan">Planned</span></td></tr>
           <tr><td class="ph">P14</td><td>Room bill and Konkan produce shop (pickup), then ship-home</td><td>M + M</td><td><span class="pill p-warn">Feb 2027 target</span></td></tr>
@@ -134,9 +135,9 @@ tr.now td { background: var(--ocean-soft); }
       <li>Daily jobs: expire holds, balance reminders, kitchen summary</li>
       <li>Animated site with dog-friendly and Konkan food pages</li>
       <li>Google sign-in, guest account history (needs OAuth setup)</li>
-      <li>Admin: overview, bookings, booking detail with check-in/out, cancel and desk payments, message log with resend, rooms and menu editors, settings with change history</li>
-      <li>54 unit tests, CI on every push, pre-push checks, production smoke check</li>
-      <li>30 database tests on real Postgres, feature matrix in every CI run</li>
+      <li>Admin: bookings with check-in/out, cancel, desk payments and date/room/meal changes; message log with resend; rooms, menu, notifications and theme editors; settings with change history</li>
+      <li>68 unit tests, CI on every push, pre-push checks, production smoke check</li>
+      <li>39 database tests on real Postgres, feature matrix in every CI run</li>
     </ul>
   </section>
 </div>
