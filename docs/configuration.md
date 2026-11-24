@@ -2,7 +2,7 @@
 
 Two places:
 - **Environment variables** — secrets and infrastructure. Never in the DB or git.
-- **`settings` table** — business rules, editable at runtime from `/admin/settings` (admin only; deposit, meals, GST, booking rules and property are editable, notifications and theme are not yet). Typed with defaults in `src/lib/settings.ts`; a missing or invalid row falls back to defaults (invalid rows log a warning).
+- **`settings` table** — business rules, editable at runtime from `/admin/settings` (admin only; deposit, meals, GST, booking rules, property, notifications at `/admin/settings/notifications` and theme at `/admin/settings/theme`). Typed with defaults in `src/lib/settings.ts`; a missing or invalid row falls back to defaults (invalid rows log a warning).
 
 ## Environment variables
 See `.env.example` (copy to `.env.local` for development).
@@ -65,12 +65,14 @@ Each group is one row: `key` = group name, `value` = JSON (partial is fine — m
 `name`, `timezone` (`Asia/Kolkata`), `phone`, `email`, `address`, `gstin`.
 
 ### `notifications`
-See [notifications.md](notifications.md).
+Edited at `/admin/settings/notifications`. See [notifications.md](notifications.md).
 
 ### `theme`
-Partial override of `src/theme/theme.config.ts`. See [design-system.md](design-system.md).
+Partial override of `src/theme/theme.config.ts`, edited at `/admin/settings/theme`. See [design-system.md](design-system.md).
 
-## Changing a setting (until the admin page exists)
+**Stored as JSON objects.** Before 2026-11-24 the admin saved settings rows as JSON strings inside `jsonb`, which were then ignored on read. `getSettings()` now reads those old rows correctly, and saves use `sql.json()`.
+
+## Changing a setting by SQL (the admin pages are preferred)
 ```sql
 update settings set value = value || '{"value": 25}' where key = 'deposit';
 update settings set value = value || '{"dinnerPrice": 700}' where key = 'meals';

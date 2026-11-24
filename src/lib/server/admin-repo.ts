@@ -76,6 +76,21 @@ export async function saveSettingsGroup<K extends Exclude<SettingsKey, "notifica
   value: AppSettings[K],
 ): Promise<void> {
   await db()`
-    insert into settings (key, value) values (${key}, ${JSON.stringify(value)}::jsonb)
+    insert into settings (key, value) values (${key}, ${db().json(value as never)})
+    on conflict (key) do update set value = excluded.value`;
+}
+
+/** Stores the whole notifications group. Callers validate with parseNotificationsForm first. */
+export async function saveNotificationSettings(value: AppSettings["notifications"]): Promise<void> {
+  await db()`
+    insert into settings (key, value) values ('notifications', ${db().json(value as never)})
+    on conflict (key) do update set value = excluded.value`;
+}
+
+/** Stores the theme override (only values that differ from the file theme). `null` resets to the file theme. */
+export async function saveThemeOverride(value: import("@/theme/theme.config").ThemeOverride | null): Promise<void> {
+  if (value === null) await db()`delete from settings where key = 'theme'`;
+  else await db()`
+    insert into settings (key, value) values ('theme', ${db().json(value as never)})
     on conflict (key) do update set value = excluded.value`;
 }

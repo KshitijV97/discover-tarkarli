@@ -27,11 +27,12 @@ Status: **Built** · **Partial** · **Planned**. "Cases" counts cases in the man
 ## Operations
 | ID | Feature | Status | Cases | Notes |
 |---|---|---|---|---|
-| F-NTF | Notifications (events, routing, dedupe, retries, templates, channels) | Built | `TC-NTF-*` | Real channels need credentials |
+| F-NTF | Notifications (events, routing, dedupe, retries, templates, channels) and their admin editor | Built | `TC-NTF-*` | Real channels need credentials |
 | F-CRN | Daily jobs (expire holds, balance reminders, kitchen summary, retries) | Built | `TC-CRN-*` | |
 | F-ADM | Admin overview and bookings list | Partial | `TC-ADM-*` | Booking detail, rooms, menu, notification log not built |
-| F-SET | Settings editor (property, deposit, meals, tax, booking) with change history | Built | `TC-SET-*` | Notifications and theme editors not built |
-| F-ADM2 | Booking detail, check-in/out, cancel, desk payments, message log + resend, rooms and menu editors, audit log | Partial | `TC-ADM2-*` | Booking date/room edits, notification and theme editors not built |
+| F-SET | Settings editor (property, deposit, meals, tax, booking) with change history | Built | `TC-SET-*` | |
+| F-THM | Theme editor with live preview and contrast checks | Built | `TC-THM-*` | |
+| F-ADM2 | Booking detail, check-in/out, cancel, desk payments, date/room/meal changes, message log + resend, rooms and menu editors, audit log | Built | `TC-ADM2-*` | Photo upload not built |
 
 ## Platform
 | ID | Feature | Status | Cases | Notes |

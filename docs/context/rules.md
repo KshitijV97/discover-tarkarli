@@ -33,6 +33,7 @@ These rules apply to every AI agent and every human contributor. They were learn
 ## Code
 
 15. **Invariants in [../../AGENTS.md](../../AGENTS.md) must hold** (no double-booking, paise, date strings, server-side pricing, idempotent payments, `notify()` never throws, settings for business values, theme tokens only, append-only migrations).
+15a. **Pass JSON to SQL with `sql.json(value)`**, never `${JSON.stringify(value)}::jsonb`. postgres.js encodes it a second time, the row becomes a JSON string, and readers silently fall back to defaults. *Why:* this broke every admin settings save until 2026-11-24.
 16. **Pure core, thin shell.** Domain rules have no I/O and get unit tests. DB access lives in `src/lib/server/*`.
 17. **Every new external integration sits behind an interface** with a fake for tests. See the extension points in [../architecture.md](../architecture.md).
 18. **Update docs in the same change** as the behaviour, schema, settings, env vars or endpoints.

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { requireAdmin } from "@/lib/server/session";
 import { getSettings } from "@/lib/server/settings-repo";
 import { listAudit } from "@/lib/server/audit-repo";
@@ -19,8 +20,11 @@ export default async function AdminSettingsPage() {
         <h1 className="text-3xl font-semibold">Settings</h1>
         <p className="mt-2 max-w-2xl text-muted">
           Business rules live here, not in code. Each section saves on its own. Secrets (API keys, passwords) stay in environment variables.
-          Notification routing and the theme editor are coming next (see docs/roadmap.md).
         </p>
+        <div className="mt-4 flex flex-wrap gap-3">
+          <Link href="/admin/settings/notifications" className="inline-flex min-h-11 items-center rounded-pill border border-border bg-surface px-5 text-sm font-semibold hover:bg-surface-muted">Notifications →</Link>
+          <Link href="/admin/settings/theme" className="inline-flex min-h-11 items-center rounded-pill border border-border bg-surface px-5 text-sm font-semibold hover:bg-surface-muted">Theme →</Link>
+        </div>
       </div>
       {SETTINGS_GROUPS.map((group) => (
         <Card key={group.key} className="p-6 md:p-8">

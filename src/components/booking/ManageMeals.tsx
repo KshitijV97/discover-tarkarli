@@ -11,9 +11,15 @@ import { PriceSummary } from "./PriceSummary";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 
-type Props = { booking: BookingDetail; settings: AppSettings; editable: boolean; serverNow: string };
+export type SaveMealsResult = { ok: true; meals: MealLine[]; quote: Quote } | { ok: false; error: string };
+type Props = {
+  booking: BookingDetail; settings: AppSettings; editable: boolean; serverNow: string;
+  /** Staff mode (admin): save through a server action instead of the guest API, and ignore the meal cutoff. */
+  saveMeals?: (selections: ReturnType<typeof valuesToSelections>) => Promise<SaveMealsResult>;
+  bypassCutoff?: boolean;
+};
 
-export function ManageMeals({ booking, settings, editable, serverNow }: Props) {
+export function ManageMeals({ booking, settings, editable, serverNow, saveMeals, bypassCutoff }: Props) {
   const [saved, setSaved] = useState<{ meals: MealLine[]; quote: Quote }>({ meals: booking.meals, quote: booking.quote });
   const [values, setValues] = useState<MealValues>(() => linesToValues(booking.meals));
   const [now, setNow] = useState(() => new Date(serverNow));
@@ -41,6 +47,14 @@ export function ManageMeals({ booking, settings, editable, serverNow }: Props) {
 
   async function save() {
     setStatus({ kind: "saving" });
+    if (saveMeals) {
+      const res = await saveMeals(valuesToSelections(values));
+      if (!res.ok) { setStatus({ kind: "error", message: res.error }); return; }
+      setSaved({ meals: res.meals, quote: res.quote });
+      setValues(linesToValues(res.meals));
+      setStatus({ kind: "saved", message: "Meals updated." });
+      return;
+    }
     try {
       const res = await fetch(`/api/manage/${booking.accessToken}/meals`, {
         method: "PUT",
@@ -72,7 +86,7 @@ export function ManageMeals({ booking, settings, editable, serverNow }: Props) {
         values={values}
         onChange={(v) => { setValues(v); setStatus({ kind: "idle" }); }}
         existing={saved.meals}
-        now={now}
+        now={bypassCutoff ? new Date(0) : now}
       />
       <Card className="sticky bottom-3 z-10 flex flex-wrap items-center justify-between gap-3 p-4 shadow-raised">
         <div className="text-sm">

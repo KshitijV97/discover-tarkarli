@@ -56,3 +56,34 @@ describe("manual payment validation", () => {
     expect(parseRupeesInput("abc")).toBeNull();
   });
 });
+
+import { defaultSettings } from "@/lib/settings";
+import { carryOverMeals, validateStayChange } from "./booking-ops";
+
+describe("changing a stay", () => {
+  const S = defaultSettings;
+  it("[sanity] TC-ADM2-17 upcoming bookings can move to any valid future dates", () => {
+    expect(validateStayChange({ status: "confirmed", checkIn: "2027-02-10" }, { checkIn: "2027-02-20", checkOut: "2027-02-22" }, "2027-02-01", S)).toBeNull();
+    expect(validateStayChange({ status: "confirmed", checkIn: "2027-02-10" }, { checkIn: "2027-01-20", checkOut: "2027-01-22" }, "2027-02-01", S)).toMatch(/past/);
+    expect(validateStayChange({ status: "pending", checkIn: "2027-02-10" }, { checkIn: "2027-02-10", checkOut: "2027-02-10" }, "2027-02-01", S)).toMatch(/after check-in/);
+  });
+  it("[sanity] TC-ADM2-18 an in-house guest can extend but not change the arrival date", () => {
+    const inHouse = { status: "checked_in" as const, checkIn: "2027-02-10" };
+    expect(validateStayChange(inHouse, { checkIn: "2027-02-10", checkOut: "2027-02-14" }, "2027-02-11", S)).toBeNull();
+    expect(validateStayChange(inHouse, { checkIn: "2027-02-11", checkOut: "2027-02-14" }, "2027-02-11", S)).toMatch(/already arrived/);
+    expect(validateStayChange(inHouse, { checkIn: "2027-02-10", checkOut: "2027-02-11" }, "2027-02-11", S)).toMatch(/after today/);
+  });
+  it("finished and cancelled bookings can't be changed", () => {
+    for (const status of ["checked_out", "cancelled", "expired"] as const)
+      expect(validateStayChange({ status, checkIn: "2027-02-10" }, { checkIn: "2027-02-20", checkOut: "2027-02-22" }, "2027-02-01", S)).toMatch(/can't be changed/);
+  });
+  it("carries meal choices to the new dates, caps headcount and drops what no longer fits", () => {
+    const line = (date: string, mealType: "lunch" | "dinner" | "breakfast", quantity: number, includedFree = false) =>
+      ({ date, mealType, quantity, unitPrice: 65000, gstRate: 5, includedFree });
+    const kept = carryOverMeals(
+      [line("2027-02-10", "dinner", 3), line("2027-02-11", "lunch", 2), line("2027-02-11", "breakfast", 3, true)],
+      { checkIn: "2027-02-10", checkOut: "2027-02-11", numGuests: 2 }, S,
+    );
+    expect(kept).toEqual([{ date: "2027-02-10", mealType: "dinner", quantity: 2 }]);
+  });
+});

@@ -12,6 +12,10 @@ import { Card } from "@/components/ui/Card";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { PriceSummary } from "@/components/booking/PriceSummary";
 import { NotesForm, RecordPayment, ResendButton, StatusActions } from "./BookingControls";
+import { StayEditor } from "./StayEditor";
+import { ManageMeals } from "@/components/booking/ManageMeals";
+import { listAllRooms } from "@/lib/server/catalog-repo";
+import { saveMealsAction } from "./actions";
 
 export const metadata: Metadata = { title: "Booking", robots: { index: false } };
 export const dynamic = "force-dynamic";
@@ -33,6 +37,12 @@ export default async function AdminBookingPage({ params }: { params: { id: strin
   if (!data) notFound();
   const { booking: b, summary, payments, notifications, audit, notes, today } = data;
   const paidMeals = b.meals.filter((m) => m.quantity > 0);
+  const editable = ["pending", "confirmed", "checked_in"].includes(b.status);
+  const bookedIds = new Set(b.rooms.map((r) => r.roomId));
+  const roomOptions = editable ? (await listAllRooms(today)).filter((r) => r.active || bookedIds.has(r.id)).map((r) => ({
+    id: r.id, name: r.name, maxOccupancy: r.maxOccupancy, hidden: !r.active,
+    pricePerNight: b.rooms.find((x) => x.roomId === r.id)?.pricePerNight ?? Math.round(r.basePrice * 100),
+  })) : [];
 
   return (
     <div className="space-y-6">
@@ -52,6 +62,21 @@ export default async function AdminBookingPage({ params }: { params: { id: strin
           <Section title="Actions">
             <StatusActions bookingId={b.id} options={staffActions({ status: b.status, checkIn: b.checkIn, checkOut: b.checkOut }, today)} />
           </Section>
+
+          {editable && (
+            <Section title="Dates and rooms">
+              <StayEditor bookingId={b.id} checkIn={b.checkIn} checkOut={b.checkOut} arrived={b.status === "checked_in"}
+                rooms={roomOptions} current={b.rooms.map((r) => ({ roomId: r.roomId, guests: r.guests }))} />
+            </Section>
+          )}
+
+          {editable && (
+            <Section title="Meals">
+              <p className="mb-4 text-sm text-muted">Staff can change meals at any time, including after the guest cutoff. Booked meals keep their price.</p>
+              <ManageMeals key={`${b.checkIn}-${b.checkOut}-${b.numGuests}`} booking={JSON.parse(JSON.stringify(b))} settings={settings} editable serverNow={new Date().toISOString()}
+                saveMeals={saveMealsAction.bind(null, b.id)} bypassCutoff />
+            </Section>
+          )}
 
           <Section title="Payments">
             <dl className="grid grid-cols-3 gap-4 text-sm">

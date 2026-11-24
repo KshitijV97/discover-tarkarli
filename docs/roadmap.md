@@ -11,7 +11,8 @@
 - Optional guest accounts + staff roles via Auth.js (Google); `/account` booking history; staff-gated `/admin`
 - **P0 quality foundation** (2026-11-13): pre-push hook, GitHub Actions CI (typecheck, lint, tests, migrations on Postgres 16, build, smoke), `[smoke]/[sanity]` test tags, `scripts/smoke.mjs`. See [quality-gates.md](quality-gates.md).
 - **P1 integration tests + feature matrix** (2026-11-13): 20 tests on real Postgres 16 (no double-booking incl. a race, triggers, snapshots, cutoff at booking, settings, idempotent and late payments, webhook signature, cron holds, kitchen summary), `test:integration:bg`, `test:status`, `test:matrix`, CI job summary.
-- **P2 admin, slice 2** (2026-11-14): booking detail with check-in/out and cancel, desk payments (cash/UPI/card/bank), staff notes, message log with resend, rooms and menu editors, `admin_audit_log` with settings change history. Remaining in P2: booking date/room edits, notification and theme editors. See [admin.md](admin.md).
+- **P2 finished** (2026-11-24): staff change dates, rooms, guests and meals (cutoff bypass); notifications editor (recipients, routes, wording); theme editor with live preview and contrast checks. Fixed a bug where every admin settings save was stored as a JSON string and ignored.
+- **P2 admin, slice 2** (2026-11-14): booking detail with check-in/out and cancel, desk payments (cash/UPI/card/bank), staff notes, message log with resend, rooms and menu editors, `admin_audit_log` with settings change history. See [admin.md](admin.md).
 - Admin dashboard, first slice: overview counts, bookings list filtered by date, and a settings editor for deposit, meals, GST, booking rules and property (admin-only, validated on the server). See [admin.md](admin.md).
 
 ## 📝 TODO (owner, not code)

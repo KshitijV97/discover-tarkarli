@@ -1,14 +1,17 @@
 import "server-only";
 import { db } from "./db";
 import { getSettings } from "./settings-repo";
-import { BookingError, getBookingById, type BookingDetail } from "./bookings";
+import { BookingError, getBookingById, updateBookingMeals, type BookingDetail } from "./bookings";
 import { notify } from "./notify";
 import { listAudit, writeAudit, type AuditEntry } from "./audit-repo";
 import {
-  NEXT_STATUS, paidFlags, paymentSummary, staffActions, validateManualPayment,
+  NEXT_STATUS, carryOverMeals, paidFlags, paymentSummary, staffActions, validateManualPayment, validateStayChange,
   type BookingStatus, type LedgerEntry, type ManualMethod, type PaymentSummary, type StaffAction,
 } from "@/lib/admin/booking-ops";
 import { todayInTz } from "@/lib/dates";
+import { planMeals, type MealSelection } from "@/lib/booking/meals";
+import { computeQuote, roomGstRate, type RoomPriceInput } from "@/lib/booking/pricing";
+import { validateAllocation } from "@/lib/booking/rules";
 import { formatINR, paiseToRupeesString, rupeesToPaise, type Paise } from "@/lib/money";
 
 export interface PaymentRow {
@@ -158,4 +161,105 @@ export async function saveBookingNotes(id: string, notes: string, actorEmail: st
     if (!row) throw new BookingError("NOT_FOUND", "Booking not found.");
     await writeAudit({ actorEmail, action: "booking.notes", entity: "booking", entityId: id }, tx);
   });
+}
+
+// ---------------------------------------------------------------------------
+// Change dates, rooms and guests
+// ---------------------------------------------------------------------------
+export interface StayChange { checkIn: string; checkOut: string; rooms: { roomId: string; guests: number }[] }
+
+/**
+ * Moves a booking to new dates and/or rooms. Rooms the booking already had keep
+ * their snapshot price; added rooms use today's price. Paid meals carry over where
+ * the slot still exists. The deposit stays fixed once paid. The exclusion constraint
+ * still guards against double-booking (23P01 → UNAVAILABLE).
+ */
+export async function changeBookingStay(id: string, change: StayChange, actorEmail: string, now = new Date()): Promise<BookingDetail> {
+  const settings = await getSettings();
+  const today = todayInTz(settings.property.timezone, now);
+  const current = await getBookingById(id);
+  if (!current) throw new BookingError("NOT_FOUND", "Booking not found.");
+
+  const stayError = validateStayChange({ status: current.status, checkIn: current.checkIn }, change, today, settings);
+  if (stayError) throw new BookingError("INVALID", stayError);
+
+  // Kept rooms may since have been hidden; added rooms must be bookable.
+  const ids = change.rooms.map((r) => r.roomId).filter((x) => /^[0-9a-f-]{36}$/i.test(x));
+  const rows = ids.length
+    ? await db()<{ id: string; name: string; max_occupancy: number; base_price: string; active: boolean }[]>`
+        select id, name, max_occupancy, base_price, active from rooms where id in ${db()(ids)}`
+    : [];
+  const keptIds = new Set(current.rooms.map((r) => r.roomId));
+  const usable = rows.filter((r) => r.active || keptIds.has(r.id)).map((r) => ({ id: r.id, name: r.name, maxOccupancy: r.max_occupancy }));
+  const allocError = validateAllocation(change.rooms, usable);
+  if (allocError) throw new BookingError("INVALID", allocError);
+
+  const roomInputs: RoomPriceInput[] = change.rooms.map((a) => {
+    const kept = current.rooms.find((r) => r.roomId === a.roomId);
+    if (kept) return { ...kept, guests: a.guests };
+    const r = rows.find((x) => x.id === a.roomId)!;
+    const price = rupeesToPaise(r.base_price);
+    return { roomId: r.id, name: r.name, guests: a.guests, pricePerNight: price, gstRate: roomGstRate(price, settings) };
+  });
+  const numGuests = roomInputs.reduce((s, r) => s + r.guests, 0);
+  const plan = planMeals({
+    checkIn: change.checkIn, checkOut: change.checkOut, numGuests, settings, now, enforceCutoff: false,
+    existing: current.meals, selections: carryOverMeals(current.meals, { checkIn: change.checkIn, checkOut: change.checkOut, numGuests }, settings),
+  });
+  if (plan.errors.length) throw new BookingError("INVALID", plan.errors[0], plan.errors);
+  const quote = computeQuote({ checkIn: change.checkIn, checkOut: change.checkOut, rooms: roomInputs, meals: plan.lines, settings });
+
+  try {
+    await db().begin(async (tx) => {
+      const [b] = await tx<{ status: BookingStatus; deposit_paid: boolean; deposit_amount: string }[]>`
+        select status, deposit_paid, deposit_amount from bookings where id = ${id} for update`;
+      if (!b || b.status !== current.status) throw new BookingError("LOCKED", "This booking changed while you were editing. Reload and try again.");
+      const deposit = b.deposit_paid ? rupeesToPaise(b.deposit_amount) : quote.deposit;
+
+      // Remove old room rows first so the new ones only compete with other bookings.
+      await tx`delete from booking_rooms where booking_id = ${id}`;
+      await tx`update bookings set check_in = ${change.checkIn}, check_out = ${change.checkOut}, num_guests = ${numGuests},
+                 subtotal_amount = ${paiseToRupeesString(quote.subtotal)}, tax_amount = ${paiseToRupeesString(quote.tax)},
+                 total_amount = ${paiseToRupeesString(quote.total)}, deposit_amount = ${paiseToRupeesString(deposit)}
+               where id = ${id}`;
+      await tx`insert into booking_rooms ${tx(roomInputs.map((r) => ({
+        booking_id: id, room_id: r.roomId, guests: r.guests, price_per_night: paiseToRupeesString(r.pricePerNight), gst_rate: r.gstRate,
+        stay: `[${change.checkIn},${change.checkOut})`,
+      })))}`;
+      await tx`delete from booking_meals where booking_id = ${id}`;
+      if (plan.lines.length) {
+        await tx`insert into booking_meals ${tx(plan.lines.map((m) => ({
+          booking_id: id, date: m.date, meal_type: m.mealType, quantity: m.quantity,
+          price_at_booking: paiseToRupeesString(m.unitPrice), gst_rate: m.gstRate, included_free: m.includedFree,
+        })))}`;
+      }
+      // Fully paid can stop being true when the stay gets longer.
+      await tx`update bookings set balance_paid = coalesce((select sum(amount) from payments where booking_id = ${id} and status = 'paid'), 0) >= total_amount
+               where id = ${id}`;
+      await writeAudit({
+        actorEmail, action: "booking.change", entity: "booking", entityId: id,
+        detail: {
+          from: { checkIn: current.checkIn, checkOut: current.checkOut, rooms: current.rooms.map((r) => `${r.name} ×${r.guests}`) },
+          to: { checkIn: change.checkIn, checkOut: change.checkOut, rooms: roomInputs.map((r) => `${r.name} ×${r.guests}`) },
+          total: formatINR(quote.total),
+        },
+      }, tx);
+    });
+  } catch (err) {
+    if ((err as { code?: string }).code === "23P01") {
+      throw new BookingError("UNAVAILABLE", "One of those rooms is already booked for some of these nights. Pick other dates or rooms.");
+    }
+    throw err;
+  }
+
+  const updated = (await getBookingById(id))!;
+  await notify("booking.updated", { booking: updated, dedupeKey: `booking.updated:${id}:${change.checkIn}:${change.checkOut}:${roomInputs.map((r) => `${r.roomId}x${r.guests}`).join(",")}` });
+  return updated;
+}
+
+/** Staff meal edit: same as the guest's, but past the cutoff too. */
+export async function staffUpdateMeals(id: string, selections: MealSelection[], actorEmail: string): Promise<BookingDetail> {
+  const detail = await updateBookingMeals({ id }, selections, { bypassCutoff: true });
+  await writeAudit({ actorEmail, action: "booking.meals", entity: "booking", entityId: id, detail: { total: formatINR(detail.quote.total) } });
+  return detail;
 }

@@ -24,6 +24,10 @@ export const DEFAULT_TEMPLATES: Partial<Record<`${NotificationEvent}.${Audience}
     "Hi {{guestFirstName}}, your booking {{reference}} ({{checkIn}} → {{checkOut}}) has been cancelled. Questions? Call {{propertyPhone}}.",
   "booking.cancelled.operator": "❌ Booking cancelled {{reference}} · {{guestName}} · {{checkIn}} → {{checkOut}}",
 
+  "booking.updated.guest":
+    "Hi {{guestFirstName}}, your booking {{reference}} has been updated.\n\n*Dates:* {{checkIn}} → {{checkOut}} ({{nights}} nights)\n*Rooms:* {{rooms}}\n*Guests:* {{numGuests}}\n*Total:* {{total}} · *Balance due:* {{balance}}\n\nDetails: {{manageUrl}}",
+  "booking.updated.operator": "✏️ Booking changed {{reference}} · {{guestName}} · {{checkIn}} → {{checkOut}} · {{rooms}} · {{numGuests}} guests · Total {{total}}",
+
   "booking.balance_reminder.guest":
     "Hi {{guestFirstName}}, a reminder that the balance of *{{balance}}* for booking {{reference}} is due at check-out on {{checkOut}}. We accept UPI, card and cash. Thank you for staying with us!",
 

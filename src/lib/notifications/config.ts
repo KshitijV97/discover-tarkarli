@@ -30,6 +30,7 @@ export const notificationsSchema = z.object({
     "booking.confirmed": { guest: ["whatsapp"], operator: ["whatsapp", "telegram"] },
     "booking.meals_updated": { guest: ["whatsapp"], operator: ["whatsapp", "telegram"] },
     "booking.cancelled": { guest: ["whatsapp"], operator: ["whatsapp", "telegram"] },
+    "booking.updated": { guest: ["whatsapp"], operator: ["telegram"] },
     "booking.balance_reminder": { guest: ["whatsapp"] },
     "booking.fully_paid": { guest: ["whatsapp"] },
     "payment.conflict": { operator: ["whatsapp", "telegram", "sms"] },

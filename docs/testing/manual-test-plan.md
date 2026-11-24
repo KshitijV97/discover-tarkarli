@@ -208,6 +208,27 @@ Run after every deploy. Cases are marked **S** below; this is the checklist:
 | TC-ADM2-14 | Room price change | Change a booked room's price | Existing booking keeps the old price; new bookings use the new one | N | int |
 | TC-ADM2-15 | Hide a room | Untick "Bookable" | Room disappears from `/book`; existing bookings kept | N | int |
 | TC-ADM2-16 | Staff can't edit prices | Sign in as staff; open `/admin/rooms` | Redirected to `/account` | N | e2e |
+| TC-ADM2-17 | Move an upcoming booking | Change dates to next week | Saved; a date in the past is refused | N | unit |
+| TC-ADM2-18 | Extend an in-house stay | Checked-in booking: move check-out a day later | Saved; check-in date can't change | N | unit |
+| TC-ADM2-19 | Prices and meals on a date change | Booked room's price was raised; move the dates | Old room price kept; dinners on dropped nights removed; guest told (`booking.updated`) | S | int |
+| TC-ADM2-20 | Add a room / room taken | Add a free room; then try a room booked by someone else | First saved at today's price; second refused, booking unchanged | N | int |
+| TC-ADM2-21 | Extend a fully paid stay | Fully paid in-house booking: add a night | Balance due again | N | int |
+| TC-ADM2-22 | Staff meal edit after cutoff | Tonight's dinner (locked for the guest): change it in the admin | Saved | N | int |
+
+### F-NTF (editor) and F-THM · Notification and theme editors
+| ID | Case | Steps | Expected | Suite | Auto |
+|---|---|---|---|---|---|
+| TC-NTF-09 | Defaults round-trip | Open `/admin/settings/notifications`; save without changes | "saved with no changes" in Recent changes; nothing stored as wording override | S | unit |
+| TC-NTF-10 | Staff numbers | Add `98200 12345`; then `12` | First saved as `+919820012345`; second refused with a message | N | unit |
+| TC-NTF-11 | Routes and wording | Untick a route; edit one message | Only the edited wording is stored; route change applies | N | unit |
+| TC-NTF-12 | Used for real | Add a staff SMS number and route; make a booking | `notifications` row for that number | N | int |
+| TC-THM-01 | Theme defaults | Open `/admin/settings/theme`; save | Nothing stored | S | unit |
+| TC-THM-02 | Change a colour | Change the main colour; save | Site uses it; only that value stored | N | unit |
+| TC-THM-03 | Unsafe values | Type `red;}body{display:none` as a colour | Refused | R | unit |
+| TC-THM-04 | Unreadable text | Set text colour to light grey | "Too low" in Readability; save refused | N | unit |
+| TC-THM-05 | Reset | Reset to default (confirm) | Override removed; default look | N | int |
+| TC-SET-08 | Settings stored as JSON | Save a settings group | Row is a JSON object and is read back | S | int |
+| TC-SET-09 | Old string rows | A row saved before the fix | Still read correctly | R | int |
 
 ### F-SEC / F-A11Y / F-PERF · Platform quality
 | ID | Case | Steps | Expected | Suite | Auto |

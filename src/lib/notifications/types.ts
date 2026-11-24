@@ -7,6 +7,7 @@ export const NOTIFICATION_EVENTS = [
   "booking.confirmed",        // deposit paid (or payments off) — confirmation + receipt
   "booking.meals_updated",    // meal selection changed
   "booking.cancelled",
+  "booking.updated",          // staff changed dates, rooms or guests
   "booking.balance_reminder", // before/at checkout
   "booking.fully_paid",       // balance settled — final receipt
   "payment.conflict",         // paid but couldn't confirm (refund needed)

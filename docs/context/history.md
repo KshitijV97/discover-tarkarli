@@ -47,6 +47,9 @@ All dates are 2026-11-04 unless noted. The project was built in one long working
 ## Going public, new vision
 - 2026-11-23: the repository is made public and the product is renamed **Discover Tarkarli** (discovertarkarli.com), a destination marketplace with Golden Tide Retreat as partner #1. Added `docs/vision.md`, rewrote the README, updated agent docs and the roadmap. A pre-publication scan found no secrets in files or git history. *Why:* the owner's vision changed from one property plus SaaS to a local destination platform.
 
+## P2 finished
+- 2026-11-24: staff stay changes (dates, rooms, guests) with price snapshots and meal carry-over, staff meal edits past the cutoff, notifications editor, theme editor with contrast checks, and a hardened theme loader. Found and fixed a bug: admin settings saves were double-encoded (`JSON.stringify` + `::jsonb` in postgres.js), so they were stored as strings and ignored; old rows are now read correctly (rule 15a). Found that the default orange button text is 2.9:1 contrast (owner decision). *Why:* finishes the admin so the owner never needs SQL.
+
 ## Decisions that shaped the work
 See [../decisions.md](../decisions.md) (001 to 017). The most consequential:
 - Plain Postgres and postgres.js instead of Supabase client libraries (portability).

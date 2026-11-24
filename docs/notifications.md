@@ -22,9 +22,10 @@ notify(event, { booking?, vars?, dedupeKey? })          src/lib/server/notify.ts
 | `booking.pending` | booking created, awaiting deposit | operator: Telegram |
 | `booking.confirmed` | deposit paid, or booking created with online payment off | guest: WhatsApp · operator: WhatsApp, Telegram |
 | `booking.meals_updated` | guest edits meals | guest: WhatsApp · operator: WhatsApp, Telegram |
-| `booking.cancelled` | *(admin, upcoming)* | guest + operator |
+| `booking.cancelled` | staff cancel in the admin | guest: WhatsApp · operator: WhatsApp, Telegram |
+| `booking.updated` | staff change dates, rooms or guests in the admin | guest: WhatsApp · operator: Telegram |
 | `booking.balance_reminder` | daily cron, N days before check-out (`balanceReminderDaysBefore`, default `[1, 0]`) | guest: WhatsApp |
-| `booking.fully_paid` | *(admin marks balance paid, upcoming)* | guest: WhatsApp |
+| `booking.fully_paid` | desk payments cover the total (admin) | guest: WhatsApp |
 | `payment.conflict` | paid after hold expired and room taken | operator: WhatsApp, Telegram, SMS |
 | `order.placed` / `order.updated` | *(à la carte, upcoming)* | kitchen: WhatsApp, Telegram |
 | `kitchen.daily_summary` | daily cron — tomorrow's meal counts | kitchen: WhatsApp, Telegram |
@@ -32,7 +33,9 @@ notify(event, { booking?, vars?, dedupeKey? })          src/lib/server/notify.ts
 Audiences: **guest** (booking phone — WhatsApp/SMS only), **operator**, **kitchen** (recipient lists in settings).
 
 ## Configuration
-All in the `settings` row with key `notifications` (schema: `src/lib/notifications/config.ts`). Example:
+**Edit it at `/admin/settings/notifications`** (admin only): master switch, channels on/off (with whether each channel's keys are set), staff and kitchen recipients (phones normalised to E.164, Telegram chat ids or @channel), a matrix of which message goes to whom on which channel (Telegram is never offered for guests), message wording per event and audience (only edited wording is stored; **Reset to default** restores it), and balance reminder days. Provider template mappings (`whatsappTemplates`, `smsTemplates`) are kept as they are and still set by SQL. Every save is in the audit log.
+
+All of it lives in the `settings` row with key `notifications` (schema: `src/lib/notifications/config.ts`). Example:
 
 ```sql
 insert into settings (key, value) values ('notifications', '{

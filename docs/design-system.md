@@ -18,12 +18,11 @@
 
 ## Changing the theme
 - **In code** (versioned): edit `theme.config.ts`.
-- **At runtime** (no deploy): write a partial override —
-  ```sql
-  insert into settings (key, value) values ('theme', '{"colors": {"primary": "#145C7A", "accent": "#F28C38"}, "radius": {"card": "0.5rem"}}')
-  on conflict (key) do update set value = excluded.value;
-  ```
-  An admin theme editor will write this row.
+- **At runtime** (no deploy): **`/admin/settings/theme`** (admin only). Colour pickers for every colour token, a card-corner preset, a live preview, and a readability panel (WCAG contrast). It stores only the values that differ from `theme.config.ts` in the `settings.theme` row, and **Reset to default** deletes the row.
+  - Colours must be `#RRGGBB` and the corner radius comes from a fixed list (`src/lib/admin/theme-form.ts`), because theme values are written into the page's `<style>`.
+  - Unreadable text (for example body text below 4.5:1, button text below 2.5:1) can't be saved; low but usable contrast shows a warning.
+  - `mergeTheme()` (`src/lib/theme.ts`) also ignores any stored value that isn't a plain colour or length, so a hand-edited row can't inject CSS.
+- **Known contrast issue (owner to decide):** the default white text on the orange accent (`#E8793A`, the "Book a stay" button) is 2.9:1, below the 3:1 minimum for large text. A darker orange would fix it; brand colours are the owner's call.
 
 ## Adding a token
 1. Add it to `theme.config.ts`.
