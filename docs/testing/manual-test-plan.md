@@ -71,6 +71,7 @@ Run after every deploy. Cases are marked **S** below; this is the checklist:
 | TC-UI-04 | 404 page | Open `/does-not-exist` | Branded not-found page with a way home | R | e2e |
 | TC-UI-05 | Footer follows settings | Admin changes property phone; reload `/` | Footer shows the new phone with no redeploy | N | manual |
 | TC-UI-06 | Menu page | Open `/food` | Menu items and prices listed; prices exclude GST | N | e2e |
+| TC-UI-08 | Link previews | `curl -s <site>/ \| grep -E 'og:\|twitter:\|canonical'`; repeat for `/book`, `/food`; open `<site>/opengraph-image` | Each page has its own title, description and canonical; `og:image`/`twitter:image` are absolute URLs to a 1200×630 PNG under 300 KB; `twitter:card` is `summary_large_image` | N | unit + manual |
 | TC-UI-07 | Theme tokens only | `grep -rE "#[0-9a-fA-F]{6}\|bg-(red\|blue\|green\|gray)-" src/components src/app` | No matches (theme tokens only) | R | unit (lint) |
 
 ### F-AVL · Availability

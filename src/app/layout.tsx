@@ -7,11 +7,9 @@ import { getSessionUser } from "@/lib/server/session";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { MotionProvider } from "@/components/fx/MotionProvider";
+import { rootMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: { default: "Golden Tide Retreat", template: "%s · Golden Tide Retreat" },
-  description: "A six-room beachfront homestay with a coastal kitchen.",
-};
+export const metadata: Metadata = rootMetadata;
 
 export const viewport: Viewport = { width: "device-width", initialScale: 1, themeColor: "#0E6E8C" };
 

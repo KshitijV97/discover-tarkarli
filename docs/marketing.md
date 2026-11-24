@@ -15,6 +15,11 @@ Dishes on `/food` come from `site.localFood.dishes`, not from `menu_items`. The 
 
 Dishes are made to order. There is no dish-level ordering flow yet: guests ask when they book, or call the property. A la carte ordering is on the roadmap.
 
+## Site name and link previews
+The public name, description, share-image text and production URL live in `src/content/brand.ts`. Titles, Open Graph and Twitter tags are built from it in `src/lib/seo.ts`: the root layout uses `rootMetadata`, and public pages call `pageMetadata({ title, description, path })` to get their own title, description and canonical URL. Private pages (`/account`, `/booking/[token]`, `/admin`, `/signin`) keep `robots: noindex`.
+
+The share image (`/opengraph-image`, 1200×630 PNG, about 60 KB) is drawn at build time by `src/app/opengraph-image.tsx` with the built-in `next/og` renderer, using theme colours and the brand name. It uses no photo because no property photo is committed to the repo (see below). To rename the site to Discover Tarkarli or move to a new domain, edit `brand.ts`; the tags and the image follow. Check with `TC-UI-08`.
+
 ## Photos folder
 `/photos/` (repo root) holds the owner's own property and dog photos. It is in `.gitignore` and `.vercelignore`, so the files are neither committed nor deployed. To use them on the site, host them somewhere public (for example Supabase Storage) and point `site.ts` or `rooms.photos` at the URLs. `src/lib/images.ts` passes non-Unsplash URLs through unchanged.
 

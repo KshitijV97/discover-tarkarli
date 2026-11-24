@@ -1,3 +1,6 @@
+import type { Metadata } from "next";
+import { brand } from "@/content/brand";
+import { pageMetadata } from "@/lib/seo";
 import { listActiveRooms } from "@/lib/server/rooms-repo";
 import { listActiveMenuItems } from "@/lib/server/menu-repo";
 import { getSettings } from "@/lib/server/settings-repo";
@@ -6,6 +9,7 @@ import { Hero } from "@/components/home/Hero";
 import { RoomsShowcase } from "@/components/home/RoomsShowcase";
 import { DogFriendly, Experiences, FinalCta, Gallery, HowItWorks, Kitchen, SectionHeading, Stats } from "@/components/home/sections";
 
+export const metadata: Metadata = pageMetadata({ description: brand.description, path: "/" });
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
