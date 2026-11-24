@@ -86,7 +86,7 @@ Release notes list the PR title, the requirement and any owner-facing changes.
 
 ## Limits
 - The repository is **private** on a free GitHub plan. **Branch protection and required reviews are not available** (the API returns 403). Approval is enforced by this process, not by GitHub. Enabling protection needs GitHub Pro (or a public repo, which the owner has not chosen).
-- Vercel's Git integration must stay connected to `KshitijV97/golden-tide-retreat`. Production deployments are blocked if the commit author is not allowed to deploy.
+- Vercel's Git integration must stay connected to `KshitijV97/discover-tarkarli`. Production deployments are blocked if the commit author is not allowed to deploy.
 - The tag and release commands need `gh` logged in as the owner's account, which is the case on this machine.
 
 ## History note
