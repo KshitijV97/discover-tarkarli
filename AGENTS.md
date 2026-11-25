@@ -31,9 +31,9 @@ Before committing: `npm run typecheck && npm run lint && npm test`. The pre-push
 ## Working rules (short form; full list in docs/context/rules.md)
 - **Ask few, decide the rest.** Ask only the 3 to 4 questions that change the design, as multiple choice with a recommended default. Take sensible defaults for everything else and record them.
 - **Never work around credentials or sandboxes.** If a secret, connection string or network route is wrong or blocked, stop and ask the owner for the exact value or command. Do not probe, derive or disable anything to get past it.
-- **Work on `main` directly** (owner's fast mode, see [docs/workflows/vibe-coding.md](docs/workflows/vibe-coding.md)). Commit and push; a push deploys production via Vercel. No branches, PRs, tags or releases.
+- **Changes go through a pull request** (ADR 020 in [docs/decisions.md](docs/decisions.md)). Branch from `main`, commit, push the branch, and open a PR. Never push to `main`. Pushing a branch creates a Vercel preview. The owner merges, and the merge deploys production. No tags or releases are needed.
 - **Commits are the owner's.** Plain-English messages. **No `Co-Authored-By` or AI attribution trailers.**
-- **Guardrails still apply:** before pushing, make sure there are no blatant syntax or type errors (`npm run typecheck`). Ask first before messages to guests or staff, and before changing live prices or policy copy.
+- **Guardrails still apply:** before opening or updating a PR, make sure there are no blatant syntax or type errors (`npm run typecheck`). Ask first before messages to guests or staff, and before changing live prices or policy copy.
 - **Update the docs in the same change** whenever behaviour, schema, settings, env vars or endpoints change.
 - **Report outcomes faithfully.** If a check fails or was not run, say so.
 
@@ -45,7 +45,7 @@ Before committing: `npm run typecheck && npm run lint && npm test`. The pre-push
 - **Price snapshots** on booking lines are fixed at creation. Edits keep existing prices.
 - **Payments are idempotent.** `recordPayment()` is called by the browser callback and the webhook. Keep it safe to repeat.
 - **`notify()` never throws** and runs after the DB commit. Pass a `dedupeKey` for anything that may fire twice.
-- **Build for many partners.** The repo is public. New tables include `tenant_id`; new features must not assume a single property. Never commit secrets, real guest data or the owner's private photos.
+- **Build for many partners.** The repo is public. New tables include `partner_id` (see `GLOSSARY.md` and `docs/plans/`); new features must not assume a single property. Never commit secrets, real guest data or the owner's private photos.
 - **Business values belong in `settings`** (zod field with a default in `lib/settings.ts`). Secrets belong in env.
 - **Motion respects reduced motion**: use `components/fx` primitives.
 - **Styling uses theme tokens only** (`bg-primary`, `text-muted`, …) from `src/theme/theme.config.ts`. No raw hex or Tailwind palette colours in components.

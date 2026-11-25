@@ -2,6 +2,8 @@
 
 > **Status: planned, not started.** Goal: bill tenants for everything the platform does, keep the platform's own running cost as low as possible, and make every cost visible per tenant.
 
+> **Update 2026-11-24 (decided):** the Platform is not the merchant of record (ADR 018). Day-1 revenue is **Featured slots**, sold by hand. Basic Listings are free, but **Usage** is metered from day one (`listing_view`, `enquiry_click`, `booking_created`, `booking_value_paise`, `message_sent`) so it can be charged later. Each Partner gets a free monthly WhatsApp allowance (default 100). The owner stays GST-unregistered below the ₹20 lakh threshold, and a tracker warns at 75%. See [plans/03](plans/03-marketplace-front.md) and [plans/06](plans/06-partner-money.md). The model below is the longer-term menu.
+
 ## Business model (proposed, to confirm)
 A tenant pays for:
 1. **Base subscription**, monthly or yearly, per plan (for example Starter, Growth, Pro). Plans are data in the database, not code.

@@ -22,9 +22,9 @@ These rules apply to every AI agent and every human contributor. They were learn
 
 ## Git and deploys
 
-8. **Work directly on `main`.** Commit and push to `main`; no feature branches and no pull requests (owner's fast mode, see [../workflows/vibe-coding.md](../workflows/vibe-coding.md)).
+8. **Every change goes through a pull request** (ADR 020). Create a branch from an up-to-date `main` (`docs/…`, `feat/…`, `fix/…`), commit, push the branch and open a PR. Never push to `main` directly. One plan slice means one PR. The owner merges. Agents never merge.
 9. **Plain-English commit messages**, short, describing what changed (for example "Add login button"). No prefixes or tags required. Commits are authored by the owner's git identity. **No `Co-Authored-By` or other AI attribution trailers.**
-10. **Push deploys.** Vercel deploys `main` automatically on every push, so a push goes to production. Still avoid breaking production: check the change before pushing.
+10. **Merge deploys.** A pushed branch gets a Vercel preview. Merging to `main` deploys production. CI must be green before the PR is ready to merge.
 11. **No tags or versions** are needed. `package.json` version is not maintained per release.
 12. **Production deploys apply migrations first** (`vercel-build`). Preview deploys never touch the production database. Don't run migrations against production from a laptop unless the owner asks.
 13. **Never delete or overwrite** without looking at the target first.

@@ -68,8 +68,14 @@ These turn the single-property app into the platform. Most are already planned i
 - **Proven on a real property.** Golden Tide Retreat runs on this software, so every feature is tested against real guests, real staff and real money.
 - **Repeatable.** Once the model works for one coastal destination, the same platform can launch the next one (Devbag, Vengurla, Ganpatipule and beyond) as a new destination on the same core.
 
-## Open decisions (owner)
-- Commission, flat plan or both for partners.
-- Whether Golden Tide Retreat keeps its own domain or lives only under discovertarkarli.com.
-- The first non-Golden-Tide partners (a scuba operator is the strongest second partner).
-- Brand and visual identity for Discover Tarkarli.
+## Decisions (2026-11-24)
+These were settled in a grilling session. The vocabulary is in [GLOSSARY.md](../GLOSSARY.md), the ADRs are 018 and 019 in [decisions.md](decisions.md), and the build plans are in [plans/](plans/README.md).
+- **Money:** each Partner is the merchant of record and is paid directly (pay at property or UPI, Razorpay later). The Platform holds no guest money. It stays ready to pivot to a Razorpay Route marketplace (ADR 018).
+- **GST:** the owner starts as an unregistered proprietor. Stays are booked on the Partner's own Partner site (SaaS framing), to stay outside GST Section 9(5) (ADR 019). Each Partner has a Tax profile: unregistered, regular or composition. A CA must confirm before launch.
+- **Revenue:** free basic Listings for Partners, with Usage metered from day one so it can be charged later, plus paid Featured slots. Public listings (government or non-profit) and Places of interest are always free.
+- **Day-1 scope:** Stays are bookable. Food, Shop and Experience are Listings with WhatsApp and call buttons. Rental comes later.
+- **Partner sites** live at paths (`/stays/<slug>`). goldentideretreat.com is the one custom domain. Subdomains stay possible later.
+- **Languages:** English, Marathi and Hindi from day 1, with Malvani and Konkani flavour phrases.
+- **Brand:** water sports, Malvani food, beach life, Maratha navy history and Sindhudurg Fort.
+- **Partners** start applications themselves, and the Owner approves them. The Partner console is an installable PWA with an offline action queue.
+- **Still open:** the first pilot Partners (see [plans/00](plans/00-owner-actions.md)).

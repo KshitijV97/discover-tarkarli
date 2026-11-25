@@ -3,6 +3,8 @@
 | Doc | What's inside |
 |---|---|
 | [vision.md](vision.md) | **The direction**: discovertarkarli.com marketplace, Golden Tide Retreat as partner #1, the technical changes it drives |
+| [plans/README.md](plans/README.md) | **The build plans** for discovertarkarli.com: PRDs with test-backed slices that agents implement unattended, plus owner-only actions |
+| [../GLOSSARY.md](../GLOSSARY.md) | **Domain vocabulary**: Partner, Listing, Partner site, Featured, Usage, Support session… |
 | [context/README.md](context/README.md) | **Start here for any AI tool or new contributor**: requirements, working rules, history, current handoff |
 | [architecture.md](architecture.md) | Layers, module map, request flows, extension points |
 | [booking-rules.md](booking-rules.md) | Stay, occupancy, meals, cutoff, pricing, GST, deposit rules |
@@ -11,8 +13,8 @@
 | [razorpay-onboarding.md](razorpay-onboarding.md) | **TODO**: step-by-step Razorpay account, keys, webhook, go-live checklist |
 | [region-migration.md](region-migration.md) | **TODO**: move Vercel and Supabase to Mumbai, step by step |
 | [auth.md](auth.md) | Sign-in: Auth.js + Google (**TODO setup**), roles, phone OTP plan |
-| [release-process.md](release-process.md) | **How work ships**: branch, PR, owner approval, merge, version tag, Vercel deploy, rollback |
-| [workflows/vibe-coding.md](workflows/vibe-coding.md) | **Proposed fast mode** (direct to main, no PRs, no tags). Not active until the owner confirms |
+| [release-process.md](release-process.md) | **How work ships**: branch, PR, owner merges, Vercel deploy, rollback (tags optional) |
+| [workflows/vibe-coding.md](workflows/vibe-coding.md) | Former fast mode (direct to main). **Superseded** by ADR 020: changes go through a PR |
 | [marketing.md](marketing.md) | Branding pillars (dog friendly, AC rooms, Konkan food), where copy lives, photos policy |
 | [admin.md](admin.md) | Admin dashboard: what's built, how to add a page or setting |
 | [future-services.md](future-services.md) | **TODO**: third-party activities (parasailing, scuba, kayaking…) as configurable, operator-owned offers |

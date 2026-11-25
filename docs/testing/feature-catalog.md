@@ -41,10 +41,25 @@ Status: **Built** · **Partial** · **Planned**. "Cases" counts cases in the man
 | F-A11Y | Accessibility | Built | `TC-A11Y-*` | |
 | F-PERF | Performance budgets | Built | `TC-PERF-*` | |
 | F-CHN | Room types and channel sync (iCal, OTAs) | Planned | – | |
-| F-TEN | Multi-tenancy (tenants, domains, isolation, cells) | Planned | – | Isolation cases are a standing regression group |
+| F-TEN | Multi-tenancy (tenants, domains, isolation, cells) | Planned | – | Core in [plans/01](../plans/01-tenancy-core.md). Isolation cases are a standing regression group |
 | F-FLG | Feature flags: entitlements and preferences | Planned | – | |
-| F-ONB | Tenant onboarding wizard and platform console | Planned | – | |
+| F-ONB | Partner applications and approval | Planned | – | [plans/02](../plans/02-consoles-and-roles.md). |
 | F-BILL | SaaS billing | Planned | – | |
+| F-RBAC | Platform and Partner roles, permissions, Support sessions | Planned | – | [plans/02](../plans/02-consoles-and-roles.md) |
+| F-CON | Platform console and Partner console | Planned | – | [plans/02](../plans/02-consoles-and-roles.md) |
+| F-LST | Listings, browse pages, Partner sites at paths, Trip plan | Planned | – | [plans/03](../plans/03-marketplace-front.md) |
+| F-USE | Usage metering and dashboards | Planned | – | [plans/03](../plans/03-marketplace-front.md) |
+| F-FEAT | Featured slots | Planned | – | [plans/03](../plans/03-marketplace-front.md) |
+| F-I18N | English, Marathi, Hindi; translatable content; guest language | Planned | – | [plans/04](../plans/04-languages-brand-guides.md) |
+| F-BRAND | Discover Tarkarli brand and theme | Planned | – | [plans/04](../plans/04-languages-brand-guides.md) |
+| F-GDE | Guides, Places of interest, Public listings | Planned | – | [plans/04](../plans/04-languages-brand-guides.md) |
+| F-PWA | Installable Partner console with offline queue | Planned | – | [plans/05](../plans/05-partner-pwa-offline.md) |
+| F-PACC | Partner payment accounts (pay at property, UPI, Razorpay later) | Planned | – | [plans/06](../plans/06-partner-money.md) |
+| F-TAX | Partner tax profiles in pricing and receipts | Planned | – | [plans/06](../plans/06-partner-money.md) |
+| F-UPI | UPI deposit with Partner confirmation | Planned | – | [plans/06](../plans/06-partner-money.md) |
+| F-WA | Platform WhatsApp messages: per-language templates, allowance, metering | Planned | – | [plans/06](../plans/06-partner-money.md) |
+
+Cases for the features above are written in their plan files under `docs/plans/`. Each slice's agent copies them into the manual plan before coding (see [plans/README.md](../plans/README.md)).
 
 ## Adding a feature
 1. Add a row here (ID, status `Planned`).

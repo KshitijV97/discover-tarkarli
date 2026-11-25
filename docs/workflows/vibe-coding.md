@@ -1,6 +1,6 @@
 # Vibe coding workflow (fast mode)
 
-> **Status: active** since 2026-11-04. Confirmed by the owner. It replaces the release process in [../release-process.md](../release-process.md) (kept for reference). Its risks are listed below; the owner accepted them.
+> **Status: superseded on 2026-11-24** by ADR 020 in [../decisions.md](../decisions.md): changes go through a pull request. This page is kept as history. It was active from 2026-11-04.
 
 ## Owner's instructions (verbatim)
 
