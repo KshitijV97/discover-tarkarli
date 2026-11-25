@@ -23,7 +23,7 @@ Each plan is a **PRD plus vertical slices**. A slice is one unit of work that an
 | **In progress** | At least one slice is done. | An agent |
 | **Done** | Every slice is done, and its feature rows in the catalog show **Built**. | An agent |
 
-Each slice also has its own status: `todo`, `doing`, `done` or `blocked: <reason>`.
+Each slice also has its own status: `todo`, `doing`, `in review` (PR open), `done` (merged) or `blocked: <reason>`.
 
 ## How to refine a plan (owner)
 1. Run `/mattpocock-skills:grill-with-docs docs/plans/0N-….md`. It works through the **Open questions** section, updates the plan, adds to the glossary and records ADRs.
@@ -41,7 +41,7 @@ The agent then:
 4. **Builds with `/mattpocock-skills:tdd`**, red then green then refactor, one TC at a time. Test titles carry the TC id and the suite tag, e.g. `it("[sanity] TC-TEN-07 …")`. Use `*.int.test.ts` for anything Postgres must prove.
 5. **Verifies.** Run `npm run typecheck && npm run lint && npm test && npm run test:integration`. For UI slices, also use the browser preview and take a screenshot at 375 px wide.
 6. **Updates the docs named in the slice**, plus the glossary or an ADR if the model changed. Then marks the slice `done`.
-7. **Reviews its own diff** with `/code-review`, fixes what it finds, and commits to `main` (see [CLAUDE.md](../../CLAUDE.md#conventions)).
+7. **Reviews its own diff** with `/code-review` and fixes what it finds. Then it commits on a branch named `feat/plan-0N-sM-<slug>`, pushes, and opens **one PR per slice** with the TC ids and test results in the body (see [CLAUDE.md](../../CLAUDE.md#conventions)). It never merges. The owner merges, and the slice counts as `done` once merged. While its PR is open, the slice is `in review`, and slices that depend on it wait for it.
 
 **When to stop and report instead of guessing:**
 - the slice needs a decision the plan doesn't make;

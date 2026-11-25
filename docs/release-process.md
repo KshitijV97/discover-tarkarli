@@ -1,6 +1,6 @@
 # Release process
 
-> **Superseded on 2026-11-04** by the owner's fast mode: [workflows/vibe-coding.md](workflows/vibe-coding.md). Work goes directly to `main`, with no PRs, approvals, tags or releases. This document is kept for reference, for when the owner wants a reviewed release again.
+> **Partly back in force (2026-11-24, ADR 020).** Steps 1–5 apply: branch, commits (plain English rather than conventional prefixes), checks, push for a preview, and PR. The owner merges. Version tags and GitHub releases (the later steps) stay optional.
 
 How a requirement becomes a merged change, a version tag and a production deploy. It applies to every change, from the owner's request to the live site.
 

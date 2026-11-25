@@ -50,10 +50,10 @@ Without credentials, every delivery is logged in `notifications` as `skipped` an
 - **Docs**: update `docs/` in the same commit as the behaviour change.
 
 ## Git workflow
-Owner's fast mode (see [workflows/vibe-coding.md](workflows/vibe-coding.md)):
-- Commit and push directly to `main`. Plain-English commit messages, no AI trailers.
-- Every push deploys production via Vercel. Check for blatant syntax and type errors first: `npm run typecheck`.
+Pull requests (ADR 020 in [decisions.md](decisions.md)):
+- Branch from `main`, commit, push the branch, and open a PR with `gh pr create`. Never push to `main` directly. Plain-English commit messages, no AI trailers.
+- A pushed branch gets a Vercel preview deployment. The owner merges, and the merge deploys production. Run `npm run typecheck` before every push.
 - For logic, config or build changes, also run `npm run lint`, `npm test` and `npm run build`.
 - **Pre-push hook** (`.githooks/pre-push`) runs typecheck, lint and unit tests automatically. Emergency skip: `git push --no-verify`.
-- **CI** (`.github/workflows/ci.yml`) runs on every push to `main` and every PR: typecheck, lint, tests, migrations on a fresh Postgres 16 (twice, to prove they are idempotent), seed, build, and the smoke script against the built app. A red CI run means production may already have the change, because Vercel deploys in parallel: fix or revert at once.
+- **CI** (`.github/workflows/ci.yml`) runs on every push to `main` and every PR: typecheck, lint, tests, migrations on a fresh Postgres 16 (twice, to prove they are idempotent), seed, build, and the smoke script against the built app. A PR with red CI is not merged. Fix it on the branch.
 - The earlier PR and tag process is in [release-process.md](release-process.md), kept for reference.

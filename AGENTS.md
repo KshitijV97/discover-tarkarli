@@ -31,9 +31,9 @@ Before committing: `npm run typecheck && npm run lint && npm test`. The pre-push
 ## Working rules (short form; full list in docs/context/rules.md)
 - **Ask few, decide the rest.** Ask only the 3 to 4 questions that change the design, as multiple choice with a recommended default. Take sensible defaults for everything else and record them.
 - **Never work around credentials or sandboxes.** If a secret, connection string or network route is wrong or blocked, stop and ask the owner for the exact value or command. Do not probe, derive or disable anything to get past it.
-- **Work on `main` directly** (owner's fast mode, see [docs/workflows/vibe-coding.md](docs/workflows/vibe-coding.md)). Commit and push; a push deploys production via Vercel. No branches, PRs, tags or releases.
+- **Changes go through a pull request** (ADR 020 in [docs/decisions.md](docs/decisions.md)). Branch from `main`, commit, push the branch, and open a PR. Never push to `main`. Pushing a branch creates a Vercel preview. The owner merges, and the merge deploys production. No tags or releases are needed.
 - **Commits are the owner's.** Plain-English messages. **No `Co-Authored-By` or AI attribution trailers.**
-- **Guardrails still apply:** before pushing, make sure there are no blatant syntax or type errors (`npm run typecheck`). Ask first before messages to guests or staff, and before changing live prices or policy copy.
+- **Guardrails still apply:** before opening or updating a PR, make sure there are no blatant syntax or type errors (`npm run typecheck`). Ask first before messages to guests or staff, and before changing live prices or policy copy.
 - **Update the docs in the same change** whenever behaviour, schema, settings, env vars or endpoints change.
 - **Report outcomes faithfully.** If a check fails or was not run, say so.
 

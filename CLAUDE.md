@@ -60,7 +60,7 @@ Before committing: `npm run typecheck && npm run lint && npm test`. The pre-push
 - Local DB: `postgres://postgres:postgres@localhost:54329/golden_tide`.
 
 ## Conventions
-- Commit and push directly to `main` (fast mode, see docs/workflows/vibe-coding.md and docs/context/rules.md). Plain-English commit messages, no AI attribution trailers. Every push deploys production.
+- **Changes go through a pull request** (ADR 020, docs/context/rules.md). Create a branch from `main`, commit, push the branch, and open a PR with `gh pr create`. Never push to `main` directly. The owner merges, and merging deploys production. Plain-English commit messages, no AI attribution trailers.
 - Path alias `@/` = `src/`.
 - Server components load data; client components (`"use client"`) handle interaction. Mobile-first, with touch targets of at least 44px.
 - New external integrations go behind an interface (see the extension points in docs/architecture.md).
