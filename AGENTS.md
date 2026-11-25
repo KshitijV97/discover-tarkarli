@@ -45,7 +45,7 @@ Before committing: `npm run typecheck && npm run lint && npm test`. The pre-push
 - **Price snapshots** on booking lines are fixed at creation. Edits keep existing prices.
 - **Payments are idempotent.** `recordPayment()` is called by the browser callback and the webhook. Keep it safe to repeat.
 - **`notify()` never throws** and runs after the DB commit. Pass a `dedupeKey` for anything that may fire twice.
-- **Build for many partners.** The repo is public. New tables include `tenant_id`; new features must not assume a single property. Never commit secrets, real guest data or the owner's private photos.
+- **Build for many partners.** The repo is public. New tables include `partner_id` (see `GLOSSARY.md` and `docs/plans/`); new features must not assume a single property. Never commit secrets, real guest data or the owner's private photos.
 - **Business values belong in `settings`** (zod field with a default in `lib/settings.ts`). Secrets belong in env.
 - **Motion respects reduced motion**: use `components/fx` primitives.
 - **Styling uses theme tokens only** (`bg-primary`, `text-muted`, …) from `src/theme/theme.config.ts`. No raw hex or Tailwind palette colours in components.

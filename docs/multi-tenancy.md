@@ -1,5 +1,7 @@
 # Future: multi-tenant white-label SaaS (TODO, major)
 
+> **Update 2026-11-24:** the core is now planned in [plans/01-tenancy-core.md](plans/01-tenancy-core.md), and roles in [plans/02](plans/02-consoles-and-roles.md). The column is named **`partner_id`** (the glossary term), where this doc says `tenant_id`. Partner sites resolve by **path** first, not host. Where this doc and the plans disagree, the plans win.
+
 > **Status: planned, not started (0% built).** This is the largest structural change on the roadmap. It changes the data model, so it must be planned before more tables are added. Every new feature should be written as if a second property will use it.
 
 ## Current status (audit)

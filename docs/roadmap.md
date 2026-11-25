@@ -28,6 +28,9 @@ The product becomes **discovertarkarli.com**, a destination marketplace for the 
 - **New phase: marketplace layer** (after P4 and P5): partner types (stay, operator, kitchen), cross-tenant search and availability, partner listing pages, trip basket, multi-partner checkout with Razorpay Route split payouts, destination content (guides, seasons).
 - The order of P0 to P3 is unchanged. Exact re-sequencing is an owner decision.
 
+## 🧭 Discover Tarkarli plans (2026-11-24)
+The marketplace work is now planned slice by slice in [plans/](plans/README.md): 01 tenancy core → 02 consoles and roles → 03 marketplace front → 04 languages, brand and guides → 05 partner PWA offline → 06 partner money. Owner-only steps are in [plans/00](plans/00-owner-actions.md). These replace P4, P5, P8 and P11 below for the marketplace. P2's remaining items, P3 and P9 still apply.
+
 ## 🗺 Phased plan (decided 2026-11-05)
 
 Goal: sell the product to other buyers, each on their own domain, with a small blast radius, admin-configurable features, a full test catalog, built-in tours and an AI assistant. Sizes are relative effort for one developer working with an AI assistant: **S** ≈ 1–2 days, **M** ≈ 3–7 days, **L** ≈ 1–3 weeks.

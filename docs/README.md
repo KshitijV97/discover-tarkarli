@@ -3,6 +3,8 @@
 | Doc | What's inside |
 |---|---|
 | [vision.md](vision.md) | **The direction**: discovertarkarli.com marketplace, Golden Tide Retreat as partner #1, the technical changes it drives |
+| [plans/README.md](plans/README.md) | **The build plans** for discovertarkarli.com: PRDs with test-backed slices that agents implement unattended, plus owner-only actions |
+| [../GLOSSARY.md](../GLOSSARY.md) | **Domain vocabulary**: Partner, Listing, Partner site, Featured, Usage, Support session… |
 | [context/README.md](context/README.md) | **Start here for any AI tool or new contributor**: requirements, working rules, history, current handoff |
 | [architecture.md](architecture.md) | Layers, module map, request flows, extension points |
 | [booking-rules.md](booking-rules.md) | Stay, occupancy, meals, cutoff, pricing, GST, deposit rules |
