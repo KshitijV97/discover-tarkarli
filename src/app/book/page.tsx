@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { brand } from "@/content/brand";
+import { pageMetadata } from "@/lib/seo";
 import { BookingFlow } from "@/components/booking/BookingFlow";
 import { listActiveRooms } from "@/lib/server/rooms-repo";
 import { getSettings } from "@/lib/server/settings-repo";
@@ -6,7 +8,11 @@ import { isISODate, todayInTz } from "@/lib/dates";
 import { getPaymentProvider } from "@/lib/payments";
 import { getSessionUser } from "@/lib/server/session";
 
-export const metadata: Metadata = { title: "Book your stay" };
+export const metadata: Metadata = pageMetadata({
+  title: "Book your stay",
+  description: `Check live availability and book a beachfront room at ${brand.name}. Add home-cooked Konkan meals and pay a small deposit online.`,
+  path: "/book",
+});
 export const dynamic = "force-dynamic";
 
 export default async function BookPage({ searchParams }: { searchParams: { checkIn?: string; checkOut?: string } }) {

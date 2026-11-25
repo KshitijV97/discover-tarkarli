@@ -1,14 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { site } from "@/content/site";
+import { brand } from "@/content/brand";
+import { pageMetadata } from "@/lib/seo";
 import { getSettings } from "@/lib/server/settings-repo";
 import { Reveal, RevealGroup, RevealItem } from "@/components/fx/Reveal";
 import { ShimmerButton } from "@/components/fx/ShimmerButton";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Local food",
-  description: "Konkan dishes cooked to order at Golden Tide Retreat: modak, ghavne, shirwale, patholi, solkadhi and Malvani curries.",
-};
+  description: `Konkan dishes cooked to order at ${brand.name}: modak, ghavne, shirwale, patholi, solkadhi and Malvani curries.`,
+  path: "/food",
+});
 export const dynamic = "force-dynamic";
 
 const COURSES = ["Breakfast", "Sweets", "Mains"] as const;
