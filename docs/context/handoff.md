@@ -3,12 +3,12 @@
 Last updated: 2026-11-24, after finishing P2. Update this file whenever the state changes.
 
 ## Repository
-- **Branch in use:** `main` (direct-to-main fast mode). P0, P1 and P2 are pushed there. Next: P3 (refunds and GST invoice), or tenancy first per [../vision.md](../vision.md) (owner decision).
+- **Branch in use:** feature branches with PRs into `main` (ADR 020). P0, P1 and P2 are on `main`. The Discover Tarkarli plans are in [../plans/](../plans/README.md). Next: P3 (refunds and GST invoice), or tenancy first per [../vision.md](../vision.md) (owner decision).
 - **Open PR:** #2 (`docs/guest-convenience-and-produce-shop`): planning docs for web check-in, guest ID, produce shop and conveniences. Waiting for the owner to merge.
 - **Owner status page:** `docs/status/status.html`, published as a private artifact. Republish it when the state changes.
 
 ## Deployment
-- **Process:** direct to `main` (owner's fast mode, see [../workflows/vibe-coding.md](../workflows/vibe-coding.md)). Every push deploys production. The old release process is in [../release-process.md](../release-process.md) for reference.
+- **Process:** every change goes through a pull request (ADR 020). The owner merges, and the merge deploys production. Pushed branches get Vercel previews. See [../release-process.md](../release-process.md), steps 1–5.
 - **Production (Vercel):** the latest *production* deploy does **not** include the admin dashboard, branding or licence. The `vercel --prod` attempt was blocked by a permission check. It needs the owner's approval, or a deploy from `main` after merging.
 - **Preview:** a preview build of the feature branch was started by the push. Its result was not checked.
 - **Region mismatch to resolve:** `vercel.json` sets `regions: ["hnd1"]` (Tokyo), `docs/deployment.md` says Montreal `yul1`, and commit `2a23ba4` says "pin Vercel region to Mumbai". Decide the intended region (Mumbai `bom1` is the goal in `docs/region-migration.md`) and make the three agree.
